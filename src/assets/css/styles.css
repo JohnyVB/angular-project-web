@@ -1,0 +1,412 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+  background-color: #E9EAED;
+}
+
+.mHeight{
+  min-height: 800px;
+}
+
+.clearfix {
+  clear: both;
+  float: none;
+}
+
+header {
+  height: 60px;
+  width: 100%;
+  border-top: 5px solid rgb(231, 189, 2);
+  border-bottom: 1px solid #ccc;
+  background: white;
+}
+
+header ul li a{
+  color: black;
+}
+
+
+
+.center {
+  width: 100%;
+}
+
+.center-2 {
+  text-align: center;
+}
+
+#title {
+  width: 20%;
+  display: block;
+  float: left;
+  height: 60px;
+  margin-top: 3px;
+}
+
+#title a:hover {
+  text-decoration: none;
+}
+
+#title h1 a{
+   color: rgb(231, 189, 2);
+}
+
+#title h1{
+  width: 100%;
+  height: 100%;
+ 
+  font-size: 30px;
+  line-height: 47px;
+  text-align: right;
+}
+
+.width-img-user {
+  width: 42px;
+}
+
+#menu {
+  width: 79%;
+}
+
+#menu>ul {
+  width: 100%;
+
+}
+
+#menu ul li {
+  display: inline-block;
+  text-decoration: none;
+  margin-left: 2%;
+}
+
+#menu ul li a:hover, .active {
+  color: rgb(231, 189, 2);
+  text-decoration: none;
+  transition: 300ms all;
+}
+
+#menu ul li:nth-child(4) {
+  margin-right: 15%;
+}
+
+.anchoWidht{
+  width: 400px;
+}
+
+.drama{
+  background: pink;
+}
+
+.romance{
+  background: #ff5733;
+}
+
+.terror{
+  background: black;
+}
+#contentMain {
+  float: left;
+  min-height: 800px;
+}
+
+.minHeight{
+  min-height: 700px;
+}
+
+.heightChapters{
+  height: 700px;
+}
+
+#contentlector {
+  float: left;
+  min-height: 450px;
+}
+
+
+#contentUlticaps {
+  width: 70%;
+  float: left;
+  min-height: 450px;
+  margin-right: 20px;
+}
+
+#sidebar {
+  float: left;
+}
+
+#contentformulario {
+  min-height: 450px;
+}
+
+.sidebar-item {
+  border: 1px solid #CCCCCC;
+}
+
+.sidebar-item h3 {
+  text-transform: uppercase;
+  font-size: 17px;
+  margin: 0px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+}
+
+.sidebar-item p {
+  text-align: center;
+}
+
+.sidebar-item h3 i {
+  margin-right: 20px;
+  font-size: 20px;
+}
+
+.btnMain {
+  display: block;
+  background: black;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  transition: 300ms all;
+  text-align: center;
+  border-radius: 5px;
+  border: none;
+  margin: 1px;
+}
+
+.btnMainColor {
+  color: white;
+}
+
+.btnMainColor:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.btnMain:hover {
+  text-decoration: none;
+  color: black;
+}
+
+#create-chapter a:hover,
+#create-article a:hover {
+  background: #E7BD02;
+
+}
+
+#contentMain h2 {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.article-item {
+  margin-top: 20px;
+}
+
+.article-item h6 {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.664);
+  text-align: center;
+  margin-bottom: 0;
+  padding: 2px;
+  max-height: 24px;
+  font-size: 14px;
+}
+
+.article-item .typeBook {
+  width: 100%;
+  background: red;
+  text-align: center;
+  margin-bottom: 0;
+  padding: 2px;
+  color: white;
+
+}
+
+.article-item h6 a {
+  color: white;
+
+}
+
+.article-item h6 a:hover {
+  text-decoration: none;
+}
+
+.article-item p {
+  position: absolute;
+  color: white;
+  text-align: center;
+  background: red;
+  top: 75.5%;
+  width: 85.7%;
+}
+
+.over-flow {
+  overflow: hidden !important;
+}
+
+.heightArticle{
+  height: 788px !important;
+}
+
+.marginCenter {
+  margin: 0px auto;
+  width: 100%;
+}
+
+.divscroll{
+  height: 612px;
+  overflow-y: scroll;
+  font-size: 13px;
+  scrollbar-darkshadow-color: #fff;
+}
+
+.heightImg {
+  height: 100%;
+}
+
+.imageWidth{
+  width: 160px;
+  position: relative;
+  right: -84%;
+}
+
+.widthChapter{
+  width: 888px;
+}
+
+.fontSize{
+  font-size: 16px;
+}
+
+#pie-pagina {
+  background: #DEDEDE;
+  width: 100%;
+  height: 60px;
+  line-height: 65px;
+  color: #444;
+}
+
+#canvas_container img {
+  display: block;
+  margin: 0px auto;
+  width: 95%;
+}
+
+#controls button {
+  height: 40px;
+}
+
+#imagenPortada img,
+.widthForms {
+  width: 94%;
+}
+
+.marginUnRem {
+  margin-top: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 2rem;
+}
+
+#btnCap {
+  line-height: 10px;
+}
+
+#btnCap i {
+  margin-right: 15px;
+}
+
+#infoMain ol li {
+  margin-bottom: 8px;
+}
+
+#controlBook a:hover {
+  text-decoration: none;
+}
+
+.imgprofileWidth {
+  width: 35%;
+}
+
+.typeBookProfile {
+  width: 89.4% !important;
+}
+
+.imguserfileWidth {
+  width: 90%;
+
+}
+
+#datosUserprofile label {
+  display: block;
+  margin: 13px;
+}
+
+#datosUserprofile label:last-child {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+#datosUserprofile label a:hover {
+  text-decoration: none;
+}
+
+.widthBookEdit{
+  width: 200px;
+}
+
+.widthModal{
+  width: 120%;
+}
+
+
+/*---------------------------Responsive en general-----------------------------------------------*/
+
+
+@media (max-width: 1366px) {
+
+  .article-item p {
+    width: 79.7%;
+  }
+
+  .typeBookProfile {
+    width: 85.5% !important;
+  }
+
+  .imageUserProfile {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+
+  .article-item p {
+    width: 77.5%;
+  }
+
+  .typeBookProfile {
+    width: 83.5% !important;
+  }
+}
+
+@media (max-width: 980px) {
+
+  .article-item h6 {
+    overflow: hidden;
+  }
+}

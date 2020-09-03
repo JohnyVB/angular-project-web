@@ -1,0 +1,90 @@
+<header>
+  <div ngClass="center">
+    <div id="title">
+
+      <h1><a [routerLink]="['/home']">Reader<strong>Book</strong></a></h1>
+
+    </div>
+    <nav id="menu" ngClass="navbar navbar-expand-lg">
+      <ul>
+        <li><a [routerLink]="['/library']" [routerLinkActive]="['active']">Biblioteca</a></li>
+        <li><a [routerLink]="['/chapters']" [routerLinkActive]="['active']">Capitulos</a></li>
+        <li><a [routerLink]="['/developer']" [routerLinkActive]="['active']">Desarrollo</a></li>
+        <li><a [routerLink]="['/users']" [routerLinkActive]="['active']" *ngIf="this.user.role == 'admin'">Usuarios</a>
+        </li>
+
+        <li>
+          <form ngClass="row" #searchForm="ngForm" (submit)="sendString()">
+            <input type="text" ngClass="form-control col mr-1" name="search" #search="ngModel"
+              [(ngModel)]="this.searchString" placeholder="Buscar...">
+
+            <button type="submit" ngClass="btn btn-warning text-white mb-1 col mr-3"><i
+                ngClass="fas fa-search"></i></button>
+          </form>
+        </li>
+
+
+        <li><a ngClass="mb-1"><i id="icon-theme" ngClass="fas fa-adjust fa-rotate-180"></i></a></li>
+        <li><img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
+            src="{{this.url + 'get-image-user/' + this.user.image }}" alt="{{this.user.user}}"
+            *ngIf="this.userOn == true && this.user.image">
+          <img ngClass="img-thumbnail rounded-circle width-img-user mb-1" src="assets/img/default-user.png"
+            alt="imgUser" *ngIf="this.userOn == false || !this.user.image">
+        </li>
+        <li>
+          <div ngClass="dropdown">
+
+            <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn == false">Login</button>
+
+            <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn == true">{{this.user.user}}</button>
+
+            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu" *ngIf="this.userOn == true">
+              <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item"><i ngClass="fas fa-user pr-2"></i>Mi perfil</a>
+              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()"><i
+                  ngClass="fas fa-sign-out-alt pr-2"></i>Cerrar sesion</a>
+            </div>
+
+
+
+            <div ngClass="dropdown-menu mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenu"
+              *ngIf="this.userOn == false">
+              <form>
+                <div ngClass="form-group">
+
+                  <label for="exampleInputEmail1">Correo</label>
+                  <input type="email" ngClass="form-control" name="correo" #correo="ngModel"
+                    [(ngModel)]="this.login.email" (change)="validarCampos()">
+
+                </div>
+
+                <div ngClass="form-group">
+
+                  <label for="exampleInputPassword1">Contraseña</label>
+                  <input type="password" ngClass="form-control" name="contrasena" #contrasena="ngModel"
+                    [(ngModel)]="this.login.password" (change)="validarCampos()">
+
+                </div>
+
+                <div ngClass="text-danger text-center" *ngIf='this.errorOn == true'>
+                  <h5>Por favor ingrese sus datos completos</h5>
+                </div>
+
+                <button type="submit" ngClass="btn btn-success w-100" (click)="loginUser()" [disabled]="this.errorOn" >Login</button>
+                <div ngClass="text-center mt-3">
+                  <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
+                    cuenta</a>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div ngClass="clearfix"></div>

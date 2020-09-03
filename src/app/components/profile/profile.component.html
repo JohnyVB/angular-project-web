@@ -1,0 +1,139 @@
+<div ngClass="row">
+
+
+
+  <section id="contentMain" ngClass="col-8">
+    <h2>Perfil</h2>
+    <div ngClass="border row m-3 bg-dark text-white rounded justify-content-center">
+
+      <div ngClass="col-12 d-flex justify-content-center">
+        <!--<i ngClass="fas fa-user fa-7x m-5"></i>-->
+        <img *ngIf="!user.image || user.image == ''" src="../../../assets/img/default-user.png"
+          ngClass="m-5 imgprofileWidth rounded-circle">
+        <img *ngIf="user.image || user.image != ''" src="{{this.url + 'get-image-user/' + user.image}}"
+          ngClass="m-5 imgprofileWidth rounded-circle">
+      </div>
+
+
+
+
+      <div ngClass="col-5 row d-flex justify-content-center rounded bg-info p-4">
+
+
+        <div ngClass="col-12 d-flex justify-content-center ">
+          <label ngClass="p-2 rounded bg-primary">@{{this.user.user}}</label>
+        </div>
+
+        <div ngClass="col-12 d-flex justify-content-center">
+          <label>Nombre: {{this.user.name}} {{this.user.lastname}}</label>
+        </div>
+
+        <div ngClass="col-12 row d-flex justify-content-center">
+          <label>Correo: {{this.user.email}}</label>
+        </div>
+
+        <div ngClass="col-12 row d-flex justify-content-center">
+          <label>Fecha de registro: {{this.user.regdate | amLocale: 'es' | amDateFormat:'LL'}}</label>
+        </div>
+
+        <div ngClass="col-5">
+          <a *ngIf="this.userEdit" href="#Modal" role="button" ngClass="btn btn-large btn-warning text-white d-flex justify-content-center"
+            data-toggle="modal">Editar
+            perfil</a>
+        </div>
+
+
+        <!-- Modal / Ventana / Overlay en HTML -->
+        <div id="Modal" ngClass="modal fade">
+
+          <div ngClass="modal-dialog">
+            <div ngClass="modal-content">
+              <div ngClass="modal-header">
+                <h4 ngClass="modal-title text-black-50">Editar Perfil</h4>
+                <button id="close"type="button" ngClass="close" data-dismiss="modal" aria-hidden="true"
+                  (click)="ngOnInit()">&times;</button>
+              </div>
+
+
+              <div ngClass="row modal-body">
+
+
+                <div ngClass="col-5 align-content-center">
+                  <img ngClass="rounded-circle imageWidth" [src]="this.imgUrl">
+                  <img ngClass="rounded-circle imageWidth" *ngIf="!this.imgUrl" src="{{this.url + 'get-image-user/' + this.user.image}}">
+                </div>
+
+                <form ngClass="col-12 m-1 row" #editarUsuario>
+
+                  <div ngClass="custom-file mb-4 mt-4 col-12">
+                    <input type="file" ngClass="custom-file-input"
+                      (change)="validarImagen($event); getFile($event.target.files)" id="validatedCustomFile" required
+                      name="imagen" #imagen="ngModel" [(ngModel)]="this.user.image">
+                    <label ngClass="custom-file-label" for="validatedCustomFile">Selecciona tu imagen</label>
+                  </div>
+
+                  <div ngClass="col-6">
+                    <input type="text" ngClass="form-control" placeholder="Nombres" name="name" #name="ngModel" [(ngModel)]="this.user.name">
+                  </div>
+
+                  <div ngClass="col-6">
+                    <input type="text" ngClass="form-control" placeholder="Apellidos" name="lastname" #lastname="ngModel" [(ngModel)]="this.user.lastname">
+                  </div>
+
+                </form>
+
+              </div>
+
+
+              <div ngClass="modal-footer">
+                <button type="button" ngClass="btn btn-danger" data-dismiss="modal" (click)="ngOnInit()">Cancelar</button>
+                <button type="button" ngClass="btn btn-success" data-dismiss="modal" (click)="editUser();">Editar</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+
+
+      <h3 ngClass="col-12 text-center mt-5 mb-1">Publicaciones: {{user.article.length}}</h3>
+
+      <div ngClass="col-11 border rounded m-5 divscroll heightArticle" *ngIf="user.article.length != 0; else noArticle">
+
+
+        <div ngClass="row">
+          <article ngClass="article-item col-3" *ngFor="let article of user.article">
+
+            <h6><a [routerLink]="['/book/' + article._id]">{{article.title}}</a></h6>
+            <div ngClass="img-fluid h-75 over-flow">
+              <img *ngIf="article.image || article.image != ''" ngClass="marginCenter"
+                src="{{this.url + 'get-coverimage/' + article.image}}" alt="Portada libro">
+              <img *ngIf="!article.image || article.image == ''" ngClass="marginCenter"
+                src="../../../assets/img/defaultBook.jpg" alt="Portada libro">
+            </div>
+            <p ngClass="typeBookProfile">
+              {{article.type}}
+            </p>
+
+
+          </article>
+        </div>
+
+
+      </div>
+      <ng-template ngClass="col-11 border m-5" #noArticle>
+        <h3>Aun no hay publicaciones</h3>
+      </ng-template>
+
+    </div>
+
+
+
+
+  </section>
+  <app-sidebar ngClass="col-4"></app-sidebar>
+</div>

@@ -1,0 +1,14 @@
+ <aside id="sidebar" ngClass="m-3 w-75">
+   
+   <div id="create-article" ngClass="sidebar-item p-3 bg-white" *ngIf="this.chapterOff == false">
+     <h3><i ngClass="fas fa-book"></i>Añadir un libro</h3>
+     <p>Añade el libro que estas creando</p>
+     <a (click)="sendIdUser()" ngClass="btnMain text-white">Añadir libro</a>
+   </div>
+
+   <div id="create-chapter" ngClass="sidebar-item mt-3 p-3 bg-white" *ngIf="this.capOff == false">
+     <h3><i ngClass="fas fa-file"></i>Añadir un capitulo</h3>
+     <p>Añade el capitulo que estas creando</p>
+     <a ngClass="btnMain text-white">Añadir capitulo</a>
+   </div>
+ </aside>

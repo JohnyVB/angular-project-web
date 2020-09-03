@@ -1,0 +1,87 @@
+<div class="row">
+
+
+
+<section id="contentMain" ngClass="col-8">
+  <h2 ngClass="center-2 mt-4 mb-4">Registrarse</h2>
+  <form ngClass="row justify-content-center" #userForm="ngForm">
+
+    <div ngClass="bg-dark p-3 pt-4 text-white rounded col-7">
+      <div ngClass="mb-3 m-4 row justify-content-center border p-4">
+
+
+        <div ngClass="justify-content-center col-5 mb-4" *ngIf="user.image != '' else noImagen">
+
+          <div *ngIf="validarExtend == 'jpg' || validarExtend == 'png' || validarExtend == 'jpeg'; else noValida">
+            <img ngClass="img-thumbnail rounded-circle" [src]="url">
+          </div>
+
+          <ng-template #noValida>
+            
+            <small ngClass="bg-danger">
+              Extencion del archivo no valida, por favor intente con un archivo correcto!!!
+            </small>
+
+          </ng-template>
+
+        </div>
+
+        <ng-template #noImagen>
+          <img ngClass="img-thumbnail rounded-circle col-5 mb-4" src="https://via.placeholder.com/150">
+        </ng-template>
+
+        
+
+        <div ngClass="custom-file mb-3 col-12">
+          <input type="file" ngClass="custom-file-input"
+            (change)="validarImagen($event); getFile($event.target.files)" id="validatedCustomFile"
+            required name="imagen" #imagen="ngModel" [(ngModel)]="user.image">
+          <label ngClass="custom-file-label" for="validatedCustomFile">Selecciona tu imagen</label>
+          <div ngClass="invalid-feedback">Example invalid custom file feedback</div>
+        </div>
+
+      </div>
+      <div ngClass="row m-2 mt-3">
+        <div ngClass="col">
+          <input type="text" ngClass="form-control" placeholder="Nombre(s)*" name="nombres" #nombres="ngModel"
+            [(ngModel)]="user.name" (change)="validarCampos()">
+        </div>
+        <div ngClass="col">
+          <input type="text" ngClass="form-control" placeholder="Apellido(s)*" name="apellidos" #apellidos="ngModel"
+            [(ngModel)]="user.lastname" (change)="validarCampos()">
+        </div>
+      </div>
+      <div ngClass="row m-2 mt-4">
+        <div ngClass="col">
+          <input type="text" ngClass="form-control" placeholder="Nombre Usuario*" name="nombreUsuario"
+            #nombreUsuario="ngModel" [(ngModel)]="user.user" (change)="validarCampos()">
+        </div>
+        <div ngClass="col">
+          <input type="email" ngClass="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Email*" placeholder="Email*" name="correo" #correo="ngModel"
+            [(ngModel)]="user.email" (change)="validarCampos()">
+        </div>
+      </div>
+      <div ngClass="form-group m-4">
+        <input type="password" ngClass="form-control" id="exampleInputPassword1" placeholder="Contraseña*"
+          name="contrasena" #contrasena="ngModel" [(ngModel)]="user.password" (change)="validarCampos()">
+      </div>
+      <div ngClass="d-flex justify-content-center m-4 mt-6">
+        <button type="button" ngClass="btn btn-success w-100" (click)="registerUser()" *ngIf="errorOn == false">Enviar</button>
+        <button type="button" ngClass="btn btn-success w-100" (click)="registerUser()" *ngIf="errorOn == true" disabled>Enviar</button>
+        
+      </div>
+      <div ngClass="w-100 text-danger text-center" *ngIf="errorOn">
+        <h5>Por favor ingresar todos sus datos</h5>
+      </div>
+    </div>
+
+
+
+
+  </form>
+
+
+</section>
+<app-sidebar ngClass="col-4"></app-sidebar>
+</div>

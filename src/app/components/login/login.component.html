@@ -1,0 +1,40 @@
+<div ngClass="row">
+
+  <section id="contentMain" ngClass="col-8">
+    <h2>Iniciar Sesión</h2>
+
+    <form ngClass="row justify-content-center">
+      <div ngClass="col-5 row bg-dark p-4 rounded shadow">
+
+        <div ngClass="col-12 row m-0 p-0">
+          <i ngClass="fas fa-user p-2 bg-warning text-white text-center col-2"></i>
+          <input type="email" ngClass="form-control col-10 rounded-0" placeholder="Correo" name="correo"
+            #correo="ngModel" [(ngModel)]="login.email" (change)="validarEmail()">
+        </div>
+        <div ngClass="col-12 row m-0 p-0 mt-4 mb-4">
+          <i ngClass="fas fa-key p-2 bg-warning text-white text-center col-2"></i>
+          <input type="password" ngClass="form-control col-10 rounded-0" placeholder="Contraseña" name="contrasena"
+            #contrasena="ngModel" [(ngModel)]="login.password" (change)="validarPassword()">
+        </div>
+
+        <button type="submit" ngClass="btn btn-warning btn-lg col-12 rounded-0 text-white" (click)="loginUser()"
+          disabled *ngIf="this.errorOn == true">Login</button>
+
+        <button type="submit" ngClass="btn btn-warning btn-lg col-12 rounded-0 text-white" (click)="loginUser()"
+          *ngIf="this.errorOn == false">Login</button>
+
+        <div ngClass="text-danger col-12 text-center" *ngIf='this.errorOn == true'>
+          <h5>Por favor ingrese sus datos completos</h5>
+        </div>
+
+        <div ngClass="col-12 text-center mt-2">
+          <label ngClass="text-white mr-2">¿No registrado?</label><a [routerLink]="['/register']">Crear cuenta</a>
+        </div>
+
+
+      </div>
+    </form>
+  </section>
+
+  <app-sidebar ngClass="col-4"></app-sidebar>
+</div>
