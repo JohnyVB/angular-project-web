@@ -2,29 +2,33 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Article } from '../../models/article';
 import { User } from '../../models/user';
+import { Chapter } from '../../models/chapter';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
+import { ChapterService } from '../../services/chapter.service';
 import { Global } from '../../services/global';
 
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css'],
-  providers: [ArticleService, UserService]
+  providers: [ArticleService, UserService, ChapterService]
 })
 export class BookComponent implements OnInit {
 
 
   public article: Article;
-  public Id: string;
   public user: User;
+  public chapter: Chapter;
+  public chapterId: any;
+  public Id: string;
   public url: string;
   public articleSearch: Array<any>;
   public userXarticle: boolean;
   public file: any;
   public urlImage: any;
   public editOn: boolean;
-  public srcImage: any;
+  public errFileChapter: boolean;
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
@@ -34,7 +38,8 @@ export class BookComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _articleService: ArticleService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _chapterService: ChapterService
   ) {
 
     this.url = Global.url;
@@ -42,9 +47,13 @@ export class BookComponent implements OnInit {
     this.urlImage = '';
     this.editOn = false;
     this.Id = '';
+    this.errFileChapter = null;
+    this.chapterId = '';
 
     this.article = new Article('','','','','','',[],'',[]);
     this.user = new User('', '', '', '', [], '', '', '', '', '', '');
+    this.chapter = new Chapter('',null,'',null,'');
+
   }
 
 
@@ -61,7 +70,6 @@ export class BookComponent implements OnInit {
     this._articleService.getArticleService(this.Id).subscribe(
       response => {
         this.article = response.article;
-        this.srcImage = this.url + 'get-coverimage/'+this.article.image;
       },
       error => {
         console.log('Error al traer el articulo');
@@ -76,10 +84,7 @@ export class BookComponent implements OnInit {
       error => {
         console.log('Error al traer el usuario');
       }
-    );
-    
-    
-          
+    );    
   }
 
   getUserLogged(){
@@ -87,7 +92,7 @@ export class BookComponent implements OnInit {
     this._userService.getUserLogged().subscribe(
       response => {
 
-       let result = response['user'].article.find(_element => _element === this.article._id );
+       let result = response['user'].article.find((_element: any) => _element === this.article._id );
        if (result) {
          this.userXarticle = true;
        }
@@ -104,6 +109,63 @@ export class BookComponent implements OnInit {
 
   getFile(files: FileList){
     this.file = files.item(0);    
+  }
+
+  validatePDF(){
+    console.log(this.file.type);
+
+    if (this.file.type !="application/pdf") {
+      this.errFileChapter = true;
+    }else{
+      this.errFileChapter = false;
+    }
+    
+  }
+  idChapter(id: any){
+    this.chapterId = id;
+    this._chapterService.getChapter(id).subscribe(
+      response => {
+        this.chapter = response.chapter;
+      },
+      error => {
+        console.log('Error al traer el capitulo', error);
+        
+      }
+    );
+  }
+
+  validateNumber(){
+   
+  }
+
+  edit(){
+     
+    this._chapterService.updateChapter(this.chapterId, this.chapter).subscribe(
+      response => {
+        console.log('El capitulo se ha actualizado correctamente!!',response);
+        if (this.file) {
+          this._chapterService.uploadPDF(this.file, this.chapterId).subscribe(
+            response => {
+              console.log('Archivo pdf actualizado con exito', response);
+              
+            },
+            error => {
+              console.log('No se ha podido actualizar el archivo pdf');
+              
+            }
+          );
+        }
+        
+      },
+      error => {
+        console.log('Error al actualizar el capitulo');
+
+      }
+    );
+
+    this.ngOnInit();
+    let close2 = document.getElementById('close2') as any;
+    close2.click();
   }
 
   showImage(){
@@ -144,18 +206,6 @@ export class BookComponent implements OnInit {
     this.ngOnInit();
     var modal = document.getElementById('close') as any;
     modal.click();
-  }
-
-  updateImageArticle(articleId: any){
-    this._articleService.uploadImage(this.file, articleId).subscribe(
-      response => {
-        console.log('la imagen del articulo se ha actualizado correctamente');
-      },
-      error => {
-        console.log('Error al actualizar imagen del articulo');
-        
-      }
-    );
   }
 
 

@@ -8,8 +8,7 @@
        <div ngClass="col-4">
          <h6 ngClass="bg-danger w-100 p-2 m-0 text-center text-white">{{article.type}}</h6>
          <img ngClass="w-100" *ngIf="!article.image" src="../../../assets/img/defaultBook.jpg" alt="defaultBook">
-         <!--<img ngClass="w-100" *ngIf="article.image" src="{{url + 'get-coverimage/' + this.article.image}}">-->
-         <img ngClass="w-100" *ngIf="article.image" [src]="this.srcImage">
+         <img ngClass="w-100" *ngIf="article.image" src="{{url + 'get-coverimage/' + this.article.image}}">
          <h6 [ngClass]="{'w-100 p-2 m-0 text-center text-white': article.state,
                           'bg-danger': article.state == 'Finalizado',
                           'bg-success': article.state == 'Publicandose',
@@ -194,11 +193,11 @@
                <div ngClass="row bg-dark m-2 mb-1 rounded p-3">
 
                  <div ngClass="col-2 p-0">
-                   <div *ngIf="userXarticle">
+                   <div *ngIf="this.userXarticle">
                      <a [routerLink]="['/delete-chapter/'+chapter._id]"><i
                          ngClass="fas fa-trash-alt fa-lg float-sm-left m-2 text-danger"></i></a>
-                     <a [routerLink]="['/update-chapter/'+chapter._id]"><i
-                         ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning"></i></a>
+                     <a href="#modalChapter" data-toggle="modal" role="button"><i
+                         ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning" (click)="idChapter(chapter._id)"></i></a>
                    </div>
                  </div>
 
@@ -222,6 +221,52 @@
            </div>
 
 
+           <div id="modalChapter" ngClass="modal fade">
+            <div ngClass="modal-dialog">
+              <div ngClass="modal-content">
+
+
+                <form #editChapter="ngForm" (ngSubmit)="edit()">
+
+
+                  <div ngClass="modal-header">
+                    <h4 ngClass="modal-title text-black-50">Editar Capitulo</h4>
+                    <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true" (click)="ngOnInit()">&times;</button>
+                  </div>
+
+                  <div ngClass="modal-body">
+                    <div ngClass="row m-1">
+
+                      <div ngClass="col-12 custom-file mt-3">
+                        <input type="file" ngClass="custom-file-input" name="image" #image="ngModel"
+                          [(ngModel)]="this.chapter.imgpage" (change)="getFile($event.target.files); validatePDF()">
+                        <label ngClass="custom-file-label">Selecciona la nueva imagen...</label>
+                        <small *ngIf="this.errFileChapter == true" ngClass="p-1 rounded bg-danger text-white">Archivo no valido!!</small>
+                        <small *ngIf="this.errFileChapter == false" ngClass="p-1 rounded bg-success text-white">Archivo valido</small>
+                      </div>
+
+                      <div ngClass="col-12 form-group p-0 mt-3">
+                        <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" pattern="*[0-9]" (change)="validateNumber()">
+                      </div>
+
+                      <div ngClass="col-12 form-group p-0 mt-1">
+                        <input type="text" ngClass="form-control" name="titlecap" #titlecap="ngModel"
+                          [(ngModel)]="chapter.titlecap">
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div ngClass="modal-footer">
+                    <button type="button" ngClass="btn btn-danger" data-dismiss="modal" (click)="ngOnInit();">Cancelar</button>
+                    <button type="submit" ngClass="btn btn-success">Editar</button>
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+           </div>
 
 
 

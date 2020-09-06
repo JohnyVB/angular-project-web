@@ -20,13 +20,24 @@ import { Global } from './global';
         return this.cookie.get('token');
     }
 
-    saveChapter(chapter: any, articleId: any):Observable<any>{
+    getChapter(chapterId: any):Observable<any>{
+        const token = this.getToken();
+
+        if (token) {
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
+            return this._http.get(this.url + 'get-chapter/' + chapterId, {headers: headers})
+        }else{
+            console.log('No hay usuario logeado!!!');
+        }
+    }
+
+    saveChapter(chapter: any, chapterId: any):Observable<any>{
         const token = this.getToken();
 
         if (token) {
             let params = JSON.stringify(chapter);
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.post(this.url + 'save-chapter/' + articleId, params, { headers: headers });
+            return this._http.post(this.url + 'save-chapter/' + chapterId, params, { headers: headers });
         }else{
             console.log('No hay usuario logeado!!!');
         }
@@ -52,7 +63,7 @@ import { Global } from './global';
             let params = JSON.stringify(chapter);
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
 
-            return this._http.put(this.url + '' + chapterId, params, {headers: headers});
+            return this._http.put(this.url + 'update-chapter/' + chapterId, params, {headers: headers});
         } else {
             console.log('No hay usuario logeado!!!');
         }
