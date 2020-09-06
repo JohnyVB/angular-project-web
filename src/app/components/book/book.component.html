@@ -241,9 +241,13 @@
                         <input type="file" ngClass="custom-file-input" name="image" #image="ngModel"
                           [(ngModel)]="this.chapter.imgpage" (change)="getFile($event.target.files); validatePDF()">
                         <label ngClass="custom-file-label">Selecciona la nueva imagen...</label>
-                        <small *ngIf="this.errFileChapter == true" ngClass="p-1 rounded bg-danger text-white">Archivo no valido!!</small>
-                        <small *ngIf="this.errFileChapter == false" ngClass="p-1 rounded bg-success text-white">Archivo valido</small>
+                        
                       </div>
+
+                      <small *ngIf="this.errFileChapter == true"
+                        ngClass="p-1 rounded bg-danger text-white">Archivo no valido!!</small>
+                      <small *ngIf="this.errFileChapter == false"
+                        ngClass="p-1 rounded bg-success text-white">Archivo valido</small>
 
                       <div ngClass="col-12 form-group p-0 mt-3">
                         <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" pattern="*[0-9]" (change)="validateNumber()">

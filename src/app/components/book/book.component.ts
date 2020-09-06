@@ -121,6 +121,7 @@ export class BookComponent implements OnInit {
     }
     
   }
+
   idChapter(id: any){
     this.chapterId = id;
     this._chapterService.getChapter(id).subscribe(
@@ -146,6 +147,7 @@ export class BookComponent implements OnInit {
         if (this.file) {
           this._chapterService.uploadPDF(this.file, this.chapterId).subscribe(
             response => {
+              this.ngOnInit();
               console.log('Archivo pdf actualizado con exito', response);
               
             },
@@ -162,8 +164,6 @@ export class BookComponent implements OnInit {
 
       }
     );
-
-    this.ngOnInit();
     let close2 = document.getElementById('close2') as any;
     close2.click();
   }
