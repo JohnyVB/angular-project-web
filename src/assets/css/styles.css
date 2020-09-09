@@ -23,6 +23,17 @@ body {
   float: none;
 }
 
+pdf-viewer {
+  display: flex;
+  height: auto;
+  justify-content: center;
+  width: 65%;
+}
+
+.heightBtn{
+  height: 38px !important;
+}
+
 header {
   height: 60px;
   width: 100%;

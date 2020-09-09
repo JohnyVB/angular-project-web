@@ -20,7 +20,8 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
-              "angular2-moment"
+              "angular2-moment",
+              "ng2-pdf-viewer"
             ],
             "assets": [
               "src/favicon.ico",

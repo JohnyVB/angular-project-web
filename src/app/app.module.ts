@@ -3,7 +3,10 @@ import { NgModule } from '@angular/core';
 import { routing, appRoutingProviders } from './app.routing';
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http';
-import { MomentModule } from 'angular2-moment'
+import { MomentModule } from 'angular2-moment';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
+
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -55,7 +58,8 @@ import { SearchComponent } from './components/search/search.component';
     routing,
     FormsModule,
     HttpClientModule,
-    MomentModule
+    MomentModule,
+    PdfViewerModule
   ],
   providers: [appRoutingProviders, CookieService],
   bootstrap: [AppComponent]

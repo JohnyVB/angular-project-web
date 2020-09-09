@@ -43,6 +43,10 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.get(this.url + 'get-chapters-populate/' + articleId);
     }
 
+    getArticleXchapter(chapterId: string):Observable<any>{
+        return this._http.get(this.url + 'get-articlexchapter/' + chapterId);
+    }
+
     search(searchString: string): Observable<any> {
         return this._http.get(this.url + 'search/' + searchString);
     }

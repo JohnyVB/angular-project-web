@@ -1,56 +1,54 @@
-<div class="row justify-content-center">
+<div ngClass="row justify-content-center">
 
 
-<div ngClass="sidebar-item d-flex justify-content-center row mb-2 mt-2 bg-white col-5">
-  <button type="button" ngClass="btnMain btn-light col-2 m-1"><i ngClass="fas fa-arrow-alt-circle-left"></i></button>
-  <button type="button" ngClass="btnMain btn-light col-2 m-1"><i ngClass="fas fa-arrows-alt"></i></button>
-  <button type="button" ngClass="btnMain btn-light col-2 m-1"><i ngClass="fas fa-compress"></i></button>
-  <button type="button" ngClass="btnMain btn-light col-2 m-1"><i ngClass="fas fa-expand"></i></button>
+  <section id="contentlector" ngClass="col-12 row">
 
-</div>
-  <section id="contentlector" ngClass="col-12">
-    <div id="my_pdf_viewer">
-
-      <div id="canvas_container" class="w-100">
-        <div id="controls" ngClass="row justify-content-center mt-4 mb-2">
-          <!--<canvas id="pdf_renderer"></canvas>-->
-          <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-search-minus"></i></button>
-          <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="far fa-file"></i></button>
-
-          <div id="selected" ngClass="input-group mb-3 w-25 col-3">
-
-            <div ngClass="input-group-prepend">
-              <label ngClass="input-group-text" for="inputGroupSelect01">Paginas</label>
-            </div>
-            <select ngClass="custom-select" id="inputGroupSelect01">
-              <option selected>Seleccionar....</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-
-          </div>
-          <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="far fa-copy"></i></button>
-          <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-search-plus"></i></button>
-
-        </div>
-
-        <img src="assets/img/ImgChapters/naku-lectores-cero_page-0001.jpg" alt="" srcset="">
-      </div>
-
-      <div id="navigation_controls" ngClass="row justify-content-center mt-4 mb-4">
-        <button type="button" ngClass="btnMain btn-light col-2"><i ngClass="fas fa-angle-double-left"></i></button>
-        <button type="button" ngClass="btnMain btn-light col-2"><i ngClass="fas fa-angle-left"></i></button>
-
-        <button type="button" ngClass="btnMain btn-light col-2"><i ngClass="fas fa-angle-right"></i></button>
-        <button type="button" ngClass="btnMain btn-light col-2"><i ngClass="fas fa-angle-double-right"></i></button>
-
-
-      </div>
+    <div ngClass="col-12 bg-warning text-center text-white p-1">
+      <h2>{{this.article.title}}</h2>
+      <h2>Capitulo: {{this.chapter.numcap}} {{this.chapter.titlecap}}</h2>
+      <h2>Autor: {{this.user.name}} {{this.user.lastname}}</h2>
     </div>
 
+    <div ngClass="col-12 bg-white row d-flex justify-content-center m-2 p-3">
 
+      <button type="button" (click)="returnArticle()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-arrow-alt-circle-left"></i></button>
+      <button type="button" (click)="minusZoom()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-search-minus"></i></button>
 
+      <div id="selected" ngClass="input-group mb-3 w-25 col-2">
+
+        <div ngClass="input-group-prepend">
+          <label ngClass="input-group-text" for="inputGroupSelect01">Paginas</label>
+        </div>
+
+        <select ngClass="custom-select" id="inputGroupSelect01" #pages="ngModel" [(ngModel)]="this.page">
+          <option selected>Seleccionar....</option>
+          <option>1</option>
+        </select>
+
+      </div>
+
+      <button type="button" (click)="plusZoom()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-search-plus"></i></button>
+      <button type="button" *ngIf="this.cascade === true" (click)="setCascade()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="far fa-file"></i></button>
+      <button type="button" *ngIf="this.cascade === false" (click)="setCascade()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="far fa-copy"></i></button>
+    </div>
+  
+
+    <pdf-viewer ngClass="col-12" 
+      [src]="this.urlPDF" 
+      [original-size]="false"
+      [(page)]="this.page"
+      [(show-all)]="this.cascade"
+      [(zoom)]="this.zoom"
+      [autoresize]="true"
+      ></pdf-viewer>
+
+    <div ngClass="col-12 bg-white row d-flex justify-content-center m-2 p-3">
+      <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-double-left"></i></button>
+      <button type="button" *ngIf="this.cascade === false" (click)="previousPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-left"></i></button>
+
+      <button type="button" *ngIf="this.cascade === false" (click)="nextPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-right"></i></button>
+      <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-double-right"></i></button>
+    </div>
 
   </section>
 </div>
