@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
     this.url = Global.url;
     this.userEdit = false;
 
-    this.user = new User('', '', '', '', [], '', '', '', '', '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
   }
 
   ngOnInit(): void {

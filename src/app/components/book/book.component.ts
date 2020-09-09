@@ -51,7 +51,7 @@ export class BookComponent implements OnInit {
     this.chapterId = '';
 
     this.article = new Article('','','','','','',[],'',[]);
-    this.user = new User('', '', '', '', [], '', '', '', '', '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
     this.chapter = new Chapter('',null,'',null,'');
 
   }

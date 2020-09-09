@@ -41,9 +41,15 @@ export class ReaderComponent implements OnInit {
 
     this.article = new Article('', '', '', null, '', '', [], '', []);
     this.chapter = new Chapter('', null, '', null, '');
-    this.user = new User('', '', '', '', [], '', '', '', null, '', '');
-    this.autor = new User('', '', '', '', [], '', '', '', null, '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
+    this.autor = new User('', '', '', '', [], '', '', '', '', null, '', '');
 
+  }
+
+  validatePrefe(){
+    if (this.user.prefreader === 'cascada') {
+      this.cascade = true;
+    }
   }
 
   ngOnInit(): void {
@@ -62,6 +68,7 @@ export class ReaderComponent implements OnInit {
                 this._userService.getUserXArticle(response.article._id).subscribe(
                   (response) => {
                     this.autor = response.user;
+                    
                   },
                   (error) => {
                     console.log('No se encontro el usuario del libro');
@@ -91,6 +98,7 @@ export class ReaderComponent implements OnInit {
     this._userService.getUserLogged().subscribe(
       (response) => {
         this.user = response['user'];
+        this.validatePrefe();
       },
       (error) => {
         console.log('No hay usuario logeado');
@@ -98,7 +106,7 @@ export class ReaderComponent implements OnInit {
       }
     );
 
-    
+
 
   }
 

@@ -44,27 +44,42 @@
       <div ngClass="row m-2 mt-3">
         <div ngClass="col">
           <input type="text" ngClass="form-control" placeholder="Nombre(s)*" name="nombres" #nombres="ngModel"
-            [(ngModel)]="user.name" (change)="validarCampos()">
+            [(ngModel)]="user.name">
         </div>
         <div ngClass="col">
           <input type="text" ngClass="form-control" placeholder="Apellido(s)*" name="apellidos" #apellidos="ngModel"
-            [(ngModel)]="user.lastname" (change)="validarCampos()">
+            [(ngModel)]="user.lastname">
         </div>
       </div>
       <div ngClass="row m-2 mt-4">
         <div ngClass="col">
           <input type="text" ngClass="form-control" placeholder="Nombre Usuario*" name="nombreUsuario"
-            #nombreUsuario="ngModel" [(ngModel)]="user.user" (change)="validarCampos()">
+            #nombreUsuario="ngModel" [(ngModel)]="user.user">
         </div>
         <div ngClass="col">
           <input type="email" ngClass="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             placeholder="Email*" placeholder="Email*" name="correo" #correo="ngModel"
-            [(ngModel)]="user.email" (change)="validarCampos()">
+            [(ngModel)]="user.email">
         </div>
       </div>
+
+      <div ngClass="form-group m-4 p-3 border">
+  
+        <select ngClass="form-control" name="preferencia" #preferencia="ngModel"
+          [(ngModel)]="this.user.prefreader">
+
+          <option value="" disabled>Preferencia de lectura</option>
+          <option value="paginada">Paginada</option>
+          <option value="cascada">Cascada</option>
+
+        </select>
+        <small>Esta opción no es obligatoria, se asignara por defecto el valor paginada</small>
+
+      </div>
+
       <div ngClass="form-group m-4">
         <input type="password" ngClass="form-control" id="exampleInputPassword1" placeholder="Contraseña*"
-          name="contrasena" #contrasena="ngModel" [(ngModel)]="user.password" (change)="validarCampos()">
+          name="contrasena" #contrasena="ngModel" [(ngModel)]="user.password">
       </div>
       <div ngClass="d-flex justify-content-center m-4 mt-6">
         <button type="button" ngClass="btn btn-success w-100" (click)="registerUser()" *ngIf="errorOn == false">Enviar</button>

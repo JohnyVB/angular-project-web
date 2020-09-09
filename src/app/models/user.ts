@@ -9,6 +9,7 @@ export class User {
         public article: any,
         public email: string,
         public role: string,
+        public prefreader: string,
         public token: string,
         public regdate: any,
         public user: string,

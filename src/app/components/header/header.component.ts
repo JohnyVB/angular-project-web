@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
     this.userOn = false;
     this.errorOn = true;
     this.url = Global.url;
-    this.user = new User('', '', '', '', [], '', '', '', '', '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
 
     this.login = {
       email: '',
