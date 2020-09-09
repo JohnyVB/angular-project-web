@@ -9,7 +9,7 @@
 
 
 
-      <div ngClass="col-11 row bg-light border rounded m-3 d-flex" *ngFor="let users of user">
+      <div ngClass="col-11 row bg-light border rounded m-3 d-flex" *ngFor="let users of this.user">
         <div ngClass="col-2 m-2 text-center">
           <img src="assets/img/default-user.png" ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="users.image == ''">
           <img src="{{this.url + 'get-image-user/' + users.image}}" ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="users.image">
@@ -24,8 +24,8 @@
           <label><a [routerLink]="['/profile/' + users._id]" ngClass="p-2 bg-primary text-white">Ir al perfil</a></label>
         </div>
         <div ngClass="col-4 ml-auto text-center">
-          <a ngClass="btn btn-secondary mt-5" [routerLink]="['delete-user/' + users._id]"><i
-              ngClass="fas fa-trash-alt fa-4x m-4 text-danger"></i></a>
+          <button ngClass="btn btn-secondary mt-5" (click)="deleteUser(this.users._id)"><i
+              ngClass="fas fa-trash-alt fa-4x m-4 text-danger"></i></button>
         </div>
       </div>
 

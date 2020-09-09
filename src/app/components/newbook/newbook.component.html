@@ -52,7 +52,7 @@
           <h3 ngClass="center-2 m-3">Datos del libro</h3>
 
           <!---->
-          <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._titleIsEmpty == true">Por favor ingresar la
+          <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._titleIsEmpty === true">Por favor ingresar la
             información del [titulo]</small>
           <input ngClass="form-control marginUnRem widthForms" type="text" placeholder="Titulo" name="title"
             #title="ngModel" [(ngModel)]="this.article.title" (change)="titleIsEmpty()" />

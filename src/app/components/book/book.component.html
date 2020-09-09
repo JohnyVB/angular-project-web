@@ -23,7 +23,7 @@
 
 
 
-           <a href="#" ngClass="rounded m-2 mr-0 p-2 bg-danger text-white"><i
+           <a (click)="deleteArticle(this.article._id)" ngClass="rounded m-2 mr-0 p-2 bg-danger text-white"><i
                ngClass="fas fa-trash-alt mr-1"></i>Eliminar</a>
          </div>
 
@@ -194,7 +194,7 @@
 
                  <div ngClass="col-2 p-0">
                    <div *ngIf="this.userXarticle">
-                     <a [routerLink]="['/delete-chapter/'+chapter._id]"><i
+                     <a (click)="deleteChapter(chapter._id)"><i
                          ngClass="fas fa-trash-alt fa-lg float-sm-left m-2 text-danger"></i></a>
                      <a href="#modalChapter" data-toggle="modal" role="button"><i
                          ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning" (click)="idChapter(chapter._id)"></i></a>
@@ -250,7 +250,7 @@
                         ngClass="p-1 rounded bg-success text-white">Archivo valido</small>
 
                       <div ngClass="col-12 form-group p-0 mt-3">
-                        <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" pattern="*[0-9]" (change)="validateNumber()">
+                        <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" pattern="*[0-9]">
                       </div>
 
                       <div ngClass="col-12 form-group p-0 mt-1">

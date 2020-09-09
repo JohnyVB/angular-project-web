@@ -65,4 +65,13 @@ import { Global } from './global';
         }
     }
 
+    deleteChapter(chapterId: string){
+        const token = this.getToken();
+
+        if (token) {
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
+            return this._http.delete(this.url + 'delete-chapter/' + chapterId, {headers: headers});
+        }
+    }
+
 }

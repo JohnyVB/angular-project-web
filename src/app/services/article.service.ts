@@ -100,4 +100,15 @@ import { CookieService } from "ngx-cookie-service";
         }
     }
 
+    deleteArticle(articleId: any):Observable<any>{
+        const token = this.getToken();
+
+        if (token) {
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
+            return this._http.delete(this.url + 'delete-book/' + articleId, {headers: headers});
+        }else{
+            console.log('Usuario no logeado');
+        }
+    }
+
 }

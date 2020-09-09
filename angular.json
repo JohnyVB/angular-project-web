@@ -21,7 +21,9 @@
             "aot": true,
             "allowedCommonJsDependencies": [
               "angular2-moment",
-              "ng2-pdf-viewer"
+              "ng2-pdf-viewer",
+              "pdfjs-dist/build/pdf",
+              "pdfjs-dist/web/pdf_viewer"
             ],
             "assets": [
               "src/favicon.ico",

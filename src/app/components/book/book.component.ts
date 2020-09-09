@@ -135,10 +135,6 @@ export class BookComponent implements OnInit {
     );
   }
 
-  validateNumber(){
-   
-  }
-
   edit(){
      
     this._chapterService.updateChapter(this.chapterId, this.chapter).subscribe(
@@ -206,6 +202,36 @@ export class BookComponent implements OnInit {
     this.ngOnInit();
     var modal = document.getElementById('close') as any;
     modal.click();
+  }
+
+  deleteChapter(chapterId: any){
+    this._chapterService.deleteChapter(chapterId).subscribe(
+      response => {
+        console.log('Capitulo borrado correctamente', response);
+        this.ngOnInit();
+        
+      },
+      error => {
+        console.log('Error al borrar capitulo');
+        
+      }
+    );
+  }
+
+  deleteArticle(articleId: any){
+    
+    this._articleService.deleteArticle(articleId).subscribe(
+      response => {
+        console.log('El libro ha sido borrado correctamente', response);
+        this._router.navigate(['/profile/' + this.user._id]);
+        
+      },
+      error => {
+        console.log('Error al borrar el libro', error);
+        
+      }
+    );
+    
   }
 
 

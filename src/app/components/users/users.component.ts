@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { ArticleService } from '../../services/article.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Global } from '../../services/global';
@@ -8,19 +9,24 @@ import { Global } from '../../services/global';
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
-  providers: [UserService]
+  providers: [UserService, ArticleService]
 })
 export class UsersComponent implements OnInit {
 
   public user: User[];
   public url: string;
-  public noAdmin: boolean;
+  public admin: boolean;
+  public articles: Array<any>;
 
   constructor(
-    private _userService: UserService
-  ) { 
+    private _userService: UserService,
+    private _router: Router,
+    private _articleService: ArticleService
+  ) {
     this.url = Global.url;
-    this.noAdmin = true;
+    this.admin = false;
+    this.user = [];
+
   }
 
   ngOnInit(): void {
@@ -30,26 +36,24 @@ export class UsersComponent implements OnInit {
     if (token || token != '' || token != undefined) {
       this._userService.getUserAdmin(token).subscribe(response => {
         if (response.user.role == 'admin') {
-          console.log(response.user.role);
-          
-          this.noAdmin = false;
+          this.admin = true;
           this.getUsers();
         } else {
-          this.noAdmin = true;
+          this.admin = false;
         }
       },
         error => {
           console.log(error);
 
         });
-    }else{
+    } else {
       console.log('No hay usuario');
-      
+
     }
-  
+
   }
 
-  getUsers(){
+  getUsers() {
     this._userService.getUsers().subscribe(
       response => {
 
@@ -60,6 +64,39 @@ export class UsersComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  deleteUser(userId: any) {
+
+    this._userService.deleteUser(userId).subscribe(
+      response => {
+
+        if (response.user.article) {
+          
+          this.articles = response.user.article;
+
+          response.user.article.forEach((articleId: any) => {
+            this._articleService.deleteArticle(articleId).subscribe(
+              response => {
+                console.log('Se ha borrado correctamente el libro asociado al usuario', response);
+              },
+              error => {
+                console.log('No se ha podido eliminar el articulo: ', error);
+
+              }
+            );
+          });
+        }
+        
+      },
+      error => {
+        console.log('Error al eliminar el usuario', error);
+
+      }
+    );
+
+    this.ngOnInit();
+
   }
 
 }
