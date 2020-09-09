@@ -5,68 +5,64 @@ import { User } from '../models/user';
 import { CookieService } from "ngx-cookie-service";
 import { Global } from './global';
 
-@Injectable() export class ChapterService{
-    
+@Injectable() export class ChapterService {
+
     public url: string;
 
     constructor(
         private _http: HttpClient,
         private cookie: CookieService
-    ) { 
+    ) {
         this.url = Global.url;
     }
 
-    getToken(){
+    getToken() {
         return this.cookie.get('token');
     }
 
-    getChapter(chapterId: any):Observable<any>{
-        const token = this.getToken();
+    getChapter(chapterId: any): Observable<any> {
 
-        if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.get(this.url + 'get-chapter/' + chapterId, {headers: headers})
-        }else{
-            console.log('No hay usuario logeado!!!');
-        }
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this._http.get(this.url + 'get-chapter/' + chapterId, { headers: headers })
+
     }
 
-    saveChapter(chapter: any, chapterId: any):Observable<any>{
+    saveChapter(chapter: any, chapterId: any): Observable<any> {
         const token = this.getToken();
 
         if (token) {
             let params = JSON.stringify(chapter);
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
             return this._http.post(this.url + 'save-chapter/' + chapterId, params, { headers: headers });
-        }else{
+        } else {
             console.log('No hay usuario logeado!!!');
         }
     }
 
-    uploadPDF(file: File, chapterId: any):Observable<any>{
+    uploadPDF(file: File, chapterId: any): Observable<any> {
         let token = this.getToken();
         var formdata = new FormData();
         formdata.append("file0", file, file.name);
 
         if (token) {
             let headers = new HttpHeaders({ 'Authorization': "Bearer " + token });
-            return this._http.put(this.url + 'upload-pages/' + chapterId, formdata, {headers: headers});
-        }else{
+            return this._http.put(this.url + 'upload-pages/' + chapterId, formdata, { headers: headers });
+        } else {
             console.log('Usuario no logeado!!!');
-            
+
         }
     }
 
-    updateChapter(chapterId: any, chapter: any):Observable<any>{
+    updateChapter(chapterId: any, chapter: any): Observable<any> {
         const token = this.getToken();
         if (token) {
             let params = JSON.stringify(chapter);
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
 
-            return this._http.put(this.url + 'update-chapter/' + chapterId, params, {headers: headers});
+            return this._http.put(this.url + 'update-chapter/' + chapterId, params, { headers: headers });
         } else {
             console.log('No hay usuario logeado!!!');
         }
     }
-    
+
 }

@@ -58,6 +58,16 @@ export class ReaderComponent implements OnInit {
             this._articleService.getArticleXchapter(response.chapter._id).subscribe(
               (response) => {
                 this.article = response.article;
+
+                this._userService.getUserXArticle(response.article._id).subscribe(
+                  (response) => {
+                    this.autor = response.user;
+                  },
+                  (error) => {
+                    console.log('No se encontro el usuario del libro');
+
+                  }
+                );
               },
               (error) => {
                 console.log('No hay articulo');
@@ -88,7 +98,7 @@ export class ReaderComponent implements OnInit {
       }
     );
 
-
+    
 
   }
 
@@ -103,7 +113,7 @@ export class ReaderComponent implements OnInit {
   plusZoom() {
     this.zoom = (this.zoom + 0.1);
     console.log(this.zoom);
-    
+
   }
 
   minusZoom() {
@@ -115,7 +125,7 @@ export class ReaderComponent implements OnInit {
     this.cascade = !this.cascade;
   }
 
-  returnArticle(){
+  returnArticle() {
     this._router.navigate(['/book/' + this.article._id])
   }
 

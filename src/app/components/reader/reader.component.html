@@ -6,7 +6,7 @@
     <div ngClass="col-12 bg-warning text-center text-white p-1">
       <h2>{{this.article.title}}</h2>
       <h2>Capitulo: {{this.chapter.numcap}} {{this.chapter.titlecap}}</h2>
-      <h2>Autor: {{this.user.name}} {{this.user.lastname}}</h2>
+      <h2>Autor: <a ngClass="text-decoration-none" [routerLink]="['/profile/' + this.autor._id]">{{this.autor.name}} {{this.autor.lastname}}</a></h2>
     </div>
 
     <div ngClass="col-12 bg-white row d-flex justify-content-center m-2 p-3">
