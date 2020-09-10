@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Chapter } from '../../models/chapter';
 import { ArticleService } from '../../services/article.service';
 import { ChapterService } from '../../services/chapter.service';
 import { NgForm } from '@angular/forms';
+import swal from 'sweetalert';
 
 
 @Component({
@@ -63,7 +64,12 @@ export class NewchapterComponent implements OnInit {
     this._chapterService.saveChapter(this.chapterView, this.articleId).subscribe(
       response => {        
         this.uploadPDF(response.chapter._id);
-        alert('Capitulo creador correctamente!!!');
+        swal(
+          'Se ha creado un nuevo capitulo!!',
+          'Capitulo creado correctamente',
+          'success'
+        );
+
         newChapterForm.resetForm();
         this.ngOnInit();
       },

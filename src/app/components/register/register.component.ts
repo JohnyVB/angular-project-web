@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-register',
@@ -59,6 +60,13 @@ export class RegisterComponent implements OnInit {
 
         this._userService.setToken(response.userStored.token);
         this.uploadimageUser(response.userStored._id);
+
+        swal(
+          'Se ha creado el usuario!!',
+          'El usuario ha sido creado correctamente, por favor ir al boton Login para ingresar',
+          'success'
+        );
+
         this._router.navigate(['/home/']);
       },
       error => {
@@ -66,19 +74,19 @@ export class RegisterComponent implements OnInit {
       });
   }
 
-  getFile(files: FileList){
+  getFile(files: FileList) {
     this.file = files.item(0);
   }
 
-  uploadimageUser(userId: any){
+  uploadimageUser(userId: any) {
     this._userService.uploadImageUser(this.file, userId).subscribe(
       response => {
         console.log('La imagen se guardo con exito', response);
-        
+
       },
       error => {
         console.log('Error al guardar la imagen', error);
-        
+
       }
     );
   }

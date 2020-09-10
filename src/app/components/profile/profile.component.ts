@@ -3,13 +3,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { Global } from '../../services/global';
-import { HeaderComponent } from '../header/header.component';
+import swal from "sweetalert";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  providers: [UserService, HeaderComponent]
+  providers: [UserService]
 })
 export class ProfileComponent implements OnInit {
 
@@ -26,8 +26,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
-    private _userService: UserService,
-    private _HeaderComponent: HeaderComponent
+    private _userService: UserService
 
   ) {
 
@@ -79,23 +78,32 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+  
   editUser() {
     this._userService.updateUser(this.user._id, this.user).subscribe(
       response => {
 
         if (this.file != '' || this.file != null || this.file != undefined) {
           this.uploadimageUser(response.user._id);
+        }else{
+          swal(
+            'Usuario editado!!!',
+            'Se ha editado correctamente el usuario',
+            'success'
+          );
+          this.ngOnInit(); 
         }
-        
-        console.log('Se ha editado el usuario correctamente!!');
-        this.ngOnInit(); 
       },
       error => {
-        console.log('Error al editar el usuario', error);
+        swal(
+          'Error al editar usuario',
+          'El usuario no fue editado correctamente',
+          'error',
+          error
+        );
 
       }
     );
-    this._HeaderComponent.ngOnInit();
     this.ngOnInit();
     var close = document.getElementById('close') as any;
     close.click();
@@ -125,10 +133,20 @@ export class ProfileComponent implements OnInit {
   uploadimageUser(userId: any) {
     this._userService.uploadImageUser(this.file, userId).subscribe(
       response => {
-        console.log('La imagen se guardo con exito', response);
+        swal(
+          'Imagen editada!!!',
+          'Se ha editado correctamente la imagen de usuario',
+          'success'
+        );
+        this.ngOnInit();
       },
       error => {
-        console.log('Error al guardar la imagen', error);
+        swal(
+          'Error al editar la imagen!!!',
+          'La imagen no fue editada correctamente',
+          'error',
+          error
+        );
 
       }
     );

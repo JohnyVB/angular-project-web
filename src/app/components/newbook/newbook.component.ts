@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
+import swal from 'sweetalert';
 
 
 @Component({
@@ -126,7 +127,7 @@ export class NewbookComponent implements OnInit {
         reader.onload = (e: any) => {
           this.url = e.target.result;
           //console.log(this.url);
-          
+
         }
 
 
@@ -142,11 +143,13 @@ export class NewbookComponent implements OnInit {
   onSubmit() {
     this._articleService.saveArticle(this.article, this.userId).subscribe(
       response => {
-        alert('Libro creado correctamente!!');
+        swal(
+          'Libro creado con exito!!',
+          'El libro fue creado correctamente',
+          'success'
+        );
         this._router.navigate(['/book/' + response.articleStored._id]);
-
-        
-          this.uploadImage(response.articleStored._id);
+        this.uploadImage(response.articleStored._id);
       },
       error => {
         console.log('Error al guardar el articulo', error);
@@ -158,10 +161,10 @@ export class NewbookComponent implements OnInit {
   getFile(files: FileList) {
 
     this.file = files.item(0);
-  
+
   }
 
-  uploadImage(articleId: any){
+  uploadImage(articleId: any) {
     this._articleService.uploadImage(this.file, articleId).subscribe(
       response => {
         console.log('La imagen se guardo con exito!!', response);

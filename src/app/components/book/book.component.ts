@@ -7,6 +7,9 @@ import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
 import { ChapterService } from '../../services/chapter.service';
 import { Global } from '../../services/global';
+import swal from 'sweetalert';
+
+
 
 @Component({
   selector: 'app-book',
@@ -26,6 +29,7 @@ export class BookComponent implements OnInit {
   public articleSearch: Array<any>;
   public userXarticle: boolean;
   public file: any;
+  public fileChapter: any
   public urlImage: any;
   public editOn: boolean;
   public errFileChapter: boolean;
@@ -69,7 +73,7 @@ export class BookComponent implements OnInit {
     
     this._articleService.getArticleService(this.Id).subscribe(
       response => {
-        this.article = response.article;
+        this.article = response.article;     
       },
       error => {
         console.log('Error al traer el articulo');
@@ -84,7 +88,8 @@ export class BookComponent implements OnInit {
       error => {
         console.log('Error al traer el usuario');
       }
-    );    
+    );
+         
   }
 
   getUserLogged(){
@@ -139,27 +144,51 @@ export class BookComponent implements OnInit {
      
     this._chapterService.updateChapter(this.chapterId, this.chapter).subscribe(
       response => {
-        console.log('El capitulo se ha actualizado correctamente!!',response);
-        if (this.file) {
+        
+        if (this.fileChapter) {
           this._chapterService.uploadPDF(this.file, this.chapterId).subscribe(
             response => {
+
+              swal(
+                'Se ha editado el capitulo!!',
+                'El capitulo fue editado correctamente',
+                'success'
+              );
               this.ngOnInit();
-              console.log('Archivo pdf actualizado con exito', response);
+              
               
             },
             error => {
-              console.log('No se ha podido actualizar el archivo pdf');
+              swal(
+                'No de ha podido editar el archivo pdf !!',
+                'Error en editar el archivo',
+                'error',
+                error
+              );
               
             }
           );
+        }else{
+          swal(
+            'Se ha editado el capitulo!!',
+            'El capitulo fue editado correctamente',
+            'success'
+          );
+          this.ngOnInit();
         }
         
       },
       error => {
-        console.log('Error al actualizar el capitulo');
+        swal(
+          'No de ha podido editar el capitulo !!',
+          'Error en editar el capitulo',
+          'error',
+          error
+        );
 
       }
     );
+  
     let close2 = document.getElementById('close2') as any;
     close2.click();
   }
@@ -179,27 +208,46 @@ export class BookComponent implements OnInit {
   onSubmit(){
     this._articleService.updateArticle(this.Id, this.article).subscribe(
       response => {
-        console.log(response);
-        this._articleService.uploadImage(this.file, response.articleUpdated._id).subscribe(
-          response => {
-            console.log('la imagen del articulo se ha actualizado correctamente');
-          },
-          error => {
-            console.log('Error al actualizar imagen del articulo');
-            
-          }
-        );
-        //this.updateImageArticle(response.articleUpdated._id);
-        console.log('Se ha actualizado el libro correctamente!!');
         
-        this.ngOnInit();
+        if (this.file) {
+          this._articleService.uploadImage(this.file, response.articleUpdated._id).subscribe(
+            response => {
+              swal(
+                'Se ha editado el libro!!',
+                'El libro fue editado correctamente',
+                'success'
+              );
+              this.ngOnInit();
+            },
+            error => {
+              swal(
+                'No de ha podido editar la image del libro !!',
+                'Error en editar la imagen',
+                'error',
+                error
+              );
+
+            }
+          );
+        }else{
+          swal(
+            'Se ha editado el libro!!',
+            'El libro fue editado correctamente',
+            'success'
+          );
+        }        
       },
       error => {
-        console.log('Error al actualizar el articulo', error);
+        swal(
+          'No de ha podido editar el libro !!',
+          'Error en editar el libro',
+          'error',
+          error
+        );
+
       }
     );
 
-    this.ngOnInit();
     var modal = document.getElementById('close') as any;
     modal.click();
   }
