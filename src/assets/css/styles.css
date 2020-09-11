@@ -30,6 +30,10 @@ pdf-viewer {
   width: 65%;
 }
 
+.cursorPointer:hover{
+  cursor: pointer;
+}
+
 .heightBtn{
   height: 38px !important;
 }
