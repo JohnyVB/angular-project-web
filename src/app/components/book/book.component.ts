@@ -253,32 +253,86 @@ export class BookComponent implements OnInit {
   }
 
   deleteChapter(chapterId: any){
-    this._chapterService.deleteChapter(chapterId).subscribe(
-      response => {
-        console.log('Capitulo borrado correctamente', response);
-        this.ngOnInit();
-        
-      },
-      error => {
-        console.log('Error al borrar capitulo');
-        
-      }
-    );
+
+    swal({
+      title: "¿Esta seguro de eliminar el capitulo?",
+      text: "Una vez eliminado no se podra recuperar!",
+      icon: "warning",
+      buttons: ['Cancelar','Eliminar'],
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+
+          this._chapterService.deleteChapter(chapterId).subscribe(
+            response => {
+              console.log('Capitulo borrado correctamente', response);
+              this.ngOnInit();
+
+            },
+            error => {
+              swal({
+                title: 'Error al eliminar el capitulo',
+                icon: 'warning'
+              });
+              console.log('Error al eliminar el capitulo', error);
+              
+            }
+          );
+
+          swal("El capitulo de ha eliminado correctamente", {
+            icon: "success",
+          });
+        } else {
+          swal({
+            title: "No se ha eliminado el capitulo!",
+            icon: 'info'
+          });
+        }
+      });
+
+    
   }
 
   deleteArticle(articleId: any){
+
+    swal({
+      title: "¿Esta seguro de eliminar el libro?",
+      text: "Una vez eliminado no se podra recuperar!",
+      icon: "warning",
+      buttons: ['Cancelar', 'Eliminar'],
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+
+          this._articleService.deleteArticle(articleId).subscribe(
+            response => {
+              console.log('El libro ha sido eliminado correctamente', response);
+              this._router.navigate(['/profile/' + this.user._id]);
+
+            },
+            error => {
+              console.log('Error al borrar el libro', error);
+
+            }
+          );
+
+          swal("El libro de ha eliminado correctamente", {
+            icon: "success",
+          });
+        } else {
+          swal({
+            title: "No se ha eliminado el libro!",
+            icon: 'info'
+          });
+        }
+      });
+
+
+
     
-    this._articleService.deleteArticle(articleId).subscribe(
-      response => {
-        console.log('El libro ha sido borrado correctamente', response);
-        this._router.navigate(['/profile/' + this.user._id]);
-        
-      },
-      error => {
-        console.log('Error al borrar el libro', error);
-        
-      }
-    );
+    
     
   }
 

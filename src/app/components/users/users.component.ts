@@ -4,6 +4,7 @@ import { ArticleService } from '../../services/article.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Global } from '../../services/global';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-users',
@@ -13,7 +14,7 @@ import { Global } from '../../services/global';
 })
 export class UsersComponent implements OnInit {
 
-  public user: User[];
+  public user: User;
   public url: string;
   public admin: boolean;
   public articles: Array<any>;
@@ -25,7 +26,7 @@ export class UsersComponent implements OnInit {
   ) {
     this.url = Global.url;
     this.admin = false;
-    this.user = [];
+    this.user = new User('','','','',[],'','','','',null,'','');
 
   }
 
@@ -68,35 +69,54 @@ export class UsersComponent implements OnInit {
 
   deleteUser(userId: any) {
 
-    this._userService.deleteUser(userId).subscribe(
-      response => {
+    swal({
+      title: "¿Esta seguro?",
+      text: "Una vez eliminado el usuario no podra ser recuperado",
+      icon: "warning",
+      buttons: ['Cancelar', 'Eliminar'],
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
 
-        if (response.user.article) {
-          
-          this.articles = response.user.article;
+          this._userService.deleteUser(userId).subscribe(
+            response => {
 
-          response.user.article.forEach((articleId: any) => {
-            this._articleService.deleteArticle(articleId).subscribe(
-              response => {
-                console.log('Se ha borrado correctamente el libro asociado al usuario', response);
-              },
-              error => {
-                console.log('No se ha podido eliminar el articulo: ', error);
+              if (response.user.article) {
 
+                this.articles = response.user.article;
+
+                response.user.article.forEach((articleId: any) => {
+                  this._articleService.deleteArticle(articleId).subscribe(
+                    response => {
+                      console.log('Se ha borrado correctamente el libro asociado al usuario', response);
+                    },
+                    error => {
+                      console.log('No se ha podido eliminar el articulo: ', error);
+
+                    }
+                  );
+                });
               }
-            );
+
+            },
+            error => {
+              console.log('Error al eliminar el usuario', error);
+
+            }
+          );
+            this.ngOnInit();
+
+          swal("El usuario ha sido eliminado!", {
+            icon: "success",
+          });
+        } else {
+          swal({
+            title: "El usuario no se ha eliminado",
+            icon: "info"
           });
         }
-        
-      },
-      error => {
-        console.log('Error al eliminar el usuario', error);
-
-      }
-    );
-
-    this.ngOnInit();
-
+      });
   }
 
 }

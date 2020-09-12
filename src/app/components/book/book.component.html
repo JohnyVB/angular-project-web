@@ -194,7 +194,7 @@
 
                  <div ngClass="col-2 p-0">
                    <div *ngIf="this.userXarticle">
-                     <a (click)="deleteChapter(chapter._id)"><i
+                     <a ngClass="cursorPointer" (click)="deleteChapter(chapter._id)"><i
                          ngClass="fas fa-trash-alt fa-lg float-sm-left m-2 text-danger"></i></a>
                      <a href="#modalChapter" data-toggle="modal" role="button"><i
                          ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning" (click)="idChapter(chapter._id)"></i></a>
@@ -280,5 +280,5 @@
      </div>
 
    </section>
-   <app-sidebar [capOff]="true" ngClass="col-4"></app-sidebar>
+   <app-sidebar ngClass="col-4"></app-sidebar>
  </div>

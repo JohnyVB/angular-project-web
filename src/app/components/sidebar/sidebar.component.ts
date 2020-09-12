@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
 
   @Input() chapterOff: boolean;
-  @Input() capOff: boolean;
 
   public userId: string;
 
@@ -23,7 +22,6 @@ export class SidebarComponent implements OnInit {
     private _router: Router
   ) {
     this.chapterOff = false;
-    this.capOff = false;
     this.userId = '';
    }
 
