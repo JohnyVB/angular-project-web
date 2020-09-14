@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   public url: any;
   public errorOn: boolean;
   public file: any;
+  public cpassword: any;
 
   constructor(
     public _userService: UserService,
@@ -24,7 +25,7 @@ export class RegisterComponent implements OnInit {
   ) {
 
     this.user = new User('', '', '', '', [], '', '', '', '', '', '', '');
-
+    this.cpassword = null;
     this.errorOn = false;
   }
 
