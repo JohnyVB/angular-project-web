@@ -24,7 +24,7 @@ const appRoutes: Routes = [
     { path: 'book/:id', component: BookComponent },
     { path: 'search/:search', component: SearchComponent},
     { path: 'developer', component: DeveloperComponent },
-    { path: 'newbook/:id', component: NewbookComponent },
+    { path: 'newbook', component: NewbookComponent },
     { path: 'newchapter/:id', component: NewchapterComponent},
     { path: 'profile/:id', component: ProfileComponent },
     { path: 'reader/:id', component: ReaderComponent },

@@ -13,11 +13,19 @@ import swal from 'sweetalert';
 export class RegisterComponent implements OnInit {
 
   public user: User;
-  public validarExtend: any;
   public url: any;
-  public errorOn: boolean;
+  public validarExtend: any;
   public file: any;
   public cpassword: any;
+
+
+  public errorOn: boolean;
+  public errPass: boolean;
+  public errEmail: boolean;
+  public emailDupli: boolean;
+
+  public parent: any;
+  public evet: any;
 
   constructor(
     public _userService: UserService,
@@ -25,8 +33,13 @@ export class RegisterComponent implements OnInit {
   ) {
 
     this.user = new User('', '', '', '', [], '', '', '', '', '', '', '');
-    this.cpassword = null;
-    this.errorOn = false;
+    this.cpassword = '';
+
+    this.errorOn = true;
+    this.errPass = null;
+    this.errEmail = null;
+    this.emailDupli = null;
+
   }
 
   ngOnInit(): void {
@@ -60,8 +73,12 @@ export class RegisterComponent implements OnInit {
       response => {
 
         this._userService.setToken(response.userStored.token);
-        this.uploadimageUser(response.userStored._id);
+        
+        if (this.file) {
+          this.uploadimageUser(response.userStored._id);
+        }
 
+        
         swal(
           'Se ha creado el usuario!!',
           'El usuario ha sido creado correctamente, por favor ir al boton Login para ingresar',
@@ -92,6 +109,61 @@ export class RegisterComponent implements OnInit {
     );
   }
 
+  validatePassword() {
+    if (this.cpassword === this.user.password) {
+      this.errPass = false;
+    } else {
+      this.errPass = true;
+    }
+  }
 
+  validateEmail(e: any) {
+
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    this.evet = e;
+
+    if (emailRegex.test(this.user.email)) {
+      this.errEmail = false;
+      this._userService.getUserXEmail(this.user.email).subscribe(
+        response => {
+
+          if (response.emailOk) {
+            this.emailDupli = false;
+            this.evet.className = "form-control border-success ng-valid ng-dirty ng-touched";
+          }else{
+            this.emailDupli = true;
+            this.evet.className = "form-control border-danger ng-valid ng-dirty ng-touched";
+          }
+  
+        }
+      );
+    } else {
+      this.errEmail = true;
+    }
+  }
+
+
+  validate(e :any){
+
+    this.parent = e.parentElement.lastChild;
+    this.evet = e;
+    
+    if (!e.value) {
+      this.parent.hidden = false;
+      this.evet.className = "form-control border-danger ng-valid ng-dirty ng-touched";
+    }else{
+      this.parent.hidden = true;
+      this.evet.className = "form-control border-success ng-valid ng-dirty ng-touched";
+    }
+  }
+
+  validateEmty(){
+
+    if (this.user.name != '' && this.user.lastname != '' && this.user.email != '' && this.user.user != '' && this.user.password != '' && this.cpassword != '') {
+      this.errorOn = false;
+    }else{
+      this.errorOn = true;
+    }
+  }
 
 }

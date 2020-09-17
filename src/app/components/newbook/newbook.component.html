@@ -11,12 +11,13 @@
 
         <div id="imagenPortada" ngClass="col-6 border justify-content-around">
           <h3 ngClass="center-2 m-3">Imagen portada</h3>
-          <div ngClass="custom-file m-3 widthForms">
 
-            <input type="file" ngClass="custom-file-input" id="customFileLang" lang="es" name="image" #image="ngModel"
+          <div ngClass="custom-file">
+            <input type="file" ngClass="custom-file-input" id="customFileLang" lang="es" name="imagen" #imagen="ngModel"
               [(ngModel)]="this.article.image" (change)="validarImagen($event); getFile($event.target.files)">
             <label ngClass="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
           </div>
+
           <div ngClass="m-3 d-flex justify-content-center">
 
             <div ngClass="m-3" *ngIf="this.article.image != ''; else nohayImagen">
@@ -28,9 +29,8 @@
               </div>
 
               <ng-template #noValida>
-                <small>
-                  Extencion del archivo no valida, por favor intente con un archivo correcto!!!
-                </small>
+                <small ngClass="text-white p-2 rounded bg-danger">Extencion del archivo no valida, por favor intente con
+                  un archivo correcto!!!</small>
               </ng-template>
 
 
@@ -48,64 +48,62 @@
 
 
 
-        <div id="fomulario" ngClass="col-6 border justify-content-around">
+        <div id="fomulario" ngClass="col-6 border">
           <h3 ngClass="center-2 m-3">Datos del libro</h3>
 
           <!---->
-          <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._titleIsEmpty === true">Por favor ingresar la
-            información del [titulo]</small>
-          <input ngClass="form-control marginUnRem widthForms" type="text" placeholder="Titulo" name="title"
-            #title="ngModel" [(ngModel)]="this.article.title" (change)="titleIsEmpty()" />
+          <div ngClass="form-group m-3">
+            <label for="titulo">Titulo</label>
+            <input id="titulo" ngClass="form-control" (change)="validate($event.target); validateEmty()"
+              placeholder="Titulo del libro" type="text" name="titulo" #titulo="ngModel" [(ngModel)]="this.article.title" />
+            <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información del
+              [titulo]</small>
+          </div>
 
-          <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._descriptionIsEmpty == true">Por favor ingresar
-            la información de la [descripción]</small>
-          <textarea required ngClass="form-control m-3 widthForms" cols="1" rows="6" placeholder="Descripción"
-            name="description" #description="ngModel" [(ngModel)]="this.article.description"
-            (change)="descriptionIsEmpty()"></textarea>
+          <div ngClass="form-group m-3">
+            <label for="description">Descripción</label>
+            <textarea id="description" ngClass="form-control" (change)="validate($event.target); validateEmty()"
+              placeholder="Descripción del libro" cols="1" rows="6"
+              name="descripcion" #descripcion="ngModel" [(ngModel)]="this.article.description"></textarea>
+            <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información de la
+              [descripción]</small>
+          </div>
+
+          <div ngClass="form-group m-3">
+            <label for="type">Tipo</label>
+            <select id="type" ngClass="custom-select" name="tipo" #tipo="ngModel" [(ngModel)]="this.article.type">
+              <option value="" disabled>Tipo de libro</option>
+              <option [value]="item" *ngFor="let item of this.listaTipo">{{item}}</option>
+            </select>
+            <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información del
+              [tipo]</small>
+          </div>
 
 
-          <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._typeIsEmpty == true">Por favor ingresar la
-            información del [tipo]</small>
-          <select required ngClass="custom-select m-3 widthForms" name="type" #type="ngModel"
-            [(ngModel)]="this.article.type" (change)="typeIsEmpty()">
-            <option value="" disabled>Tipo de libro</option>
-            <option [value]="item" *ngFor="let item of this.listaTipo">{{item}}</option>
-          </select>
+          <div ngClass="border  p-3 m-3 justify-content-around">
+            <div ngClass="row justify-content-around">
 
-
-
-          <div ngClass="border widthForms p-3 m-3 justify-content-around">
-            <div ngClass="widthForms row justify-content-around">
-
-              <div ngClass="col-5 row">
-
-                <label ngClass="col-12" for="exampleFormControlSelect2">Generos</label>
-
-                <select required ngClass="form-control col-12" multiple title="Selección multiple" name="genders"
-                  #genders="ngModel" [(ngModel)]="this.article.genders" (change)="gendersIsEmpty()">
+              <div ngClass="col form-group">
+                <label for="genero">Generos</label>
+                <select id="genero" ngClass="form-control" (change)="validate($event.target); validateEmty()" multiple
+                  title="Seleccionar" name="generos"
+                  #generos="ngModel" [(ngModel)]="this.article.genders">
                   <option [value]="item" *ngFor="let item of this.listaGeneros">{{item}}</option>
                 </select>
-
-                <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._gendersIsEmpty == true">
-                  Por favor ingresar la información de los [generos]
-                </small>
-
+                <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información de los
+                  [generos]</small>
               </div>
 
-              <div ngClass="col-5 row">
-
-                <label ngClass="col-12" for="exampleFormControlSelect1">Estado</label>
-
-                <select required ngClass="form-control col-12" title="Seleccionar" name="state" #state="ngModel"
-                  [(ngModel)]="this.article.state" (change)="stateIsEmpty()">
-                  <option value="" selected>Seleccionar</option>
+              <div ngClass="col form-group">
+                <label for="estado">Estado</label>
+                <select id="estado" ngClass="form-control" (change)="validate($event.target); validateEmty()"
+                  title="Seleccionar" name="estado" #estado="ngModel"
+                  [(ngModel)]="this.article.state">
+                  <option value="" disabled>Selecciona el estado</option>
                   <option [value]="item" *ngFor="let item of this.listaEstado">{{item}}</option>
                 </select>
-
-                <small ngClass="text-white p-2 rounded bg-danger" *ngIf="this._stateIsEmpty == true">
-                  Por favor ingresar la información del [estado]
-                </small>
-
+                <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información del
+                  [estado]</small>
               </div>
 
 
@@ -128,7 +126,7 @@
 
 
 
-          <div id="infoMain" ngClass="m-3 widthForms border p-3 h-auto">
+          <div id="infoMain" ngClass="m-3 border p-3 h-auto">
             <h3 ngClass="center-2 m-3">Información</h3>
             <ol ngClass="m-5">
               <li>
@@ -167,18 +165,11 @@
 
           </div>
 
-          <button
-            *ngIf="this.article.title === '' || this.article.description === '' || this.article.type === '' ||
-            this.article.genders.length === 0 || this.article.state === ''"
-            disabled id="btnCap" type="submit"
-            ngClass="btn btn-secondary bg-secondary btn-lg btn-block m-3 widthForms"><i
-              ngClass="fas fa-upload fa-lg"></i>Publicar</button>
+          <div ngClass="d-flex justify-content-center m-3">
+            <button [disabled]="this.errorOn" type="submit" ngClass="btn btn-success"><i ngClass="fas fa-upload fa-lg mr-3"></i>Publicar</button>
+          </div>
 
-          <button
-            *ngIf="this.article.title != '' && this.article.description != '' && this.article.type != '' &&
-            this.article.genders.length != 0 && this.article.state != ''"
-            id="btnCap" type="submit" ngClass="btn btn-secondary bg-secondary btn-lg btn-block m-3 widthForms"><i
-              ngClass="fas fa-upload fa-lg"></i>Publicar</button>
+          
 
         </div>
 

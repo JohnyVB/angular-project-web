@@ -23,9 +23,9 @@ export class NewchapterComponent implements OnInit {
   public btnDisabled: boolean;
 
   public _imgpageIsEmpty: boolean;
-  public _titleIsEmpty: boolean;
-  public _numcapIsEmpty: boolean;
-
+  public parent: any;
+  public evet: any;
+  public errNum: any
   public titleBook: string;
 
   constructor(
@@ -36,8 +36,6 @@ export class NewchapterComponent implements OnInit {
   ) {
 
     this._imgpageIsEmpty = false;
-    this._titleIsEmpty = false;
-    this._numcapIsEmpty = false;
     this.articleId = '';
     this.btnDisabled = true;
 
@@ -52,6 +50,7 @@ export class NewchapterComponent implements OnInit {
     }];
 
     this.chapterView = new Chapter('',null,'',null,'');
+    this.errNum = null;
   }
 
   ngOnInit(): void {
@@ -152,23 +151,39 @@ export class NewchapterComponent implements OnInit {
     }
   }
 
-  numcapIsEmpty(){
-    if (this.chapterView.numcap == null || this.chapterView.numcap == undefined) {
-      this._numcapIsEmpty = true;
-      this.btnDisabled = true;
-    } else {
-      this._numcapIsEmpty = false;
+  validateEmpty(){
+    if(this.chapterView.imgpage != '' && this.chapterView.numcap != null && this.chapterView.titlecap != '' && this.errNum === false){
       this.btnDisabled = false;
+    }else{
+      this.btnDisabled = true;
     }
   }
 
-  titleIsEmpty() {
-    if (this.chapterView.titlecap == '' || this.chapterView.titlecap == null || this.chapterView.titlecap == undefined) {
-      this._titleIsEmpty = true;
-      this.btnDisabled = true;
+  validateNum(){
+    const expresion = /^([0-9])*$/;
+
+    if (this.chapterView.numcap) {
+      const valor = this.chapterView.numcap;
+      if (expresion.test(valor.toString())) {
+        this.errNum = false;
+      } else {
+        this.errNum = true;
+      }
+    }
+
+  }
+
+  validate(e: any) {
+
+    this.parent = e.parentElement.lastChild;
+    this.evet = e;
+
+    if (!e.value) {
+      this.parent.hidden = false;
+      this.evet.className = "form-control border-danger ng-valid ng-dirty ng-touched";
     } else {
-      this._titleIsEmpty = false;
-      this.btnDisabled = false;
+      this.parent.hidden = true;
+      this.evet.className = "form-control border-success ng-valid ng-dirty ng-touched";
     }
   }
 

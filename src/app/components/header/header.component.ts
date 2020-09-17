@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
 
     if (token) {
       this.getLogged();
-    }else{
+    } else {
       this.userOn = false;
     }
   }
@@ -66,12 +66,12 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  validarCampos(){
+  validarCampos() {
     if (this.login.email == '' && this.login.password == '') {
       this.errorOn = true;
     } else {
       this.errorOn = false;
-    } 
+    }
   }
 
   validarEmail() {
@@ -82,10 +82,10 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  validarPassword(){
+  validarPassword() {
     if (this.login.password == '') {
       this.errorOn = !this.errorOn;
-    }else{
+    } else {
       this.errorOn = !this.errorOn;
     }
   }
@@ -95,15 +95,8 @@ export class HeaderComponent implements OnInit {
 
       response => {
         this._userService.setToken(response.userUpdated.token);
-
-        this.user._id = response.userUpdated._id;
-        this.user.user = response.userUpdated.user;
-        this.user.image = response.userUpdated.image;
-        this.user.token = response.userUpdated.token;
-        this.user.role = response.userUpdated.role;
-
+        this.user = response.userUpdated;
         this.userOn = true;
-
         this.ngOnInit();
       },
       error => {
@@ -120,7 +113,7 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  sendString(){
+  sendString() {
     this._router.navigate(['/search/' + this.searchString]);
   }
 

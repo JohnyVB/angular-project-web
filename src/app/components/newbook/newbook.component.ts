@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
+import { UserService } from '../../services/user.service';
 import swal from 'sweetalert';
 
 
@@ -9,7 +10,7 @@ import swal from 'sweetalert';
   selector: 'app-newbook',
   templateUrl: './newbook.component.html',
   styleUrls: ['./newbook.component.css'],
-  providers: [ArticleService]
+  providers: [ArticleService, UserService]
 })
 export class NewbookComponent implements OnInit {
 
@@ -19,99 +20,47 @@ export class NewbookComponent implements OnInit {
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
   public listaEstado: string[] = ["Publicandose", "Abandonado", "Finalizado"];
 
-  public _titleIsEmpty: boolean;
-  public _descriptionIsEmpty: boolean;
-  public _typeIsEmpty: boolean;
-  public _gendersIsEmpty: boolean;
-  public _stateIsEmpty: boolean;
-
   public validarExtend: any;
   public url: any;
-  public userId: string;
+  public userId: any;
   public fileImage: any;
   public file: any;
+  public token: string;
+
+  public parent: any;
+  public evet: any;
+  public errorOn: boolean;
 
   public articleId: string;
 
   constructor(
-    private _route: ActivatedRoute,
     private _router: Router,
-    private _articleService: ArticleService
+    private _articleService: ArticleService,
+    private _userService: UserService
   ) {
-
     this.article = new Article('', '', '', null, '', '', [], '', []);
-
     this.userId = '';
-
-    this._titleIsEmpty = false;
-    this._descriptionIsEmpty = false;
-    this._typeIsEmpty = false;
-    this._gendersIsEmpty = false;
-    this._stateIsEmpty = false;
-
-  }
-
-  //------------------------------------Recojer el id del usuario---------------------------------------------------
-  getIdUser() {
-    this._route.params.subscribe(
-      (params: Params) => {
-        this.userId = params.id;
-      },
-      (error) => {
-        console.log('Error al traer el id de usuario', error);
-
-      }
-    );
+    this.errorOn = true;
   }
 
 
   //------------------------------------ngOnInit()------------------------------------------------------------------
   ngOnInit(): void {
-    this.getIdUser();
+    this.token = this._userService.getToken();
+    this._userService.getUserAdmin(this.token).subscribe(
+      response => {
+        this.userId = response.user._id;
+      },
+      error => {
+        swal({
+          title: 'Error al traer el usuario',
+          text: 'Se produjo un error al consultar el usuario' + error,
+          icon: 'error'
+        });
+      }
+    );
   }
 
-
-
-  //------------------------------------validación de campos obligatorios-------------------------------------------
-  titleIsEmpty() {
-    if (this.article.title == '' || this.article.title == null || this.article.title == undefined) {
-      this._titleIsEmpty = true;
-    } else {
-      this._titleIsEmpty = false;
-    }
-  }
-
-  descriptionIsEmpty() {
-    if (this.article.description == '' || this.article.description == null || this.article.description == undefined) {
-      this._descriptionIsEmpty = true;
-    } else {
-      this._descriptionIsEmpty = false;
-    }
-  }
-
-  typeIsEmpty() {
-    if (this.article.type == '' || this.article.type == null || this.article.type == undefined) {
-      this._typeIsEmpty = true;
-    } else {
-      this._typeIsEmpty = false;
-    }
-  }
-
-  gendersIsEmpty() {
-    if (this.article.genders.length == 0 || this.article.genders == [] || this.article.genders == [null] || this.article.genders == [undefined]) {
-      this._gendersIsEmpty = true;
-    } else {
-      this._gendersIsEmpty = false;
-    }
-  }
-
-  stateIsEmpty() {
-    if (this.article.state == '' || this.article.state == null || this.article.state == undefined) {
-      this._stateIsEmpty = true;
-    } else {
-      this._stateIsEmpty = false;
-    }
-  }
   //------------------------------------Validación de tipo de arhivo a subir----------------------------------------
   validarImagen(event: any) {
     if (this.article.image != '') {
@@ -130,9 +79,7 @@ export class NewbookComponent implements OnInit {
 
         }
 
-
         reader.readAsDataURL(event.target.files[0]);
-
 
       }
     }
@@ -175,6 +122,28 @@ export class NewbookComponent implements OnInit {
 
       }
     );
+  }
+
+  validate(e: any) {
+
+    this.parent = e.parentElement.lastChild;
+    this.evet = e;
+
+    if (!e.value) {
+      this.parent.hidden = false;
+      this.evet.className = "form-control border-danger ng-valid ng-dirty ng-touched";
+    } else {
+      this.parent.hidden = true;
+      this.evet.className = "form-control border-success ng-valid ng-dirty ng-touched";
+    }
+  }
+
+  validateEmty(){
+    if (this.article.title != '' && this.article.description != '' && this.article.genders != '' && this.article.state != '' && this.article.type != '') {
+      this.errorOn = false;
+    }else{
+      this.errorOn = true;
+    }
   }
 
 }

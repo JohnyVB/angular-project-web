@@ -2,6 +2,8 @@
 
   <section id="contentMain" ngClass="col-8">
     <h2 ngClass="center-2 mt-4 mb-4">Registrarse</h2>
+
+
     <form ngClass="row justify-content-center" #userForm="ngForm">
 
       <div ngClass="bg-dark p-3 pt-4 text-white rounded col-7">
@@ -25,7 +27,7 @@
           </div>
 
           <ng-template #noImagen>
-            <img ngClass="img-thumbnail rounded-circle col-5 mb-4" src="https://via.placeholder.com/150">
+            <img ngClass="img-thumbnail rounded-circle col-5 mb-4" src="../../../assets/img/default-user.png">
           </ng-template>
 
 
@@ -41,22 +43,40 @@
         </div>
         <div ngClass="row m-2 mt-3">
           <div ngClass="col">
-            <input type="text" ngClass="form-control" placeholder="Nombre(s)*" name="nombres" #nombres="ngModel"
-              [(ngModel)]="user.name">
+
+
+            <label for="nombre">Nombre(s)*</label>
+            <input id="nombre" type="text" ngClass="form-control" (change)="validate($event.target); validateEmty()"
+              placeholder="Escriba sus nombres" name="nombres" #nombres="ngModel" [(ngModel)]="user.name">
+            <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
+
+
           </div>
           <div ngClass="col">
-            <input type="text" ngClass="form-control" placeholder="Apellido(s)*" name="apellidos" #apellidos="ngModel"
-              [(ngModel)]="user.lastname">
+
+            <label for="apellido">Apellido(s)*</label>
+            <input id="apellido" type="text" ngClass="form-control" (change)="validate($event.target); validateEmty()"
+              placeholder="Escriba sus apellidos" name="apellidos" #apellidos="ngModel" [(ngModel)]="user.lastname">
+            <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
+
           </div>
         </div>
         <div ngClass="row m-2 mt-4">
           <div ngClass="col">
-            <input type="text" ngClass="form-control" placeholder="Nombre Usuario*" name="nombreUsuario"
-              #nombreUsuario="ngModel" [(ngModel)]="user.user">
+
+            <label for="user">Nombre Usuario*</label>
+            <input id="user" type="text" ngClass="form-control" (change)="validate($event.target); validateEmty()"
+              placeholder="Apodo" name="nombreUsuario" #nombreUsuario="ngModel" [(ngModel)]="user.user">
+            <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
+
           </div>
           <div ngClass="col">
-            <input type="email" ngClass="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-              placeholder="Email*" placeholder="Email*" name="correo" #correo="ngModel" [(ngModel)]="user.email">
+            <label for="email">Email*</label>
+            <input id="email" type="email" ngClass="form-control"
+              (change)="validateEmail($event.target); validateEmty()" placeholder="name@example.com" name="correo" #correo="ngModel" [(ngModel)]="user.email">
+            <small *ngIf="this.errEmail" ngClass="p-2 bg-danger rounded">Correo no valido</small>
+            <small *ngIf="this.emailDupli === true" ngClass="p-2 bg-danger rounded">Ya hay un usuario registrado con este correo</small>
+            <small *ngIf="this.emailDupli === false" ngClass="p-2 bg-success rounded">Correo valido</small>
           </div>
         </div>
 
@@ -80,30 +100,30 @@
         </div>
 
         <div ngClass="form-group m-4">
-          <input type="password" ngClass="form-control" placeholder="Contraseña*" name="contrasena" #contrasena="ngModel" [(ngModel)]="this.user.password">
+
+          <label for="password">Contraseña*</label>
+          <input id="password" type="password" (change)="validate($event.target); validateEmty(); validatePassword()" ngClass="form-control"
+            placeholder="Contraseña" name="contrasena" #contrasena="ngModel" [(ngModel)]="this.user.password">
+          <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
+
         </div>
 
         <div ngClass="form-group m-4">
-          <input type="password" ngClass="form-control" placeholder="Confirmar contraseña*" name="confirmPass" #confirmPass="ngModel" [(ngModel)]="this.cpassword">
+
+          <label for="cpassword">Confirmar contraseña*</label>
+          <input id="cpassword" type="password" (change)="validate($event.target); validateEmty(); validatePassword()"
+            ngClass="form-control" placeholder="Confirmar contraseña" name="confirmPass" #confirmPass="ngModel" [(ngModel)]="this.cpassword">
+          <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
+          <small *ngIf="this.errPass" ngClass="p-2 bg-danger rounded">Contraseña no coincide</small>
+
         </div>
 
         <div ngClass="d-flex justify-content-center m-4 mt-6">
-          <button type="button" ngClass="btn btn-success w-100" (click)="registerUser()"
-            *ngIf="errorOn == false">Enviar</button>
-          <button type="button" ngClass="btn btn-success w-100" (click)="registerUser()" *ngIf="errorOn == true"
-            disabled>Enviar</button>
-
-        </div>
-        <div ngClass="w-100 text-danger text-center" *ngIf="errorOn">
-          <h5>Por favor ingresar todos sus datos</h5>
+          <button type="button" ngClass="btn btn-success" (click)="registerUser()" [disabled]="this.errorOn">Enviar</button>
         </div>
       </div>
 
-
-
-
     </form>
-
 
   </section>
   <app-sidebar ngClass="col-4"></app-sidebar>

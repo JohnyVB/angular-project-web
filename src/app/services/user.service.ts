@@ -73,6 +73,10 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.get(this.url + 'get-userxarticle/' + articleId);
     }
 
+    getUserXEmail(email: string):Observable<any>{
+        return this._http.get(this.url + 'get-userxemail/' + email);
+    }
+
     getUserPopulateArticle(userId: string): Observable<any>{
         return this._http.get(this.url + 'get-user-populate/' + userId);
     }

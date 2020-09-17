@@ -325,25 +325,10 @@ header ul li a{
   height: 40px;
 }
 
-#imagenPortada img,
-.widthForms {
+#imagenPortada img {
   width: 94%;
 }
 
-.marginUnRem {
-  margin-top: 2rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-bottom: 2rem;
-}
-
-#btnCap {
-  line-height: 10px;
-}
-
-#btnCap i {
-  margin-right: 15px;
-}
 
 #infoMain ol li {
   margin-bottom: 8px;
