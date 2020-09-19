@@ -7,6 +7,7 @@ import { Chapter } from '../../models/chapter';
 import { User } from '../../models/user';
 import { Article } from '../../models/article';
 import { Global } from '../../services/global';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-reader',
@@ -25,6 +26,9 @@ export class ReaderComponent implements OnInit {
   public page: number;
   public cascade: boolean;
   public zoom: number;
+  public chapterId: string;
+  public nextDisabled: boolean;
+  public preDisabled: boolean;
 
   constructor(
     private _router: Router,
@@ -38,6 +42,9 @@ export class ReaderComponent implements OnInit {
     this.page = 1;
     this.urlPDF = null;
     this.url = Global.url;
+    this.chapterId = '';
+    this.nextDisabled = false;
+    this.preDisabled = false;
 
     this.article = new Article('', '', '', null, '', '', [], '', []);
     this.chapter = new Chapter('', null, '', null, '');
@@ -46,7 +53,7 @@ export class ReaderComponent implements OnInit {
 
   }
 
-  validatePrefe(){
+  validatePrefe() {
     if (this.user.prefreader === 'cascada') {
       this.cascade = true;
     }
@@ -55,7 +62,7 @@ export class ReaderComponent implements OnInit {
   ngOnInit(): void {
     this._route.params.subscribe(
       (params: Params) => {
-
+        this.chapterId = params.id;
         this._chapterService.getChapter(params.id).subscribe(
           (response) => {
             this.chapter = response.chapter;
@@ -68,7 +75,7 @@ export class ReaderComponent implements OnInit {
                 this._userService.getUserXArticle(response.article._id).subscribe(
                   (response) => {
                     this.autor = response.user;
-                    
+
                   },
                   (error) => {
                     console.log('No se encontro el usuario del libro');
@@ -106,8 +113,6 @@ export class ReaderComponent implements OnInit {
       }
     );
 
-
-
   }
 
   nextPage() {
@@ -135,6 +140,31 @@ export class ReaderComponent implements OnInit {
 
   returnArticle() {
     this._router.navigate(['/book/' + this.article._id])
+  }
+
+  getIndexChapter() {
+    const indexChapter = this.article.chapter.findIndex((element: any) => element === this.chapterId);
+    return indexChapter;
+  }
+
+  nextChapter() {
+    const chapterNext = this.getIndexChapter() + 1;
+    if (this.article.chapter[chapterNext] === undefined) {
+      this.nextDisabled = true;
+    }else{
+      this.preDisabled = false;
+      this._router.navigate(['/reader/' + this.article.chapter[chapterNext]]);
+    }
+  }
+
+  preChapter() {
+    const chapterPre = this.getIndexChapter() - 1;
+    if (this.article.chapter[chapterPre] === undefined) {
+      this.preDisabled = true;
+    }else{
+      this.nextDisabled = false;
+      this._router.navigate(['/reader/' + this.article.chapter[chapterPre]]);
+    }
   }
 
 }

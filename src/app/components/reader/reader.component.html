@@ -43,11 +43,11 @@
       ></pdf-viewer>
 
     <div ngClass="col-12 bg-white row d-flex justify-content-center m-2 p-3">
-      <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-double-left"></i></button>
+      <button [disabled]="this.preDisabled" type="button" ngClass="btnMain btn-light col-1" (click)="preChapter()"><i ngClass="fas fa-angle-double-left"></i></button>
       <button type="button" *ngIf="this.cascade === false" (click)="previousPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-left"></i></button>
 
       <button type="button" *ngIf="this.cascade === false" (click)="nextPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-right"></i></button>
-      <button type="button" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-double-right"></i></button>
+      <button [disabled]="this.nextDisabled" type="button" ngClass="btnMain btn-light col-1" (click)="nextChapter()"><i ngClass="fas fa-angle-double-right"></i></button>
     </div>
 
   </section>

@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
 
     let token = this._userService.getToken();
-
+    
     if (token) {
       this.getLogged();
     } else {

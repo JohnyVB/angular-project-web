@@ -17,6 +17,7 @@ import { CookieService } from "ngx-cookie-service";
         private cookie: CookieService
     ) {
         this.url = Global.url;
+        
     }
 
     setToken(token: string) {
@@ -24,6 +25,7 @@ import { CookieService } from "ngx-cookie-service";
     }
 
     getToken() {
+                
         return this.cookie.get("token");
     }
 
