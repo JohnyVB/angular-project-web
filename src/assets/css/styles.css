@@ -329,6 +329,17 @@ header ul li a{
   width: 94%;
 }
 
+.logoAngular{
+  width: 13%;
+}
+
+.logoNode{
+  width: 11%;
+}
+
+.logoMongo{
+  width: 35%;
+}
 
 #infoMain ol li {
   margin-bottom: 8px;
