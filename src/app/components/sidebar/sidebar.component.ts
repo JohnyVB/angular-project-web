@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router'
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -32,7 +32,7 @@ export class SidebarComponent implements OnInit {
     if (this.token) {
       this._router.navigate(['/newbook/']);
     } else {
-      swal({
+      Swal.fire({
         title: 'No hay usuario logueado',
         text: 'Para poder utilizar esta funcion tiene que loguearse',
         icon: 'info'

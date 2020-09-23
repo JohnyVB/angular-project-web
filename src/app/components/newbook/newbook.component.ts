@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -52,7 +52,7 @@ export class NewbookComponent implements OnInit {
         this.userId = response.user._id;
       },
       error => {
-        swal({
+        Swal.fire({
           title: 'Error al traer el usuario',
           text: 'Se produjo un error al consultar el usuario' + error,
           icon: 'error'
@@ -90,7 +90,7 @@ export class NewbookComponent implements OnInit {
   onSubmit() {
     this._articleService.saveArticle(this.article, this.userId).subscribe(
       response => {
-        swal(
+        Swal.fire(
           'Libro creado con exito!!',
           'El libro fue creado correctamente',
           'success'

@@ -7,7 +7,7 @@ import { Chapter } from '../../models/chapter';
 import { User } from '../../models/user';
 import { Article } from '../../models/article';
 import { Global } from '../../services/global';
-import swal from 'sweetalert';
+
 
 @Component({
   selector: 'app-reader',

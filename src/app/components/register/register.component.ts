@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -77,9 +77,8 @@ export class RegisterComponent implements OnInit {
         if (this.file) {
           this.uploadimageUser(response.userStored._id);
         }
-
         
-        swal(
+        Swal.fire(
           'Se ha creado el usuario!!',
           'El usuario ha sido creado correctamente, por favor ir al boton Login para ingresar',
           'success'

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { Global } from '../../services/global';
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-profile',
@@ -86,7 +86,7 @@ export class ProfileComponent implements OnInit {
         if (this.file != '' || this.file != null || this.file != undefined) {
           this.uploadimageUser(response.user._id);
         }else{
-          swal(
+          Swal.fire(
             'Usuario editado!!!',
             'Se ha editado correctamente el usuario',
             'success'
@@ -95,11 +95,10 @@ export class ProfileComponent implements OnInit {
         }
       },
       error => {
-        swal(
+        Swal.fire(
           'Error al editar usuario',
           'El usuario no fue editado correctamente',
-          'error',
-          error
+          'error'
         );
 
       }
@@ -133,7 +132,7 @@ export class ProfileComponent implements OnInit {
   uploadimageUser(userId: any) {
     this._userService.uploadImageUser(this.file, userId).subscribe(
       response => {
-        swal(
+        Swal.fire(
           'Imagen editada!!!',
           'Se ha editado correctamente la imagen de usuario',
           'success'
@@ -141,11 +140,10 @@ export class ProfileComponent implements OnInit {
         this.ngOnInit();
       },
       error => {
-        swal(
+        Swal.fire(
           'Error al editar la imagen!!!',
           'La imagen no fue editada correctamente',
-          'error',
-          error
+          'error'
         );
 
       }

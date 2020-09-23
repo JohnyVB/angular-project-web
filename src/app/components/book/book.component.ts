@@ -7,7 +7,7 @@ import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
 import { ChapterService } from '../../services/chapter.service';
 import { Global } from '../../services/global';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 
@@ -54,9 +54,9 @@ export class BookComponent implements OnInit {
     this.errFileChapter = null;
     this.chapterId = '';
 
-    this.article = new Article('','','','','','',[],'',[]);
+    this.article = new Article('', '', '', '', '', '', [], '', []);
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
-    this.chapter = new Chapter('',null,'',null,'');
+    this.chapter = new Chapter('', null, '', null, '');
 
   }
 
@@ -70,10 +70,10 @@ export class BookComponent implements OnInit {
         console.log('Error al traer el id del articulo');
       }
     );
-    
+
     this._articleService.getArticleService(this.Id).subscribe(
       response => {
-        this.article = response.article;     
+        this.article = response.article;
       },
       error => {
         console.log('Error al traer el articulo');
@@ -89,45 +89,45 @@ export class BookComponent implements OnInit {
         console.log('Error al traer el usuario');
       }
     );
-         
+
   }
 
-  getUserLogged(){
-    
+  getUserLogged() {
+
     this._userService.getUserLogged().subscribe(
       response => {
 
-       let result = response['user'].article.find((_element: any) => _element === this.article._id );
-       if (result) {
-         this.userXarticle = true;
-       }
-       
-                
+        let result = response['user'].article.find((_element: any) => _element === this.article._id);
+        if (result) {
+          this.userXarticle = true;
+        }
+
+
       },
       error => {
         console.log('Error al traer el usuario para verificar autor libro', error);
-        
+
       }
     );
 
   }
 
-  getFile(files: FileList){
-    this.file = files.item(0);    
+  getFile(files: FileList) {
+    this.file = files.item(0);
   }
 
-  validatePDF(){
+  validatePDF() {
     console.log(this.file.type);
 
-    if (this.file.type !="application/pdf") {
+    if (this.file.type != "application/pdf") {
       this.errFileChapter = true;
-    }else{
+    } else {
       this.errFileChapter = false;
     }
-    
+
   }
 
-  idChapter(id: any){
+  idChapter(id: any) {
     this.chapterId = id;
     this._chapterService.getChapter(id).subscribe(
       response => {
@@ -135,84 +135,82 @@ export class BookComponent implements OnInit {
       },
       error => {
         console.log('Error al traer el capitulo', error);
-        
+
       }
     );
   }
 
-  edit(){
-     
+  edit() {
+
     this._chapterService.updateChapter(this.chapterId, this.chapter).subscribe(
       response => {
-        
+
         if (this.fileChapter) {
           this._chapterService.uploadPDF(this.file, this.chapterId).subscribe(
             response => {
 
-              swal(
+              Swal.fire(
                 'Se ha editado el capitulo!!',
                 'El capitulo fue editado correctamente',
                 'success'
               );
               this.ngOnInit();
-              
-              
+
+
             },
             error => {
-              swal(
+              Swal.fire(
                 'No de ha podido editar el archivo pdf !!',
                 'Error en editar el archivo',
-                'error',
-                error
+                'error'
               );
-              
+
             }
           );
-        }else{
-          swal(
+        } else {
+          Swal.fire(
             'Se ha editado el capitulo!!',
             'El capitulo fue editado correctamente',
             'success'
           );
           this.ngOnInit();
         }
-        
+
       },
       error => {
-        swal(
+        Swal.fire(
           'No de ha podido editar el capitulo !!',
           'Error en editar el capitulo',
-          'error',
-          error
+          'error'
         );
 
       }
     );
-  
+
     let close2 = document.getElementById('close2') as any;
     close2.click();
   }
 
-  showImage(){
+  showImage() {
     if (this.file) {
-        let reader = new FileReader();
+      let reader = new FileReader();
 
-        reader.onload = (e:any)=>{
-          this.urlImage = e.target.result;
-        }
+      reader.onload = (e: any) => {
+        this.urlImage = e.target.result;
+      }
 
-        reader.readAsDataURL(this.file);
+      reader.readAsDataURL(this.file);
     }
   }
 
-  onSubmit(){
+  onSubmit() {
     this._articleService.updateArticle(this.Id, this.article).subscribe(
       response => {
-        
+
         if (this.file) {
           this._articleService.uploadImage(this.file, response.articleUpdated._id).subscribe(
             response => {
-              swal(
+              Swal.fire(
                 'Se ha editado el libro!!',
                 'El libro fue editado correctamente',
                 'success'
@@ -220,29 +218,27 @@ export class BookComponent implements OnInit {
               this.ngOnInit();
             },
             error => {
-              swal(
+              Swal.fire(
                 'No de ha podido editar la image del libro !!',
                 'Error en editar la imagen',
-                'error',
-                error
+                'error'
               );
 
             }
           );
-        }else{
-          swal(
+        } else {
+          Swal.fire(
             'Se ha editado el libro!!',
             'El libro fue editado correctamente',
             'success'
           );
-        }        
+        }
       },
       error => {
-        swal(
+        Swal.fire(
           'No de ha podido editar el libro !!',
           'Error en editar el libro',
-          'error',
-          error
+          'error'
         );
 
       }
@@ -252,17 +248,18 @@ export class BookComponent implements OnInit {
     modal.click();
   }
 
-  deleteChapter(chapterId: any){
+  deleteChapter(chapterId: any) {
 
-    swal({
-      title: "¿Esta seguro de eliminar el capitulo?",
-      text: "Una vez eliminado no se podra recuperar!",
-      icon: "warning",
-      buttons: ['Cancelar','Eliminar'],
-      dangerMode: true,
+    Swal.fire({
+      title: '¿Esta seguro de eliminar el capitulo?',
+      text: 'una vez eliminado no podra recuperarse',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
     })
-      .then((willDelete) => {
-        if (willDelete) {
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this._chapterService.deleteChapter(chapterId).subscribe(
             response => {
@@ -271,40 +268,62 @@ export class BookComponent implements OnInit {
 
             },
             error => {
-              swal({
+              Swal.fire({
                 title: 'Error al eliminar el capitulo',
                 icon: 'warning'
               });
               console.log('Error al eliminar el capitulo', error);
-              
+
             }
           );
 
-          swal("El capitulo de ha eliminado correctamente", {
+          Swal.fire({
+            text: "El capitulo de ha eliminado correctamente",
             icon: "success",
           });
-        } else {
-          swal({
+        } else if (result.isDenied) {
+          Swal.fire({
             title: "No se ha eliminado el capitulo!",
             icon: 'info'
           });
         }
       });
 
-    
+
   }
 
-  deleteArticle(articleId: any){
+  deleteArticle(articleId: any) {
 
-    swal({
-      title: "¿Esta seguro de eliminar el libro?",
+
+    Swal.fire({
+      title: '¿Esta seguro de eliminar el libro?',
       text: "Una vez eliminado no se podra recuperar!",
-      icon: "warning",
-      buttons: ['Cancelar', 'Eliminar'],
-      dangerMode: true,
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire('Saved!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
     })
-      .then((willDelete) => {
-        if (willDelete) {
+
+
+
+
+    Swal.fire({
+      title: '¿Esta seguro de eliminar el libro?',
+      text: "Una vez eliminado no se podra recuperar!",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this._articleService.deleteArticle(articleId).subscribe(
             response => {
@@ -318,11 +337,12 @@ export class BookComponent implements OnInit {
             }
           );
 
-          swal("El libro de ha eliminado correctamente", {
+          Swal.fire({
+            text: "El libro de ha eliminado correctamente",
             icon: "success",
           });
-        } else {
-          swal({
+        } else if (result.isDenied) {
+          Swal.fire({
             title: "No se ha eliminado el libro!",
             icon: 'info'
           });
@@ -331,9 +351,9 @@ export class BookComponent implements OnInit {
 
 
 
-    
-    
-    
+
+
+
   }
 
 

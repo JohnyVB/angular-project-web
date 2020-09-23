@@ -4,7 +4,7 @@ import { ArticleService } from '../../services/article.service';
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
 import { Global } from '../../services/global';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
   ) {
     this.url = Global.url;
     this.admin = false;
-    this.user = new User('','','','',[],'','','','',null,'','');
+    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
 
   }
 
@@ -69,15 +69,37 @@ export class UsersComponent implements OnInit {
 
   deleteUser(userId: any) {
 
-    swal({
-      title: "¿Esta seguro?",
+
+
+    Swal.fire({
+      title: '¿Esta seguro?',
       text: "Una vez eliminado el usuario no podra ser recuperado",
-      icon: "warning",
-      buttons: ['Cancelar', 'Eliminar'],
-      dangerMode: true,
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire('Saved!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Changes are not saved', '', 'info')
+      }
     })
-      .then((willDelete) => {
-        if (willDelete) {
+
+
+
+
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: "Una vez eliminado el usuario no podra ser recuperado",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
 
           this._userService.deleteUser(userId).subscribe(
             response => {
@@ -105,13 +127,14 @@ export class UsersComponent implements OnInit {
 
             }
           );
-            this.ngOnInit();
+          this.ngOnInit();
 
-          swal("El usuario ha sido eliminado!", {
+          Swal.fire({
+            title: "El usuario ha sido eliminado!",
             icon: "success",
           });
-        } else {
-          swal({
+        } else if (result.isDenied) {
+          Swal.fire({
             title: "El usuario no se ha eliminado",
             icon: "info"
           });
