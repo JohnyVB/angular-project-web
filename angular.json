@@ -35,7 +35,6 @@
             ],
             "scripts": []
           },
-          
           "configurations": {
             "production": {
               "fileReplacements": [
@@ -125,6 +124,10 @@
               "devServerTarget": "angular-project-web:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }
