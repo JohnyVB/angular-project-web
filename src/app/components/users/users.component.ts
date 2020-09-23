@@ -32,11 +32,11 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const token = this._userService.getToken();
+    const token = this._userService.getToken();   
 
-    if (token || token != '' || token != undefined) {
+    if (token) {
       this._userService.getUserAdmin(token).subscribe(response => {
-        if (response.user.role == 'admin') {
+        if (response.user.role === 'admin') {
           this.admin = true;
           this.getUsers();
         } else {
