@@ -1,0 +1,48 @@
+
+<div ngClass="row rounded col-md-auto bg-secondary mt-3 text-white pb-4 mb-5">
+  <h2 ngClass="col-12 mt-2 text-center">Comentarios</h2>
+  <div ngClass="col-12 mt-2 mb-2">
+
+    <div ngClass="input-group" *ngIf="this.userOn">
+      <textarea [(ngModel)]="this.textComment" ngClass="form-control" placeholder="Ingrese su comentario"
+        aria-label="With textarea"></textarea>
+      <button (click)="saveComment()" type="button" class="btn btn-success">Publicar</button>
+    </div>
+
+    <div *ngIf="!this.userOn" ngClass="text-center">
+      <h2>Para poder comentar por favor iniciar sesión</h2>
+    </div>
+
+  </div>
+  <div *ngIf="this.comment" ngClass="col-12 mt-2 mb-2">
+    <div ngClass="border bg-comment mb-5 mt-2" *ngFor="let comment of this.comment">
+
+      <div ngClass="row">
+        <div ngClass="col-1" *ngIf="comment.userid.image">
+          <img ngClass="m-1 imageUserComment" src="{{this.url + 'get-image-user/' + comment.userid.image}}">
+        </div>
+
+        <div ngClass="col-1" *ngIf="!comment.userid.image">
+          <img ngClass="m-1 imageUserComment" src="../../../assets/img/default-user.png">
+        </div>
+        <div ngClass="col-11">
+          <a [routerLink]="['/profile/' + comment.userid._id]"
+            ngClass="d-block mt-1 mb-2 sizeComment">{{comment.userid.user}}</a>
+          <label ngClass="d-block">{{comment.date | amLocale: 'es' | amTimeAgo}}</label>
+        </div>
+      </div>
+
+      <div ngClass="border-top">
+        <p ngClass="m-1 pt-3 pb-3">
+          {{comment.text}}
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="this.comment.length === 0" ngClass="col-12 mt-2 mb-2 text-center">
+    <h2>Aun no hay comentarios</h2>
+  </div>
+</div>
+

@@ -35,7 +35,7 @@ import { Global } from './global';
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
             return this._http.post(this.url + 'save-chapter/' + chapterId, params, { headers: headers });
         } else {
-            console.log('No hay usuario logeado!!!');
+            return this._http.get(this.url + 'error');
         }
     }
 
@@ -48,8 +48,7 @@ import { Global } from './global';
             let headers = new HttpHeaders({ 'Authorization': "Bearer " + token });
             return this._http.put(this.url + 'upload-pages/' + chapterId, formdata, { headers: headers });
         } else {
-            console.log('Usuario no logeado!!!');
-
+            return this._http.get(this.url + 'error');
         }
     }
 
@@ -61,7 +60,7 @@ import { Global } from './global';
 
             return this._http.put(this.url + 'update-chapter/' + chapterId, params, { headers: headers });
         } else {
-            console.log('No hay usuario logeado!!!');
+            return this._http.get(this.url + 'error');
         }
     }
 
@@ -71,6 +70,8 @@ import { Global } from './global';
         if (token) {
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
             return this._http.delete(this.url + 'delete-chapter/' + chapterId, {headers: headers});
+        } else {
+            return this._http.get(this.url + 'error');
         }
     }
 

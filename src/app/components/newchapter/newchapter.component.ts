@@ -45,11 +45,12 @@ export class NewchapterComponent implements OnInit {
       _id: '',
       numcap: null,
       titlecap: '',
+      comments: [],
       datechapter: '',
       imgpage: ''
     }];
 
-    this.chapterView = new Chapter('',null,'',null,'');
+    this.chapterView = new Chapter('',null,'', [], null, '');
     this.errNum = null;
   }
 

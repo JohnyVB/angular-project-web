@@ -56,9 +56,10 @@ export class BookComponent implements OnInit {
 
     this.article = new Article('', '', '', '', '', '', [], '', []);
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
-    this.chapter = new Chapter('', null, '', null, '');
+    this.chapter = new Chapter('', null, '', [], null, '');
 
   }
+
 
 
   ngOnInit(): void {
@@ -73,6 +74,7 @@ export class BookComponent implements OnInit {
 
     this._articleService.getArticleService(this.Id).subscribe(
       response => {
+        const image = this.article.image;
         this.article = response.article;
       },
       error => {
@@ -82,35 +84,39 @@ export class BookComponent implements OnInit {
 
     this._userService.getUserXArticle(this.Id).subscribe(
       response => {
-        this.user = response.user;
-        this.getUserLogged();
+    
+        if (!response.user) {
+          console.warn('No hay usuario logeado..');          
+        }else{
+          this.user = response.user;
+          this.getUserCompared();
+        }
       },
       error => {
         console.log('Error al traer el usuario');
       }
     );
-
   }
 
-  getUserLogged() {
+  getUserCompared() {
 
     this._userService.getUserLogged().subscribe(
       response => {
-
-        let result = response['user'].article.find((_element: any) => _element === this.article._id);
+        
+        const result = response['user'].article.find((_element: any) => _element === this.article._id);
         if (result) {
           this.userXarticle = true;
         }
 
-
       },
       error => {
-        console.log('Error al traer el usuario para verificar autor libro', error);
+        console.warn('No hay usuario logeado...');
 
       }
     );
 
   }
+
 
   getFile(files: FileList) {
     this.file = files.item(0);
@@ -348,12 +354,6 @@ export class BookComponent implements OnInit {
           });
         }
       });
-
-
-
-
-
-
   }
 
 

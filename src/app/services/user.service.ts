@@ -17,7 +17,7 @@ import { CookieService } from "ngx-cookie-service";
         private cookie: CookieService
     ) {
         this.url = Global.url;
-        
+
     }
 
     setToken(token: string) {
@@ -25,7 +25,7 @@ import { CookieService } from "ngx-cookie-service";
     }
 
     getToken() {
-                
+
         return this.cookie.get("token");
     }
 
@@ -39,9 +39,10 @@ import { CookieService } from "ngx-cookie-service";
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + token
             });
-           
-            
-            return this._http.get(this.url + 'get-users', {headers: headers});
+
+            return this._http.get(this.url + 'get-users', { headers: headers });
+        } else {
+            return this._http.get(this.url + 'error');
         }
 
     }
@@ -55,45 +56,51 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.post(this.url + 'save-user', user);
     }
 
-    
+
 
     getUserLogged() {
 
         this.token = this.getToken();
-
-        if (!this.token) {
-            return this._http.get(this.url + 'get-usertoken/');
+        
+        if (this.token) {
+            return this._http.get(this.url + 'get-usertoken/' + this.token);
+        }else{
+            return this._http.get(this.url + 'error');
         }
-        return this._http.get(this.url + 'get-usertoken/' + this.token);
+
     }
 
     sessionClosed() {
         this.cookie.delete('token');
     }
 
-    getUserXArticle(articleId: string): Observable<any>{
+    getUserXArticle(articleId: string): Observable<any> {
         return this._http.get(this.url + 'get-userxarticle/' + articleId);
     }
 
-    getUserXEmail(email: string):Observable<any>{
+    getUserXEmail(email: string): Observable<any> {
         return this._http.get(this.url + 'get-userxemail/' + email);
     }
 
-    getUserPopulateArticle(userId: string): Observable<any>{
+    getUserPopulateArticle(userId: string): Observable<any> {
         return this._http.get(this.url + 'get-user-populate/' + userId);
     }
 
-    getUserAdmin(token: string):Observable<any>{
+    getUserAdmin(token: string): Observable<any> {
         return this._http.get(this.url + 'get-userxtoken/' + token);
     }
 
-    uploadImageUser(file: File, userId: any):Observable<any>{
+    getUser(userid: any): Observable<any> {
+        return this._http.get(this.url + 'get-user/' + userid);
+    }
+
+    uploadImageUser(file: File, userId: any): Observable<any> {
         var formdata = new FormData();
         formdata.append("file0", file, file.name);
         return this._http.post(this.url + 'upload-user/' + userId, formdata);
     }
 
-    updateUser(userId: any, user: any):Observable<any>{
+    updateUser(userId: any, user: User): Observable<any> {
         const token = this.getToken();
         if (token) {
             let params = JSON.stringify(user);
@@ -102,15 +109,13 @@ import { CookieService } from "ngx-cookie-service";
                 'Authorization': "Bearer " + token
             });
 
-            return this._http.put(this.url + 'update-user/' + userId, params, {headers: headers});
-
-        }else{
-            console.log('Usuario no logeado');
-            
+            return this._http.put(this.url + 'update-user/' + userId, params, { headers: headers });
+        } else {
+            return this._http.get(this.url + 'error');
         }
     }
 
-    deleteUser(userId: any):Observable<any>{
+    deleteUser(userId: any): Observable<any> {
         const token = this.getToken();
 
         if (token) {
@@ -119,9 +124,9 @@ import { CookieService } from "ngx-cookie-service";
                 'Authorization': "Bearer " + token
             });
 
-            return this._http.delete(this.url + 'delete-user/' + userId, {headers: headers});
-        }else{
-            console.log('Usuario no logeado'); 
+            return this._http.delete(this.url + 'delete-user/' + userId, { headers: headers });
+        } else {
+            return this._http.get(this.url + 'error');
         }
     }
 

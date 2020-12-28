@@ -14,7 +14,7 @@
       <button type="button" (click)="returnArticle()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-arrow-alt-circle-left"></i></button>
       <button type="button" (click)="minusZoom()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-search-minus"></i></button>
 
-      <div id="selected" ngClass="input-group mb-3 w-25 col-2">
+      <div *ngIf="!this.cascade" id="selected" ngClass="input-group mb-3 w-25 col-2">
 
         <div ngClass="input-group-prepend">
           <label ngClass="input-group-text" for="inputGroupSelect01">Paginas</label>
@@ -48,6 +48,17 @@
 
       <button type="button" *ngIf="this.cascade === false" (click)="nextPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-right"></i></button>
       <button [disabled]="this.nextDisabled" type="button" ngClass="btnMain btn-light col-1" (click)="nextChapter()"><i ngClass="fas fa-angle-double-right"></i></button>
+    </div>
+
+    <div ngClass="container" *ngIf="this.commentsOn">
+      <app-comments [reader]="true">
+      </app-comments>
+    </div>
+
+    <div ngClass="container" *ngIf="!this.commentsOn">
+      <button (click)="openComments()" ngClass="btn btn-primary col-12 p-3" type="button">
+        <h3>Comentarios</h3>
+      </button>
     </div>
 
   </section>

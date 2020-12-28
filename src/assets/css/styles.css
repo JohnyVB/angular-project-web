@@ -23,6 +23,24 @@ body {
   float: none;
 }
 
+.bg-comment{
+  background-color: #343A40;
+}
+
+.imageUserComment{
+  width: 130%;
+}
+.labelblockcomment label{
+  display: block;
+}
+
+.sizeComment{
+  font-size: 18px;
+  text-decoration: none !important;
+  color: white !important;
+}
+
+
 pdf-viewer {
   display: flex;
   height: auto;

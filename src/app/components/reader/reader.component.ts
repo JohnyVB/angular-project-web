@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { ChapterService } from '../../services/chapter.service';
@@ -7,7 +7,6 @@ import { Chapter } from '../../models/chapter';
 import { User } from '../../models/user';
 import { Article } from '../../models/article';
 import { Global } from '../../services/global';
-
 
 @Component({
   selector: 'app-reader',
@@ -29,6 +28,9 @@ export class ReaderComponent implements OnInit {
   public chapterId: string;
   public nextDisabled: boolean;
   public preDisabled: boolean;
+  public commentsOn: boolean;
+  
+  
 
   constructor(
     private _router: Router,
@@ -45,9 +47,11 @@ export class ReaderComponent implements OnInit {
     this.chapterId = '';
     this.nextDisabled = false;
     this.preDisabled = false;
+    this.commentsOn = false;
+    
 
     this.article = new Article('', '', '', null, '', '', [], '', []);
-    this.chapter = new Chapter('', null, '', null, '');
+    this.chapter = new Chapter('', null, '', null, [], '');
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
     this.autor = new User('', '', '', '', [], '', '', '', '', null, '', '');
 
@@ -105,7 +109,13 @@ export class ReaderComponent implements OnInit {
     this._userService.getUserLogged().subscribe(
       (response) => {
         this.user = response['user'];
-        this.validatePrefe();
+        if (!this.user) {
+          console.warn('No hay usuario logeado');
+          
+        }else{
+          this.validatePrefe();
+        }
+
       },
       (error) => {
         console.log('No hay usuario logeado');
@@ -153,7 +163,9 @@ export class ReaderComponent implements OnInit {
       this.nextDisabled = true;
     }else{
       this.preDisabled = false;
+      this.ngOnInit();
       this._router.navigate(['/reader/' + this.article.chapter[chapterNext]]);
+      this.openComments();
     }
   }
 
@@ -163,8 +175,14 @@ export class ReaderComponent implements OnInit {
       this.preDisabled = true;
     }else{
       this.nextDisabled = false;
+      this.ngOnInit();
       this._router.navigate(['/reader/' + this.article.chapter[chapterPre]]);
+      this.openComments();
     }
+  }
+
+  openComments(){
+    this.commentsOn = !this.commentsOn;
   }
 
 }

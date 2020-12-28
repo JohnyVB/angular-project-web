@@ -60,8 +60,7 @@ import { CookieService } from "ngx-cookie-service";
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
             return this._http.post(this.url + 'save-book/' + userId, params, {headers: headers});
         } else {
-            console.log('No hay usuario logeado!!!');
-
+            return this._http.get(this.url + 'error');
         }
 
 
@@ -77,10 +76,8 @@ import { CookieService } from "ngx-cookie-service";
           
             let headers = new HttpHeaders({ 'Authorization': "Bearer " + token });
             return this._http.post(this.url + 'upload-coverpages/' + articleId, formdata, { headers: headers });
-
         } else {
-            console.log('No hay usuario logeado!!!');
-
+            return this._http.get(this.url + 'error');
         }
     }
 
@@ -95,8 +92,7 @@ import { CookieService } from "ngx-cookie-service";
 
             return this._http.put(this.url + 'update-article/' + articleId, params, {headers: headers});
         } else {
-            console.log('Usuario no logeado');
-
+            return this._http.get(this.url + 'error');
         }
     }
 
@@ -106,8 +102,8 @@ import { CookieService } from "ngx-cookie-service";
         if (token) {
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
             return this._http.delete(this.url + 'delete-book/' + articleId, {headers: headers});
-        }else{
-            console.log('Usuario no logeado');
+        } else {
+            return this._http.get(this.url + 'error');
         }
     }
 

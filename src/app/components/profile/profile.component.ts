@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { Global } from '../../services/global';
@@ -24,7 +24,6 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(
-    private _router: Router,
     private _route: ActivatedRoute,
     private _userService: UserService
 
@@ -47,10 +46,9 @@ export class ProfileComponent implements OnInit {
 
       },
         error => {
-          console.log(error);
-
+          console.warn(error);
         });
-
+      
     },
       error => {
         console.log('Error al obtener el id del usuario', error);

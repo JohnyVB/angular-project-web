@@ -21,9 +21,8 @@
            <a href="#modal" data-toggle="modal" role="button" ngClass="rounded m-2 p-2 bg-warning text-white"><i
                ngClass="fas fa-edit mr-1"></i>Editar</a>
 
-
-
-           <a (click)="deleteArticle(this.article._id)" ngClass="cursorPointer rounded m-2 mr-0 p-2 bg-danger text-white"><i
+           <a (click)="deleteArticle(this.article._id)"
+             ngClass="cursorPointer rounded m-2 mr-0 p-2 bg-danger text-white"><i
                ngClass="fas fa-trash-alt mr-1"></i>Eliminar</a>
          </div>
 
@@ -46,7 +45,7 @@
                    <div ngClass="row m-1">
 
                      <div ngClass="col-12 d-flex justify-content-center">
-                       <img ngClass="widthBookEdit" src="{{this.url + 'get-coverimage/' + this.article.image}}"
+                       <img ngClass="widthBookEdit" src="{{this.url + 'get-coverimage/' + image}}"
                          *ngIf="!this.urlImage || this.urlImage === ''">
                        <img ngClass="widthBookEdit" [src]="this.urlImage" *ngIf="this.urlImage">
                      </div>
@@ -197,7 +196,8 @@
                      <a ngClass="cursorPointer" (click)="deleteChapter(chapter._id)"><i
                          ngClass="fas fa-trash-alt fa-lg float-sm-left m-2 text-danger"></i></a>
                      <a href="#modalChapter" data-toggle="modal" role="button"><i
-                         ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning" (click)="idChapter(chapter._id)"></i></a>
+                         ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning"
+                         (click)="idChapter(chapter._id)"></i></a>
                    </div>
                  </div>
 
@@ -222,59 +222,66 @@
 
 
            <div id="modalChapter" ngClass="modal fade">
-            <div ngClass="modal-dialog">
-              <div ngClass="modal-content">
+             <div ngClass="modal-dialog">
+               <div ngClass="modal-content">
 
 
-                <form #editChapter="ngForm" (ngSubmit)="edit()">
+                 <form #editChapter="ngForm" (ngSubmit)="edit()">
 
 
-                  <div ngClass="modal-header">
-                    <h4 ngClass="modal-title text-black-50">Editar Capitulo</h4>
-                    <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true" (click)="ngOnInit()">&times;</button>
-                  </div>
+                   <div ngClass="modal-header">
+                     <h4 ngClass="modal-title text-black-50">Editar Capitulo</h4>
+                     <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true"
+                       (click)="ngOnInit()">&times;</button>
+                   </div>
 
-                  <div ngClass="modal-body">
-                    <div ngClass="row m-1">
+                   <div ngClass="modal-body">
+                     <div ngClass="row m-1">
 
-                      <div ngClass="col-12 custom-file mt-3">
-                        <input type="file" ngClass="custom-file-input" name="image" #image="ngModel"
-                          [(ngModel)]="this.chapter.imgpage" (change)="getFile($event.target.files); validatePDF()">
-                        <label ngClass="custom-file-label">Selecciona la nueva imagen...</label>
-                        
-                      </div>
+                       <div ngClass="col-12 custom-file mt-3">
+                         <input type="file" ngClass="custom-file-input" name="image" #image="ngModel"
+                           [(ngModel)]="this.chapter.imgpage" (change)="getFile($event.target.files); validatePDF()">
+                         <label ngClass="custom-file-label">Selecciona la nueva imagen...</label>
 
-                      <small *ngIf="this.errFileChapter == true"
-                        ngClass="p-1 rounded bg-danger text-white">Archivo no valido!!</small>
-                      <small *ngIf="this.errFileChapter == false"
-                        ngClass="p-1 rounded bg-success text-white">Archivo valido</small>
+                       </div>
 
-                      <div ngClass="col-12 form-group p-0 mt-3">
-                        <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" pattern="*[0-9]">
-                      </div>
+                       <small *ngIf="this.errFileChapter == true" ngClass="p-1 rounded bg-danger text-white">Archivo no
+                         valido!!</small>
+                       <small *ngIf="this.errFileChapter == false" ngClass="p-1 rounded bg-success text-white">Archivo
+                         valido</small>
 
-                      <div ngClass="col-12 form-group p-0 mt-1">
-                        <input type="text" ngClass="form-control" name="titlecap" #titlecap="ngModel"
-                          [(ngModel)]="chapter.titlecap">
-                      </div>
+                       <div ngClass="col-12 form-group p-0 mt-3">
+                         <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel"
+                           [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" pattern="*[0-9]">
+                       </div>
 
-                    </div>
-                  </div>
+                       <div ngClass="col-12 form-group p-0 mt-1">
+                         <input type="text" ngClass="form-control" name="titlecap" #titlecap="ngModel" [(ngModel)]="this.chapter.titlecap">
+                       </div>
 
-                  <div ngClass="modal-footer">
-                    <button type="button" ngClass="btn btn-danger" data-dismiss="modal" (click)="ngOnInit();">Cancelar</button>
-                    <button type="submit" ngClass="btn btn-success">Editar</button>
-                  </div>
+                     </div>
+                   </div>
 
-                </form>
+                   <div ngClass="modal-footer">
+                     <button type="button" ngClass="btn btn-danger" data-dismiss="modal"
+                       (click)="ngOnInit();">Cancelar</button>
+                     <button type="submit" ngClass="btn btn-success">Editar</button>
+                   </div>
 
-              </div>
-            </div>
+                 </form>
+
+               </div>
+             </div>
            </div>
 
 
 
          </div>
+       </div>
+
+       <div ngClass="container">
+         <app-comments [reader]="false">
+         </app-comments>
        </div>
 
      </div>

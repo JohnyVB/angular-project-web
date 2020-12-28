@@ -29,6 +29,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { NewchapterComponent } from './components/newchapter/newchapter.component';
 import { CookieService } from 'ngx-cookie-service';
 import { SearchComponent } from './components/search/search.component';
+import { CommentsComponent } from './components/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { SearchComponent } from './components/search/search.component';
     BooksComponent,
     ErrorComponent,
     NewchapterComponent,
-    SearchComponent
+    SearchComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@
         <li><a [routerLink]="['/library']" [routerLinkActive]="['active']">Biblioteca</a></li>
         <li><a [routerLink]="['/chapters']" [routerLinkActive]="['active']">Capitulos</a></li>
         <li><a [routerLink]="['/developer']" [routerLinkActive]="['active']">Desarrollo</a></li>
-        <li><a [routerLink]="['/users']" [routerLinkActive]="['active']" *ngIf="this.user.role == 'admin'">Usuarios</a>
+        <li><a [routerLink]="['/users']" [routerLinkActive]="['active']" *ngIf="this.user.role === 'admin'">Usuarios</a>
         </li>
 
         <li>
@@ -40,10 +40,9 @@
             <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn == true">{{this.user.user}}</button>
 
-            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu" *ngIf="this.userOn == true">
+            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu" *ngIf="this.userOn === true">
               <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item"><i ngClass="fas fa-user pr-2"></i>Mi perfil</a>
-              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()"><i
-                  ngClass="fas fa-sign-out-alt pr-2"></i>Cerrar sesion</a>
+              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()"><i ngClass="fas fa-sign-out-alt pr-2"></i>Cerrar sesion</a>
             </div>
 
 

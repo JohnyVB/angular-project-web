@@ -6,6 +6,7 @@ export class Chapter{
         public numcap: number,
         public titlecap: string,
         public datechapter: any,
+        public comments: [],
         public imgpage: string
         
     ){}
