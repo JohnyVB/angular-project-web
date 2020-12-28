@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   public validarExtend: any;
   public file: any;
   public userEdit: boolean;
+  public imageDefault: string;
  
 
 
@@ -31,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
     this.url = Global.url;
     this.userEdit = false;
-
+    this.imageDefault = 'default-user.png';
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
   }
 

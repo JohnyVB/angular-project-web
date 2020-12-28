@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit {
   public url: string;
   public admin: boolean;
   public articles: Array<any>;
+  public imageDefault: string;
 
   constructor(
     private _userService: UserService,
@@ -26,6 +27,7 @@ export class UsersComponent implements OnInit {
   ) {
     this.url = Global.url;
     this.admin = false;
+    this.imageDefault = 'default-user.png';
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
 
   }

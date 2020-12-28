@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
 
   public login: any;
   public errorOn: boolean;
+  public imageDefault: string;
 
   public user: User;
   public url: string;
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
     this.userOn = false;
     this.errorOn = true;
     this.url = Global.url;
+    this.imageDefault = 'default-user.png';
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
 
     this.login = {

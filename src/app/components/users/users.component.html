@@ -11,7 +11,8 @@
 
       <div ngClass="col-11 row bg-light border rounded m-3 d-flex" *ngFor="let users of this.user">
         <div ngClass="col-2 m-2 text-center">
-          <img src="assets/img/default-user.png" ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="this.users.image === ''">
+          <img src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}"
+            ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="this.users.image === ''">
           <img src="{{this.url + 'get-image-user/' + this.users.image}}" ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="this.users.image">
           <label ngClass="p-1 bg-success m-2 text-white">@{{users.user}}</label>
         </div>

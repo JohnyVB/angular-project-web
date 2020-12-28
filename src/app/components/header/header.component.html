@@ -28,7 +28,8 @@
         <li><img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
             src="{{this.url + 'get-image-user/' + this.user.image }}" alt="{{this.user.user}}"
             *ngIf="this.userOn == true && this.user.image">
-          <img ngClass="img-thumbnail rounded-circle width-img-user mb-1" src="assets/img/default-user.png"
+          <img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
+            src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}"
             alt="imgUser" *ngIf="this.userOn == false || !this.user.image">
         </li>
         <li>

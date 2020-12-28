@@ -26,6 +26,7 @@ export class NewbookComponent implements OnInit {
   public fileImage: any;
   public file: any;
   public token: string;
+  public imageDefault: string;
 
   public parent: any;
   public evet: any;
@@ -41,6 +42,7 @@ export class NewbookComponent implements OnInit {
     this.article = new Article('', '', '', null, '', '', [], '', []);
     this.userId = '';
     this.errorOn = true;
+    this.imageDefault = 'defaultBook.jpg';
   }
 
 

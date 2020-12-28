@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
+import { Global } from "../../services/global";
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,7 +18,8 @@ export class RegisterComponent implements OnInit {
   public validarExtend: any;
   public file: any;
   public cpassword: any;
-
+  public defaultUrl: any;
+  public imageDefault: string;
 
   public errorOn: boolean;
   public errPass: boolean;
@@ -39,6 +41,8 @@ export class RegisterComponent implements OnInit {
     this.errPass = null;
     this.errEmail = null;
     this.emailDupli = null;
+    this.imageDefault = 'default-user.png';
+    this.defaultUrl = Global.url;
 
   }
 

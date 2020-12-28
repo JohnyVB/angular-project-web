@@ -23,7 +23,7 @@
         </div>
 
         <div ngClass="col-1" *ngIf="!comment.userid.image">
-          <img ngClass="m-1 imageUserComment" src="../../../assets/img/default-user.png">
+          <img ngClass="m-1 imageUserComment" src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}">
         </div>
         <div ngClass="col-11">
           <a [routerLink]="['/profile/' + comment.userid._id]"

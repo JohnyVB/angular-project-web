@@ -21,6 +21,7 @@ export class CommentsComponent implements OnInit, OnChanges {
   public comment: Comment[];
   public url: string;
   public textComment: string;
+  public imageDefault: string;
 
   @Input() reader: boolean;
 
@@ -33,6 +34,7 @@ export class CommentsComponent implements OnInit, OnChanges {
     this.userOn = false;
     this.comment = [];
     this.textComment = '';
+    this.imageDefault = 'default-user.png';
     this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
   }
 
