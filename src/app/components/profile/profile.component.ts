@@ -21,7 +21,8 @@ export class ProfileComponent implements OnInit {
   public file: any;
   public userEdit: boolean;
   public imageDefault: string;
- 
+  public userid: any;
+
 
 
   constructor(
@@ -33,29 +34,41 @@ export class ProfileComponent implements OnInit {
     this.url = Global.url;
     this.userEdit = false;
     this.imageDefault = 'default-user.png';
-    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
+
+    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
   }
 
   ngOnInit(): void {
 
-    this._route.params.subscribe(params => {
+    this.getParams();
+    this.getUser(this.userid);
+  }
 
-      this._userService.getUserPopulateArticle(params.id).subscribe(response => {
+  getParams() {
+    this._route.params.subscribe(
+      params => {
+        this.userid = params.id;
+
+
+      },
+      error => {
+        console.log('Error al obtener el id del usuario', error);
+
+      });
+  }
+
+  getUser(id: any) {
+    this._userService.getUserPopulateArticle(id).subscribe(
+
+      response => {
 
         this.user = response.user;
         this.validarUsuario();
 
       },
-        error => {
-          console.warn(error);
-        });
-      
-    },
       error => {
-        console.log('Error al obtener el id del usuario', error);
-
+        console.warn(error);
       });
-    
   }
 
   validarUsuario() {
@@ -77,20 +90,20 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
-  
+
   editUser() {
     this._userService.updateUser(this.user._id, this.user).subscribe(
       response => {
 
         if (this.file != '' || this.file != null || this.file != undefined) {
           this.uploadimageUser(response.user._id);
-        }else{
+        } else {
           Swal.fire(
             'Usuario editado!!!',
             'Se ha editado correctamente el usuario',
             'success'
           );
-          this.ngOnInit(); 
+          this.ngOnInit();
         }
       },
       error => {

@@ -1,0 +1,36 @@
+<div ngClass="container mt-4 minHeight">
+  <h4>Notificaciones</h4>
+  <div (mouseenter)="alertNotify(notifys)" *ngFor="let notifys of this.notify"
+    ngClass="shadow p-3 mb-5 mt-2 bg-white rounded">
+
+    <p>
+      <strong>
+        <a href="#" ngClass="notifyDecorationText" [routerLink]="['/profile/'+ notifys.userid]">
+          {{notifys.username}}
+        </a>
+      </strong>
+      {{notifys.message}}
+      <strong>
+        <a *ngIf="!notifys.chapter" href="#" ngClass="notifyDecorationText" [routerLink]="['/book/' + notifys.articleid]">
+          {{notifys.articletitle}}
+        </a>
+
+        <a *ngIf="notifys.chapter" href="#" ngClass="notifyDecorationText" [routerLink]="['/reader/' + notifys.articleid]">
+          {{notifys.articletitle}}
+        </a>
+      </strong>
+    </p>
+
+    <p>
+      <i ngClass="fas fa-bullhorn mr-2"></i>
+      {{notifys.date | amLocale: 'es' | amTimeAgo}}
+    </p>
+
+    <span ngClass="notifyNew" *ngIf="notifys.alert">
+      <strong>
+        Nuevo
+      </strong>
+    </span>
+
+  </div>
+</div>

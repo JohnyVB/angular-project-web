@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommentService } from '../../services/comment.service';
+import { NotifyService } from '../../services/notify.service';
+import { ArticleService } from '../../services/article.service';
 import { Global } from '../../services/global';
 import { User } from '../../models/user';
 import { Comment } from '../../models/comment';
@@ -11,9 +13,9 @@ import Swal from 'sweetalert2';
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css'],
-  providers: [UserService, CommentService]
+  providers: [UserService, CommentService, NotifyService, ArticleService]
 })
-export class CommentsComponent implements OnInit, OnChanges {
+export class CommentsComponent implements OnInit {
 
   public userOn: boolean;
   public user: User;
@@ -22,12 +24,16 @@ export class CommentsComponent implements OnInit, OnChanges {
   public url: string;
   public textComment: string;
   public imageDefault: string;
+  public userArticle: User;
+  public article: any;
 
   @Input() reader: boolean;
 
   constructor(
     private _userService: UserService,
     private _commentService: CommentService,
+    private _notifyService: NotifyService,
+    private _articleService: ArticleService,
     private _route: ActivatedRoute,
   ) {
     this.url = Global.url;
@@ -35,14 +41,11 @@ export class CommentsComponent implements OnInit, OnChanges {
     this.comment = [];
     this.textComment = '';
     this.imageDefault = 'default-user.png';
-    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, '', '');
+    this.userArticle = new User('', '', '', '', null, '', '', '', '', null, null, '', '');
   }
 
-  ngOnChanges() {
-    console.log("NgOnChanges");
-  }
-
-  getUserLogged(){
+  getUserLogged() {
     this._userService.getUserLogged().subscribe(
       response => {
         if (!response) {
@@ -59,7 +62,7 @@ export class CommentsComponent implements OnInit, OnChanges {
     );
   }
 
-  getParams(){
+  getParams() {
     this._route.params.subscribe(
       response => {
         this.articleId = response.id;
@@ -70,7 +73,7 @@ export class CommentsComponent implements OnInit, OnChanges {
     );
   }
 
-  getComments(articleId: any, reader: any){
+  getComments(articleId: any, reader: any) {
     this._commentService.getComments(articleId, reader).subscribe(
       response => {
         this.comment = response.article.comments;
@@ -80,13 +83,80 @@ export class CommentsComponent implements OnInit, OnChanges {
       }
     );
   }
-  
+
 
   ngOnInit(): void {
-    console.log("NgOnInit");
     this.getUserLogged();
     this.getParams();
     this.getComments(this.articleId, this.reader);
+    this.getArticle();
+    this.getUser(this.articleId);
+  }
+
+  getArticle() {
+    this._articleService.getArticleService(this.articleId, this.reader).subscribe(
+      response => {
+        this.article = response.article;
+      },
+      error => {
+        console.log('Error al traer el articulo...');
+      }
+    );
+  }
+
+  getUser(articleid: any) {
+    
+    this._userService.getUserXArticle(articleid, this.reader).subscribe(
+      response => {
+        
+        this.userArticle = response.user;
+      },
+      error => {
+        console.log('Error al traer el usuario de este articulo...');
+      }
+    );
+  }
+
+  saveNotify(userid: any) {
+  
+    let params = {
+      userid: this.user._id,
+      username: this.user.name,
+      articleid: this.article._id,
+      articletitle: this.article.title,
+      chapter: false,
+      message: ' comentó el libro: '
+    }
+
+    if (this.reader) {
+      params.articletitle = this.article.titlecap,
+      params.message = ' comentó el capitulo: ',
+      params.chapter = true
+    }
+
+    this._notifyService.saveNotify(params, userid).subscribe(
+      response => {
+
+        let update = {
+          push:{
+            notify: response.notifyStored._id
+          }
+        }
+
+        this._userService.updateUserParam(this.userArticle._id, update).subscribe(
+          response => {
+            console.log('user notify actualizado');
+          },
+          error => {
+            console.log('Error al guardar el id de la notificacion en el usuario');
+          }
+        );
+        console.log('Notificacion guardada');
+      },
+      error => {
+        console.log('Error al crear la notificacion');
+      }
+    );
   }
 
   saveComment() {
@@ -106,8 +176,9 @@ export class CommentsComponent implements OnInit, OnChanges {
             'Se ha publicado el comentario correctamente!!',
             'success'
           );
-          this.ngOnInit();
+          this.saveNotify(this.userArticle._id);
           this.textComment = '';
+          this.ngOnInit();
         },
         error => {
           Swal.fire(

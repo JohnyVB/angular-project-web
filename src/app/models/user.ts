@@ -11,6 +11,7 @@ export class User {
         public role: string,
         public prefreader: string,
         public token: string,
+        public notify: any,
         public regdate: any,
         public user: string,
         public password: string

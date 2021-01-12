@@ -29,6 +29,7 @@ export class ReaderComponent implements OnInit {
   public nextDisabled: boolean;
   public preDisabled: boolean;
   public commentsOn: boolean;
+  public reader: boolean;
   
   
 
@@ -48,12 +49,13 @@ export class ReaderComponent implements OnInit {
     this.nextDisabled = false;
     this.preDisabled = false;
     this.commentsOn = false;
+    this.reader = false;
     
 
     this.article = new Article('', '', '', null, '', '', [], '', []);
     this.chapter = new Chapter('', null, '', null, [], '');
-    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
-    this.autor = new User('', '', '', '', [], '', '', '', '', null, '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
+    this.autor = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
 
   }
 
@@ -76,7 +78,7 @@ export class ReaderComponent implements OnInit {
               (response) => {
                 this.article = response.article;
 
-                this._userService.getUserXArticle(response.article._id).subscribe(
+                this._userService.getUserXArticle(response.article._id, this.reader).subscribe(
                   (response) => {
                     this.autor = response.user;
 

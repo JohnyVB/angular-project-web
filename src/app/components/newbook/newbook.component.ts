@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
+import { Global } from '../../services/global';
 import Swal from 'sweetalert2';
 
 
@@ -27,6 +28,7 @@ export class NewbookComponent implements OnInit {
   public file: any;
   public token: string;
   public imageDefault: string;
+  public apiUrl: string;
 
   public parent: any;
   public evet: any;
@@ -42,6 +44,7 @@ export class NewbookComponent implements OnInit {
     this.article = new Article('', '', '', null, '', '', [], '', []);
     this.userId = '';
     this.errorOn = true;
+    this.apiUrl = Global.url;
     this.imageDefault = 'defaultBook.jpg';
   }
 

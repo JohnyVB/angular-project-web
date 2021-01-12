@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
     public _router: Router
   ) {
 
-    this.user = new User('', '', '', '', [], '', '', '', '', '', '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
     this.cpassword = '';
 
     this.errorOn = true;

@@ -111,7 +111,7 @@ export class NewchapterComponent implements OnInit {
 
   //----------------------------Mostrar los libros con el campo chapter poblado------------------------------------
   getArticleXPopulate() {
-    this._articleService.getArticleService(this.articleId).subscribe(
+    this._articleService.getArticleService(this.articleId, false).subscribe(
       response => {
 
         this.titleBook = response.article.title;

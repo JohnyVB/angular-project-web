@@ -18,6 +18,25 @@ body {
   min-height: 800px;
 }
 
+.iconAlertNotify{
+  color: red;
+  margin-right: 5px;
+}
+
+.notifyNew{
+  color: red;
+  background-color: #FFE1E3;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.notifyDecorationText{
+  text-decoration: none;
+  color: #444;
+}
+
 .clearfix {
   clear: both;
   float: none;
@@ -153,7 +172,7 @@ header ul li a{
 }
 
 .minHeight{
-  min-height: 700px;
+  min-height: 800px;
 }
 
 .heightChapters{

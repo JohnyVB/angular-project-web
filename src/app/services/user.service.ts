@@ -58,13 +58,13 @@ import { CookieService } from "ngx-cookie-service";
 
 
 
-    getUserLogged() {
+    getUserLogged(): Observable<any> {
 
         this.token = this.getToken();
-        
+
         if (this.token) {
             return this._http.get(this.url + 'get-usertoken/' + this.token);
-        }else{
+        } else {
             return this._http.get(this.url + 'error');
         }
 
@@ -74,8 +74,8 @@ import { CookieService } from "ngx-cookie-service";
         this.cookie.delete('token');
     }
 
-    getUserXArticle(articleId: string): Observable<any> {
-        return this._http.get(this.url + 'get-userxarticle/' + articleId);
+    getUserXArticle(articleId: string, reader: any): Observable<any> {
+        return this._http.get(this.url + 'get-userxarticle/' + articleId + '/' + reader);
     }
 
     getUserXEmail(email: string): Observable<any> {
@@ -113,6 +113,22 @@ import { CookieService } from "ngx-cookie-service";
         } else {
             return this._http.get(this.url + 'error');
         }
+    }
+    updateUserParam(userid: any, params: any): Observable<any> {
+
+        const token = this.getToken();
+        if (token) {
+            let headers = new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            });
+
+            return this._http.put(this.url + "update-user/" + userid, params, { headers: headers });
+        } else {
+            return this._http.get(this.url + 'error');
+        }
+
+
     }
 
     deleteUser(userId: any): Observable<any> {

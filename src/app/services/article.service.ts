@@ -39,8 +39,8 @@ import { CookieService } from "ngx-cookie-service";
     }
 
     //------------------------Servicio de mostrar un libro y sus capitulos-------------------------------
-    getArticleService(articleId: string): Observable<any> {
-        return this._http.get(this.url + 'get-chapters-populate/' + articleId);
+    getArticleService(articleId: string, reader: boolean): Observable<any> {
+        return this._http.get(this.url + 'get-chapters-populate/' + articleId + '/' + reader);
     }
 
     getArticleXchapter(chapterId: string):Observable<any>{

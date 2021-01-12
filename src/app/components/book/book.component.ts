@@ -33,6 +33,8 @@ export class BookComponent implements OnInit {
   public urlImage: any;
   public editOn: boolean;
   public errFileChapter: boolean;
+  public defaultImage:string;
+  public reader: boolean;
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
@@ -53,26 +55,40 @@ export class BookComponent implements OnInit {
     this.Id = '';
     this.errFileChapter = null;
     this.chapterId = '';
+    this.defaultImage = 'defaultBook.jpg';
+    this.reader = false;
 
     this.article = new Article('', '', '', '', '', '', [], '', []);
-    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, '', '');
     this.chapter = new Chapter('', null, '', [], null, '');
 
   }
 
-
-
   ngOnInit(): void {
-    this._route.params.subscribe(
+    this.getParams();
+    this.getArticle(this.Id);
+    this.getUser(this.Id);
+  }
+
+  getUser(id:any){
+    this._userService.getUserXArticle(id, this.reader).subscribe(
       response => {
-        this.Id = response.id;
+
+        if (!response.user) {
+          console.warn('No hay usuario logeado..');
+        } else {
+          this.user = response.user;
+          this.getUserCompared();
+        }
       },
       error => {
-        console.log('Error al traer el id del articulo');
+        console.log('Error al traer el usuario');
       }
     );
+  }
 
-    this._articleService.getArticleService(this.Id).subscribe(
+  getArticle(id:any){
+    this._articleService.getArticleService(id, false).subscribe(
       response => {
         const image = this.article.image;
         this.article = response.article;
@@ -81,19 +97,15 @@ export class BookComponent implements OnInit {
         console.log('Error al traer el articulo');
       }
     );
+  }
 
-    this._userService.getUserXArticle(this.Id).subscribe(
+  getParams(){
+    this._route.params.subscribe(
       response => {
-    
-        if (!response.user) {
-          console.warn('No hay usuario logeado..');          
-        }else{
-          this.user = response.user;
-          this.getUserCompared();
-        }
+        this.Id = response.id;
       },
       error => {
-        console.log('Error al traer el usuario');
+        console.log('Error al traer el id del articulo');
       }
     );
   }

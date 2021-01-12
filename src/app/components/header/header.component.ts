@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Global } from '../../services/global';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { User } from '../../models/user';
   styleUrls: ['./header.component.css'],
   providers: [UserService]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnChanges {
 
   public login: any;
   public errorOn: boolean;
@@ -18,6 +18,8 @@ export class HeaderComponent implements OnInit {
 
   public user: User;
   public url: string;
+  public alert: boolean;
+ 
 
   public userOn: boolean;
 
@@ -31,8 +33,9 @@ export class HeaderComponent implements OnInit {
     this.userOn = false;
     this.errorOn = true;
     this.url = Global.url;
+    this.alert = false;
     this.imageDefault = 'default-user.png';
-    this.user = new User('', '', '', '', [], '', '', '', '', null, '', '');
+    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
 
     this.login = {
       email: '',
@@ -41,54 +44,52 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  ngOnChanges(){
+    this.getLogged();
+  }
 
-    let token = this._userService.getToken();
-    
-    if (token) {
-      this.getLogged();
-    } else {
-      this.userOn = false;
-    }
+  ngOnInit(): void {
+    this.getLogged();
   }
 
   getLogged() {
     this._userService.getUserLogged().subscribe(
-
       response => {
-
-        this.user = response['user'];
-        this.userOn = true;
-
+        if (response) {
+          this.user = response.user;
+          this.userOn = true;
+          this.notifyAlert();
+        }
       },
       error => {
         this.userOn = false;
-        console.log('Error en el getLogged()', error);
-
       });
   }
 
-  validarCampos() {
-    if (this.login.email == '' && this.login.password == '') {
+  notifyAlert(){
+    this.user.notify.forEach((noti:any) => {
+      if (noti.alert) {
+        this.alert = true;
+      }else{
+        this.alert = false;
+      }
+    });
+  }
+
+
+  validarEmail() {
+    if (!this.login.email) {
       this.errorOn = true;
     } else {
       this.errorOn = false;
     }
   }
 
-  validarEmail() {
-    if (this.login.email == '') {
-      this.errorOn = !this.errorOn;
-    } else {
-      this.errorOn = !this.errorOn;
-    }
-  }
-
   validarPassword() {
-    if (this.login.password == '') {
-      this.errorOn = !this.errorOn;
+    if (!this.login.password) {
+      this.errorOn = true;
     } else {
-      this.errorOn = !this.errorOn;
+      this.errorOn = false;
     }
   }
 
@@ -102,7 +103,7 @@ export class HeaderComponent implements OnInit {
         this.ngOnInit();
       },
       error => {
-        console.log('Error en el loginUser()', error);
+        console.log('Campos vacios para iniciar sesion', error);
 
       });
   }

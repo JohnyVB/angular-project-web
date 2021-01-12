@@ -27,23 +27,38 @@
         <li><a hidden="true" ngClass="mb-1"><i id="icon-theme" ngClass="fas fa-adjust fa-rotate-180"></i></a></li>
         <li><img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
             src="{{this.url + 'get-image-user/' + this.user.image }}" alt="{{this.user.user}}"
-            *ngIf="this.userOn == true && this.user.image">
+            *ngIf="this.userOn && this.user.image">
           <img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
             src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}"
-            alt="imgUser" *ngIf="this.userOn == false || !this.user.image">
+            alt="imgUser" *ngIf="!this.userOn || !this.user.image">
         </li>
         <li>
+          
           <div ngClass="dropdown">
 
             <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn == false">Login</button>
+              aria-haspopup="true" aria-expanded="true" *ngIf="!this.userOn">Login</button>
+              
 
             <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn == true">{{this.user.user}}</button>
+              aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn"><i *ngIf="this.alert"
+                ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.user}}</button>
+              
 
             <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu" *ngIf="this.userOn === true">
-              <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item"><i ngClass="fas fa-user pr-2"></i>Mi perfil</a>
-              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()"><i ngClass="fas fa-sign-out-alt pr-2"></i>Cerrar sesion</a>
+              <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
+                <i ngClass="fas fa-user pr-2"></i>
+                <label>Mi perfil</label>
+              </a>
+              <a [routerLink]="['/notify/'+this.user._id]" ngClass="dropdown-item">
+                <i *ngIf="!this.alert" ngClass="fas fa-bell pr-2"></i>
+                <i *ngIf="this.alert" ngClass="fas fa-bell pr-2" style="color: red;"></i>
+                <label>Notificaciones</label>
+              </a>
+              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()">
+                <i ngClass="fas fa-sign-out-alt pr-2"></i>
+                <label>Cerrar sesion</label>
+              </a>
             </div>
 
 
@@ -55,7 +70,7 @@
 
                   <label for="exampleInputEmail1">Correo</label>
                   <input type="email" ngClass="form-control" name="correo" #correo="ngModel"
-                    [(ngModel)]="this.login.email" (change)="validarCampos()">
+                    [(ngModel)]="this.login.email" (change)="validarEmail()">
 
                 </div>
 
@@ -63,15 +78,15 @@
 
                   <label for="exampleInputPassword1">Contraseña</label>
                   <input type="password" ngClass="form-control" name="contrasena" #contrasena="ngModel"
-                    [(ngModel)]="this.login.password" (change)="validarCampos()">
+                    [(ngModel)]="this.login.password" (change)="validarPassword()">
 
                 </div>
 
-                <div ngClass="text-danger text-center" *ngIf='this.errorOn == true'>
+                <!-- <div ngClass="text-danger text-center" *ngIf='this.errorOn == true'>
                   <h5>Por favor ingrese sus datos completos</h5>
-                </div>
+                </div> -->
 
-                <button type="submit" ngClass="btn btn-success w-100" (click)="loginUser()" [disabled]="this.errorOn" >Login</button>
+                <button type="submit" [disabled]="this.errorOn" ngClass="btn btn-success w-100" (click)="loginUser()">Login</button>
                 <div ngClass="text-center mt-3">
                   <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
                     cuenta</a>

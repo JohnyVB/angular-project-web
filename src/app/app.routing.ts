@@ -14,6 +14,7 @@ import { UsersComponent } from './components/users/users.component';
 import { ErrorComponent } from './components/error/error.component';
 import { NewchapterComponent } from './components/newchapter/newchapter.component';
 import { SearchComponent } from './components/search/search.component';
+import { NotifyComponent } from './components/notify/notify.component'
 
 
 const appRoutes: Routes = [
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
     { path: 'reader/:id', component: ReaderComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'users', component: UsersComponent },
+    { path: 'notify/:id', component: NotifyComponent },
     { path: 'error', component: ErrorComponent},
     { path: '**', component: ErrorComponent }
 ];
