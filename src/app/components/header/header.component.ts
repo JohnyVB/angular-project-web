@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { NotifyService } from '../../services/notify.service';
 import { Global } from '../../services/global';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
@@ -8,7 +9,7 @@ import { User } from '../../models/user';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  providers: [UserService]
+  providers: [UserService, NotifyService]
 })
 export class HeaderComponent implements OnInit, OnChanges {
 
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   constructor(
     private _userService: UserService,
+    public _notifyService: NotifyService,
     public _router: Router
   ) {
 
@@ -50,6 +52,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getLogged();
+    
   }
 
   getLogged() {

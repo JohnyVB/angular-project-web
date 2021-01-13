@@ -51,7 +51,7 @@ export class CommentsComponent implements OnInit {
         if (!response) {
           this.userOn = false;
         } else {
-          this.user = response['user'];
+          this.user = response.user;
           this.userOn = true;
         }
       },
@@ -133,6 +133,19 @@ export class CommentsComponent implements OnInit {
       params.message = ' comentó el capitulo: ',
       params.chapter = true
     }
+
+    this._notifyService.sendEmail(this.userArticle.email, params).subscribe(
+      response => {
+        if (response) {
+          console.log('El email se envió');
+        }
+      },
+      error => {
+        if (error) {
+          console.log('Error al enviar el email');
+        }
+      }
+    );
 
     this._notifyService.saveNotify(params, userid).subscribe(
       response => {

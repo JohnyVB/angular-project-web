@@ -51,6 +51,7 @@ export class NotifyComponent implements OnInit {
 
       this._notifyService.updateAlert(notify._id, update).subscribe(
         response => {
+          
           this.ngOnInit();
         },
         error => {
@@ -58,8 +59,6 @@ export class NotifyComponent implements OnInit {
         }
       );
     }
-
-    
   }
 
 }
