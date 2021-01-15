@@ -31,6 +31,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { SearchComponent } from './components/search/search.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { NotifyComponent } from './components/notify/notify.component';
+import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { NotifyComponent } from './components/notify/notify.component';
     NewchapterComponent,
     SearchComponent,
     CommentsComponent,
-    NotifyComponent
+    NotifyComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,

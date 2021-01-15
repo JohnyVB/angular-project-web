@@ -17,7 +17,8 @@ import { Global } from './global';
     }
 
     getToken() {
-        return this.cookie.get('token');
+        //return this.cookie.get('token');
+        return sessionStorage.getItem('tokenSession');
     }
 
     getChapter(chapterId: any): Observable<any> {

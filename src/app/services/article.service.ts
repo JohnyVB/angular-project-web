@@ -17,7 +17,8 @@ import { CookieService } from "ngx-cookie-service";
 
     //------------------------Obtener token de usuario logeado-------------------------------------------
     getToken() {
-        return this.cookie.get('token');
+        //return this.cookie.get('token');
+        return sessionStorage.getItem('tokenSession');
     }
 
     //------------------------Servicio de mostrar todos los libros---------------------------------------

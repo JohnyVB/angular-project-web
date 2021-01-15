@@ -15,6 +15,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { NewchapterComponent } from './components/newchapter/newchapter.component';
 import { SearchComponent } from './components/search/search.component';
 import { NotifyComponent } from './components/notify/notify.component'
+import { ListComponent } from './components/list/list.component';
 
 
 const appRoutes: Routes = [
@@ -23,16 +24,17 @@ const appRoutes: Routes = [
     { path: 'library', component: BooksComponent },
     { path: 'chapters', component: ChaptersComponent },
     { path: 'book/:id', component: BookComponent },
-    { path: 'search/:search', component: SearchComponent},
+    { path: 'search/:search', component: SearchComponent },
     { path: 'developer', component: DeveloperComponent },
     { path: 'newbook', component: NewbookComponent },
-    { path: 'newchapter/:id', component: NewchapterComponent},
+    { path: 'newchapter/:id', component: NewchapterComponent },
     { path: 'profile/:id', component: ProfileComponent },
     { path: 'reader/:id', component: ReaderComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'users', component: UsersComponent },
     { path: 'notify/:id', component: NotifyComponent },
-    { path: 'error', component: ErrorComponent},
+    { path: 'list/:id', component: ListComponent },
+    { path: 'error', component: ErrorComponent },
     { path: '**', component: ErrorComponent }
 ];
 

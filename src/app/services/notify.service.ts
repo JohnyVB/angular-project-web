@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Global } from './global';
@@ -19,7 +19,8 @@ import { CookieService } from 'ngx-cookie-service';
     }
 
     getToken() {
-        return this.cookie.get('token');
+        //return this.cookie.get('token');
+        return sessionStorage.getItem('tokenSession');
     }
 
     getNotify(userid: any): Observable<any> {

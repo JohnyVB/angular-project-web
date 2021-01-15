@@ -24,7 +24,7 @@ export class BookComponent implements OnInit {
   public user: User;
   public chapter: Chapter;
   public chapterId: any;
-  public Id: string;
+  public articleid: string;
   public url: string;
   public articleSearch: Array<any>;
   public userXarticle: boolean;
@@ -33,8 +33,11 @@ export class BookComponent implements OnInit {
   public urlImage: any;
   public editOn: boolean;
   public errFileChapter: boolean;
-  public defaultImage:string;
   public reader: boolean;
+  public userLogged: any;
+  public btnDisabled: boolean;
+  public btnList: string;
+  public errNum: boolean;
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
@@ -52,86 +55,139 @@ export class BookComponent implements OnInit {
     this.userXarticle = false;
     this.urlImage = '';
     this.editOn = false;
-    this.Id = '';
+    this.articleid = '';
     this.errFileChapter = null;
     this.chapterId = '';
-    this.defaultImage = 'defaultBook.jpg';
     this.reader = false;
+    this.btnDisabled = false;
+    this.userLogged = {};
+    this.btnList = 'Añadir a lista';
+    this.errNum = false;
+
 
     this.article = new Article('', '', '', '', '', '', [], '', []);
-    this.user = new User('', '', '', '', null, '', '', '', '', null, null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
     this.chapter = new Chapter('', null, '', [], null, '');
 
   }
 
   ngOnInit(): void {
-    this.getParams();
-    this.getArticle(this.Id);
-    this.getUser(this.Id);
-  }
-
-  getUser(id:any){
-    this._userService.getUserXArticle(id, this.reader).subscribe(
+    //id del articulo
+    this._route.params.subscribe(
       response => {
+        this.articleid = response.id;
+      },
+      error => {
+        console.log('Error al traer el id del articulo');
+      }
+    );
 
-        if (!response.user) {
-          console.warn('No hay usuario logeado..');
-        } else {
+    // articulo
+    this._articleService.getArticleService(this.articleid, false).subscribe(
+      response => {
+        if (response) {
+          this.article = response.article;
+        }else{
+          console.warn('No hay articulo');
+        }
+      },
+      error => {
+        console.log('Error al traer el articulo');
+      }
+    );
+
+    // Usuario del articulo
+    this._userService.getUserXArticle(this.articleid, this.reader).subscribe(
+      response => {
+        if (response) {
           this.user = response.user;
-          this.getUserCompared();
+        }else{
+          console.warn('Error al traer el usuario del articulo...');
         }
       },
       error => {
         console.log('Error al traer el usuario');
       }
     );
-  }
-
-  getArticle(id:any){
-    this._articleService.getArticleService(id, false).subscribe(
-      response => {
-        const image = this.article.image;
-        this.article = response.article;
-      },
-      error => {
-        console.log('Error al traer el articulo');
-      }
-    );
-  }
-
-  getParams(){
-    this._route.params.subscribe(
-      response => {
-        this.Id = response.id;
-      },
-      error => {
-        console.log('Error al traer el id del articulo');
-      }
-    );
-  }
-
-  getUserCompared() {
-
+    
+    //Usuario logeado
     this._userService.getUserLogged().subscribe(
       response => {
-        
-        const result = response['user'].article.find((_element: any) => _element === this.article._id);
-        if (result) {
-          this.userXarticle = true;
+        if (response) {
+          this.userLogged = response.user;
+          const result = response.user.list.find((id:any) => id === this.articleid);
+          this.getUserCompared(this.userLogged);
+
+          if (result) {
+            this.btnDisabled = true;
+            this.btnList = 'En lista';
+          } else {
+            this.btnDisabled = false;
+          }
+        } else {
+          console.warn('No hay usuario logeado');
+          this.btnDisabled = true;
         }
 
       },
       error => {
-        console.warn('No hay usuario logeado...');
+        console.log('Error al traer el usuario logeado...');
+      }
+    );
+    
+  }
 
+  addList() {
+    let update = {
+      $push: {
+        list: this.articleid
+      }
+    };
+
+    this._userService.updateUserParam(this.userLogged._id, update).subscribe(
+      response => {
+        if (response) {
+          this.btnDisabled = true;
+        }else{
+          this.btnDisabled = false;
+        }
+      },
+      error => {
+        console.log('Error al añadir este libro a la lista del usuario logeado...');
       }
     );
 
   }
 
+  getUserCompared(user:any) {
+      
+    const result = user.article.find((_element: any) => _element === this.article._id);
+    if (result) {
+      this.userXarticle = true;
+      this.btnDisabled = true;
+    } else {
+      this.userXarticle = false;
+      this.btnDisabled = false;
+    }
+
+  }
 
   getFile(files: FileList) {
     this.file = files.item(0);
+  }
+
+  validateNum() {
+    const expresion = /^([0-9])*$/;
+
+    if (this.chapter.numcap) {
+      const valor = this.chapter.numcap;
+      if (expresion.test(valor.toString())) {
+        this.errNum = false;
+      } else {
+        this.errNum = true;
+      }
+    }
+
   }
 
   validatePDF() {
@@ -222,7 +278,7 @@ export class BookComponent implements OnInit {
   }
 
   onSubmit() {
-    this._articleService.updateArticle(this.Id, this.article).subscribe(
+    this._articleService.updateArticle(this.articleid, this.article).subscribe(
       response => {
 
         if (this.file) {

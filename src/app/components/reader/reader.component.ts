@@ -54,8 +54,8 @@ export class ReaderComponent implements OnInit {
 
     this.article = new Article('', '', '', null, '', '', [], '', []);
     this.chapter = new Chapter('', null, '', null, [], '');
-    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
-    this.autor = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
+    this.autor = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
 
   }
 

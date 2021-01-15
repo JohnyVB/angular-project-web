@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
     this.userEdit = false;
     this.imageDefault = 'default-user.png';
 
-    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
   }
 
   ngOnInit(): void {

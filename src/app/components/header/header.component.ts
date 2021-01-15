@@ -1,9 +1,10 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { NotifyService } from '../../services/notify.service';
 import { Global } from '../../services/global';
 import { Router } from '@angular/router';
 import { User } from '../../models/user';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -11,19 +12,14 @@ import { User } from '../../models/user';
   styleUrls: ['./header.component.css'],
   providers: [UserService, NotifyService]
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit {
 
   public login: any;
   public errorOn: boolean;
-  public imageDefault: string;
-
   public user: User;
   public url: string;
   public alert: boolean;
- 
-
   public userOn: boolean;
-
   public searchString: string;
 
   constructor(
@@ -32,12 +28,11 @@ export class HeaderComponent implements OnInit, OnChanges {
     public _router: Router
   ) {
 
-    this.userOn = false;
+    this.userOn = null;
     this.errorOn = true;
     this.url = Global.url;
     this.alert = false;
-    this.imageDefault = 'default-user.png';
-    this.user = new User('', '', '', '', [], '', '', '', '', [], null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
 
     this.login = {
       email: '',
@@ -45,27 +40,25 @@ export class HeaderComponent implements OnInit, OnChanges {
     };
 
   }
-
-  ngOnChanges(){
-    this.getLogged();
-  }
-
   ngOnInit(): void {
-    this.getLogged();
-    
+    this.getLogged();  
   }
 
   getLogged() {
     this._userService.getUserLogged().subscribe(
-      response => {
+      response => {               
         if (response) {
           this.user = response.user;
           this.userOn = true;
           this.notifyAlert();
+        }else{
+          console.warn('No hay usuario logeado');
+          this.userOn = false;
         }
       },
       error => {
-        this.userOn = false;
+        console.log('Error al traer el usuario logeado...');
+        
       });
   }
 
@@ -103,10 +96,14 @@ export class HeaderComponent implements OnInit, OnChanges {
         this._userService.setToken(response.userUpdated.token);
         this.user = response.userUpdated;
         this.userOn = true;
-        this.ngOnInit();
+        //this.ngOnInit();
       },
       error => {
-        console.log('Campos vacios para iniciar sesion', error);
+        Swal.fire(
+          'Error al ingresar',
+          'Las credenciales no concuerdan',
+          'error'
+        );
 
       });
   }
@@ -115,8 +112,6 @@ export class HeaderComponent implements OnInit, OnChanges {
 
     this._userService.sessionClosed();
     this.userOn = false;
-    this.ngOnInit();
-
   }
 
   sendString() {

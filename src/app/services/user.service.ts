@@ -10,7 +10,6 @@ import { CookieService } from "ngx-cookie-service";
 @Injectable() export class UserService {
 
     public url: string;
-    public token: string;
 
     constructor(
         private _http: HttpClient,
@@ -21,12 +20,18 @@ import { CookieService } from "ngx-cookie-service";
     }
 
     setToken(token: string) {
-        this.cookie.set("token", token);
+        //this.cookie.set("token", token);
+        sessionStorage.setItem("tokenSession", token);
     }
 
     getToken() {
+        //return this.cookie.get('token');
+        return sessionStorage.getItem('tokenSession');
+    }
 
-        return this.cookie.get("token");
+    sessionClosed() {
+        //this.cookie.delete('token');
+        sessionStorage.removeItem("tokenSession");
     }
 
 
@@ -60,19 +65,17 @@ import { CookieService } from "ngx-cookie-service";
 
     getUserLogged(): Observable<any> {
 
-        this.token = this.getToken();
+        const token = this.getToken();
 
-        if (this.token) {
-            return this._http.get(this.url + 'get-usertoken/' + this.token);
+        if (token) {
+            return this._http.get(this.url + 'get-usertoken/' + token);
         } else {
             return this._http.get(this.url + 'error');
         }
 
     }
 
-    sessionClosed() {
-        this.cookie.delete('token');
-    }
+   
 
     getUserXArticle(articleId: string, reader: any): Observable<any> {
         return this._http.get(this.url + 'get-userxarticle/' + articleId + '/' + reader);
@@ -95,7 +98,7 @@ import { CookieService } from "ngx-cookie-service";
     }
 
     uploadImageUser(file: File, userId: any): Observable<any> {
-        var formdata = new FormData();
+        const formdata = new FormData();
         formdata.append("file0", file, file.name);
         return this._http.post(this.url + 'upload-user/' + userId, formdata);
     }

@@ -41,8 +41,8 @@ export class CommentsComponent implements OnInit {
     this.comment = [];
     this.textComment = '';
     this.imageDefault = 'default-user.png';
-    this.user = new User('', '', '', '', null, '', '', '', '', null, null, '', '');
-    this.userArticle = new User('', '', '', '', null, '', '', '', '', null, null, '', '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
+    this.userArticle = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
   }
 
   getUserLogged() {

@@ -17,7 +17,8 @@ import { CookieService } from 'ngx-cookie-service';
         this.url = Global.url;
     }
     getToken() {
-        return this.cookie.get("token");
+        //return this.cookie.get("token");
+        return sessionStorage.getItem('tokenSession');
     }
 
     getComments(articleId: string, reader: boolean): Observable<any> {

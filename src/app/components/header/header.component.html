@@ -29,42 +29,17 @@
             src="{{this.url + 'get-image-user/' + this.user.image }}" alt="{{this.user.user}}"
             *ngIf="this.userOn && this.user.image">
           <img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
-            src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}"
+            src="{{this.url + 'get-defaultimage/default-user.png'}}"
             alt="imgUser" *ngIf="!this.userOn || !this.user.image">
         </li>
         <li>
           
-          <div ngClass="dropdown">
+          <div ngClass="dropdown" *ngIf="!this.userOn">
 
             <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" *ngIf="!this.userOn">Login</button>
+              aria-haspopup="true" aria-expanded="true">Login</button>
               
-
-            <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" *ngIf="this.userOn"><i *ngIf="this.alert"
-                ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.user}}</button>
-              
-
-            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu" *ngIf="this.userOn === true">
-              <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
-                <i ngClass="fas fa-user pr-2"></i>
-                <label>Mi perfil</label>
-              </a>
-              <a [routerLink]="['/notify/'+this.user._id]" ngClass="dropdown-item">
-                <i *ngIf="!this.alert" ngClass="fas fa-bell pr-2"></i>
-                <i *ngIf="this.alert" ngClass="fas fa-bell pr-2" style="color: red;"></i>
-                <label>Notificaciones</label>
-              </a>
-              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()">
-                <i ngClass="fas fa-sign-out-alt pr-2"></i>
-                <label>Cerrar sesion</label>
-              </a>
-            </div>
-
-
-
-            <div ngClass="dropdown-menu dropdown-menu-right mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenu"
-              *ngIf="this.userOn == false">
+            <div ngClass="dropdown-menu dropdown-menu-right mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenu">
               <form>
                 <div ngClass="form-group">
 
@@ -95,6 +70,32 @@
               </form>
             </div>
 
+          </div>
+
+          <div ngClass="dropdown" *ngIf="this.userOn">
+            <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true"><i *ngIf="this.alert"
+                ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.user}}</button>
+
+            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu">
+              <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
+                <i ngClass="fas fa-user pr-2"></i>
+                <label>Mi perfil</label>
+              </a>
+              <a [routerLink]="['/list/'+this.user._id]" ngClass="dropdown-item">
+                <i ngClass="fas fa-list pr-2"></i>
+                <label>Mi lista</label>
+              </a>
+              <a [routerLink]="['/notify/'+this.user._id]" ngClass="dropdown-item">
+                <i *ngIf="!this.alert" ngClass="fas fa-bell pr-2"></i>
+                <i *ngIf="this.alert" ngClass="fas fa-bell pr-2" style="color: red;"></i>
+                <label>Notificaciones</label>
+              </a>
+              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()">
+                <i ngClass="fas fa-sign-out-alt pr-2"></i>
+                <label>Cerrar sesion</label>
+              </a>
+            </div>
           </div>
 
         </li>

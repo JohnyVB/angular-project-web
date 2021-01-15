@@ -13,6 +13,7 @@ export class User {
         public token: string,
         public notify: any,
         public regdate: any,
+        public list: any,
         public user: string,
         public password: string
 
