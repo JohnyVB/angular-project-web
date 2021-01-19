@@ -1,4 +1,4 @@
-<div class="row">
+<div ngClass="row">
 
 
 
@@ -10,16 +10,16 @@
 
         <article ngClass="article-item col-2" *ngFor="let article of articles">
 
-          <h6><a [routerLink]="['/book/'+article._id]">{{article.title}}</a></h6>
+          <h6 ngClass="titleBook"><a [routerLink]="['/book/'+article._id]">{{article.title}}</a></h6>
           <div ngClass="img-fluid h-75 over-flow">
-            <img *ngIf="article.image" ngClass="marginCenter" src="{{url + 'get-coverimage/' + article.image}}"
+            <img *ngIf="article.image" ngClass="marginCenter" src="{{this.url + 'get-coverimage/' + article.image}}"
               alt="{{article.title}}">
-            <img *ngIf="!article.image" ngClass="marginCenter" src="../../../assets/img/defaultBook.jpg"
+            <img *ngIf="!article.image" ngClass="marginCenter" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
               alt="Imagen default">
           </div>
-          <p>
+          <h6 ngClass="TypeBook">
             {{article.type}}
-          </p>
+          </h6>
 
         </article>
 
@@ -31,5 +31,5 @@
 
 
   </section>
-  <app-sidebar ngClass="col-4" *ngIf="home == false"></app-sidebar>
+  <app-sidebar ngClass="col-4"></app-sidebar>
 </div>

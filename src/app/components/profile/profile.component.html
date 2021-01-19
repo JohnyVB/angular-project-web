@@ -8,9 +8,9 @@
 
       <div ngClass="col-12 d-flex justify-content-center">
         <!--<i ngClass="fas fa-user fa-7x m-5"></i>-->
-        <img *ngIf="!user.image" src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}"
+        <img *ngIf="!user.image" src="{{this.url + 'get-defaultimage/default-user.png'}}"
           ngClass="m-5 imgprofileWidth rounded-circle">
-        <img *ngIf="user.image" src="{{this.url + 'get-image-user/' + user.image}}"
+        <img *ngIf="user.image" src="{{this.url + 'get-image-user/' + this.user.image}}"
           ngClass="m-5 imgprofileWidth rounded-circle">
       </div>
 
@@ -108,16 +108,16 @@
         <div ngClass="row">
           <article ngClass="article-item col-3" *ngFor="let article of user.article">
 
-            <h6><a [routerLink]="['/book/' + article._id]">{{article.title}}</a></h6>
+            <h6 ngClass="titleBook"><a [routerLink]="['/book/'+article._id]">{{article.title}}</a></h6>
             <div ngClass="img-fluid h-75 over-flow">
               <img *ngIf="article.image || article.image != ''" ngClass="marginCenter"
                 src="{{this.url + 'get-coverimage/' + article.image}}" alt="Portada libro">
               <img *ngIf="!article.image || article.image == ''" ngClass="marginCenter"
-                src="../../../assets/img/defaultBook.jpg" alt="Portada libro">
+                src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}" alt="Portada libro">
             </div>
-            <p ngClass="typeBookProfile">
+            <h6 ngClass="TypeBookProfile">
               {{article.type}}
-            </p>
+            </h6>
 
 
           </article>

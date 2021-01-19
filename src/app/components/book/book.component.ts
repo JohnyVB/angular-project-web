@@ -3,9 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Article } from '../../models/article';
 import { User } from '../../models/user';
 import { Chapter } from '../../models/chapter';
+import { List } from '../../models/list';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
 import { ChapterService } from '../../services/chapter.service';
+import { ListService } from '../../services/list.service';
 import { Global } from '../../services/global';
 import Swal from 'sweetalert2';
 
@@ -15,7 +17,7 @@ import Swal from 'sweetalert2';
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css'],
-  providers: [ArticleService, UserService, ChapterService]
+  providers: [ArticleService, UserService, ChapterService, ListService]
 })
 export class BookComponent implements OnInit {
 
@@ -23,6 +25,8 @@ export class BookComponent implements OnInit {
   public article: Article;
   public user: User;
   public chapter: Chapter;
+  public list: List[];
+  public listAdd: List;
   public chapterId: any;
   public articleid: string;
   public url: string;
@@ -35,9 +39,12 @@ export class BookComponent implements OnInit {
   public errFileChapter: boolean;
   public reader: boolean;
   public userLogged: any;
-  public btnDisabled: boolean;
   public btnList: string;
   public errNum: boolean;
+  public listAction: boolean;
+  public btnListDisabled: boolean;
+  public btnListModal: string;
+
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
@@ -48,26 +55,29 @@ export class BookComponent implements OnInit {
     private _route: ActivatedRoute,
     private _articleService: ArticleService,
     private _userService: UserService,
-    private _chapterService: ChapterService
+    private _chapterService: ChapterService,
+    private _listService: ListService
   ) {
 
     this.url = Global.url;
     this.userXarticle = false;
     this.urlImage = '';
     this.editOn = false;
-    this.articleid = '';
     this.errFileChapter = null;
     this.chapterId = '';
     this.reader = false;
-    this.btnDisabled = false;
     this.userLogged = {};
-    this.btnList = 'Añadir a lista';
+    this.btnList = 'Agregar';
     this.errNum = false;
+    this.listAction = null;
+    this.btnListDisabled = false;
+    this.btnListModal = 'Añadir a lista';
 
 
     this.article = new Article('', '', '', '', '', '', [], '', []);
     this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
     this.chapter = new Chapter('', null, '', [], null, '');
+    this.listAdd = new List('', '', null, null);
 
   }
 
@@ -87,7 +97,7 @@ export class BookComponent implements OnInit {
       response => {
         if (response) {
           this.article = response.article;
-        }else{
+        } else {
           console.warn('No hay articulo');
         }
       },
@@ -101,32 +111,24 @@ export class BookComponent implements OnInit {
       response => {
         if (response) {
           this.user = response.user;
-        }else{
-          console.warn('Error al traer el usuario del articulo...');
+        } else {
+          console.warn('No hay usuario...');
         }
       },
       error => {
         console.log('Error al traer el usuario');
       }
     );
-    
+
     //Usuario logeado
     this._userService.getUserLogged().subscribe(
       response => {
         if (response) {
           this.userLogged = response.user;
-          const result = response.user.list.find((id:any) => id === this.articleid);
           this.getUserCompared(this.userLogged);
-
-          if (result) {
-            this.btnDisabled = true;
-            this.btnList = 'En lista';
-          } else {
-            this.btnDisabled = false;
-          }
+          this.getList(this.userLogged._id);
         } else {
           console.warn('No hay usuario logeado');
-          this.btnDisabled = true;
         }
 
       },
@@ -134,40 +136,90 @@ export class BookComponent implements OnInit {
         console.log('Error al traer el usuario logeado...');
       }
     );
-    
+
   }
 
-  addList() {
-    let update = {
-      $push: {
-        list: this.articleid
-      }
-    };
-
-    this._userService.updateUserParam(this.userLogged._id, update).subscribe(
+  addBookToList(listid: any) {
+    let params = {
+      articleid: this.articleid
+    }
+    this._listService.addBookToList(listid, params).subscribe(
       response => {
         if (response) {
-          this.btnDisabled = true;
-        }else{
-          this.btnDisabled = false;
+          this.btnListDisabled = true;
+          this.btnList = 'En lista';
         }
       },
       error => {
-        console.log('Error al añadir este libro a la lista del usuario logeado...');
+        console.warn('Error al añadir el libro a la lista');
+
       }
     );
-
   }
 
-  getUserCompared(user:any) {
+  addList() {
+    if (!this.listAdd.name) {
+      return false;
+    } else {
+      this._listService.saveList(this.userLogged._id, this.listAdd).subscribe(
+        response => {
+          if (response) {
+            console.log('Lista guardada con exito');
+            this.listAdd.name = '';
+            this.getList(this.userLogged._id);
+          }
+        },
+        error => {
+          console.warn('Error al guardar la lista');
+
+        }
+      );
+    }
+  }
+
+  getList(userid: any) {
+    this._listService.getList(userid).subscribe(
+      response => {
+        if (response) {
+          this.list = response.user.list;
+          this.listAction = true;
+          this.bookList(response.user.list);
+        } else {
+          console.warn('No llega usuario con la lista...');
+          this.listAction = false;
+        }
+      },
+      error => {
+        console.warn('Error al traer las listas...');
+
+      }
+    );
+  }
+
+  bookList(list: any) {
+
+    list.forEach(element => {
       
+      element.articleid.forEach(element => {
+        if (element._id === this.articleid) {
+          this.btnListModal = 'En lista';
+        }else{
+          this.btnListModal = 'Añadir a lista';
+        }
+      });
+    });
+  }
+
+  getUserCompared(user: any) {
+
     const result = user.article.find((_element: any) => _element === this.article._id);
+    console.log(result);
+    
     if (result) {
       this.userXarticle = true;
-      this.btnDisabled = true;
+      this.btnListModal = 'Propietario';
     } else {
       this.userXarticle = false;
-      this.btnDisabled = false;
     }
 
   }
@@ -328,7 +380,7 @@ export class BookComponent implements OnInit {
       title: '¿Esta seguro de eliminar el capitulo?',
       text: 'una vez eliminado no podra recuperarse',
       showDenyButton: true,
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: `Eliminar`,
       denyButtonText: `Cancelar`,
     })
@@ -368,31 +420,11 @@ export class BookComponent implements OnInit {
 
   deleteArticle(articleId: any) {
 
-
     Swal.fire({
       title: '¿Esta seguro de eliminar el libro?',
       text: "Una vez eliminado no se podra recuperar!",
       showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: `Eliminar`,
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Swal.fire('Saved!', '', 'success')
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
-      }
-    })
-
-
-
-
-    Swal.fire({
-      title: '¿Esta seguro de eliminar el libro?',
-      text: "Una vez eliminado no se podra recuperar!",
-      showDenyButton: true,
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: `Eliminar`,
       denyButtonText: `Cancelar`,
     })

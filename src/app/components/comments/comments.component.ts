@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { CommentService } from '../../services/comment.service';
 import { NotifyService } from '../../services/notify.service';
 import { ArticleService } from '../../services/article.service';
+import { ListService } from '../../services/list.service';
 import { Global } from '../../services/global';
 import { User } from '../../models/user';
 import { Comment } from '../../models/comment';
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2';
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css'],
-  providers: [UserService, CommentService, NotifyService, ArticleService]
+  providers: [UserService, CommentService, NotifyService, ArticleService, ListService]
 })
 export class CommentsComponent implements OnInit {
 
@@ -34,7 +35,8 @@ export class CommentsComponent implements OnInit {
     private _commentService: CommentService,
     private _notifyService: NotifyService,
     private _articleService: ArticleService,
-    private _route: ActivatedRoute,
+    private _listService: ListService,
+    private _route: ActivatedRoute
   ) {
     this.url = Global.url;
     this.userOn = false;

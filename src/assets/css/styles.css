@@ -23,6 +23,33 @@ body {
   margin-right: 5px;
 }
 
+.TypeBook{
+  position: absolute;
+  color: white;
+  text-align: center;
+  background: red;
+  top: 75.5%;
+  width: 85.7%;
+}
+
+.TypeBooklist{
+  position: absolute;
+  color: white;
+  text-align: center;
+  background: red;
+  top: 75.5%;
+  width: 83.4%;
+}
+
+.TypeBookProfile{
+  position: absolute;
+  color: white;
+  text-align: center;
+  background: red;
+  top: 75.5%;
+  width: 89.2%;
+}
+
 .notifyNew{
   color: red;
   background-color: #FFE1E3;
@@ -268,7 +295,7 @@ header ul li a{
   margin-top: 20px;
 }
 
-.article-item h6 {
+.titleBook {
   width: 100%;
   background: rgba(0, 0, 0, 0.664);
   text-align: center;
@@ -297,14 +324,14 @@ header ul li a{
   text-decoration: none;
 }
 
-.article-item p {
+/* .article-item p {
   position: absolute;
   color: white;
   text-align: center;
   background: red;
   top: 75.5%;
   width: 85.7%;
-}
+} */
 
 .over-flow {
   overflow: hidden !important;

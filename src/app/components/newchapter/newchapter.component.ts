@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Article } from '../../models/article';
 import { Chapter } from '../../models/chapter';
+import { User } from '../../models/user';
 import { ArticleService } from '../../services/article.service';
 import { ChapterService } from '../../services/chapter.service';
-import { NgForm } from '@angular/forms';
+import { NotifyService } from '../../services/notify.service';
+import { UserService } from '../../services/user.service';
+import { ListService } from '../../services/list.service';
 import Swal from 'sweetalert2';
-
 
 @Component({
   selector: 'app-newchapter',
   templateUrl: './newchapter.component.html',
   styleUrls: ['./newchapter.component.css'],
-  providers: [ArticleService, ChapterService]
+  providers: [ArticleService, ChapterService, NotifyService, ListService, UserService]
 })
 export class NewchapterComponent implements OnInit {
 
@@ -21,26 +24,27 @@ export class NewchapterComponent implements OnInit {
   public articleId: string;
   public file: any;
   public btnDisabled: boolean;
-
   public _imgpageIsEmpty: boolean;
   public parent: any;
   public evet: any;
   public errNum: any
   public titleBook: string;
+  public user: User;
+  public article: Article;
 
   constructor(
     private _route: ActivatedRoute,
-    private _router: Router,
+    private cdRef: ChangeDetectorRef,
     private _articleService: ArticleService,
-    private _chapterService: ChapterService
+    private _chapterService: ChapterService,
+    private _notifyService: NotifyService,
+    private _userService: UserService,
+    private _listService: ListService
   ) {
-
     this._imgpageIsEmpty = false;
     this.articleId = '';
-    this.btnDisabled = true;
-
+    this.btnDisabled = null;
     this.errorExtend = null;
-
     this.chapter = [{
       _id: '',
       numcap: null,
@@ -49,55 +53,124 @@ export class NewchapterComponent implements OnInit {
       datechapter: '',
       imgpage: ''
     }];
-
-    this.chapterView = new Chapter('',null,'', [], null, '');
+    this.article = new Article('', '', '', null, '', '', null, '', null);
+    this.chapterView = new Chapter('', null, '', [], null, '');
+    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
     this.errNum = null;
   }
 
   ngOnInit(): void {
     this.getParams();
     this.getArticleXPopulate();
+    this.getUserLogged();
   }
 
-  //----------------------------Enviar formulario------------------------------------------------------------------
-  onSubmit(newChapterForm: NgForm){
-    this._chapterService.saveChapter(this.chapterView, this.articleId).subscribe(
-      response => {        
-        this.uploadPDF(response.chapter._id);
-        Swal.fire(
-          'Se ha creado un nuevo capitulo!!',
-          'Capitulo creado correctamente',
-          'success'
-        );
+  getUserLogged() {
+    this._userService.getUserLogged().subscribe(
+      response => {
+        if (response) {
+          this.user = response.user;
+        } else {
+          console.warn('No hay usuario logeado');
 
-        newChapterForm.resetForm();
-        this.ngOnInit();
+        }
       },
       error => {
-        console.log('Error al guardar el capitulo', error);
-        
+        console.error('Error al traer el usuario logeado');
+
       }
     );
   }
 
-  getFile(files: FileList){
+  saveChapter() {
+    if (this.chapterView.imgpage) {
+      let extend = this.chapterView.imgpage.split('.')[1];
+      if (extend === 'pdf') {
+        this.errorExtend = false;
+        this._chapterService.saveChapter(this.chapterView, this.articleId).subscribe(
+          response => {
+
+            this.uploadPDF(response.chapter._id);
+            Swal.fire(
+              'Se ha creado un nuevo capitulo!!',
+              'Capitulo creado correctamente',
+              'success'
+            );
+            this.file = '';
+            this.chapterView.imgpage = '';
+            this.chapterView.titlecap = '';
+            this.chapterView.numcap = null;
+            this.saveNotify();
+            this.getArticleXPopulate();
+          },
+          error => {
+            console.log('Error al guardar el capitulo', error);
+          }
+        );
+      } else {
+        this.errorExtend = true;
+      }
+    } else {
+      this._imgpageIsEmpty = true;
+    }
+  }
+
+  saveNotify() {
+    this._listService.getListArticle(this.articleId).subscribe(
+      response => {
+        if (response.list) {
+
+          const notify = {
+            userid: this.user._id,
+            username: this.user.name,
+            articleid: this.article._id,
+            articletitle: this.article.title,
+            message: ' ha subido un nuevo capitulo en: ',
+            chapter: true,
+            alert: true
+          }
+
+          response.list.forEach((element: any) => {
+            this._listService.updateUserList(element._id, notify).subscribe(
+              response => {
+                if (response) {
+                  console.log(response);
+                }
+              },
+              error => {
+                console.warn('Error al crear y añadir la notificación');
+                
+              }
+            );
+          });
+        } else {
+          console.warn('No hay lista para este articulo...');
+
+        }
+
+      },
+      error => {
+        console.error('No se pudo traer las listas', error);
+
+      }
+    );
+  }
+
+  getFile(files: FileList) {
     this.file = files.item(0);
   }
 
-  uploadPDF(chapterId: any){
+  uploadPDF(chapterId: any) {
     this._chapterService.uploadPDF(this.file, chapterId).subscribe(
       response => {
         console.log('El PDF se guardo con exito!!!');
-        
       },
       error => {
         console.log('Error al guardar el PDF...', error);
-        
       }
     );
   }
 
-  //----------------------------Recojer el id del libro-------------------------------------------------------------
   getParams() {
     this._route.params.subscribe(
       response => {
@@ -109,60 +182,29 @@ export class NewchapterComponent implements OnInit {
     );
   }
 
-  //----------------------------Mostrar los libros con el campo chapter poblado------------------------------------
   getArticleXPopulate() {
     this._articleService.getArticleService(this.articleId, false).subscribe(
       response => {
-
         this.titleBook = response.article.title;
         this.chapter = response.article.chapter;
-      
+        this.article = response.article;
       },
       error => {
         console.log(error);
-
       }
     );
   }
 
-  //----------------------------Validar extencion del archivo a subir------------------------------------------------
-  validarExtens() {
-
-    if (this.chapterView.imgpage != '') {
-      let extend = this.chapterView.imgpage.split('.')[1];
-      if (extend === 'pdf') {
-        this.errorExtend = false;
-      } else {
-        this.errorExtend = true;
-      }
-    }else{
-      this._imgpageIsEmpty = true;
-    }
-
-  }
-
-  //----------------------------Validacion de campos vacios--------------------------------------------------------------
-  imgpageIsEmpty() {
-    if (this.chapterView.imgpage == '' || this.chapterView.imgpage == null || this.chapterView.imgpage == undefined) {
-      this._imgpageIsEmpty = true;
-      this.btnDisabled = true;
-    }else{
-      this._imgpageIsEmpty = false;
+  validateEmpty() {
+    if (this.chapterView.imgpage && this.chapterView.numcap && this.chapterView.titlecap && !this.errNum) {
       this.btnDisabled = false;
-    }
-  }
-
-  validateEmpty(){
-    if(this.chapterView.imgpage != '' && this.chapterView.numcap != null && this.chapterView.titlecap != '' && this.errNum === false){
-      this.btnDisabled = false;
-    }else{
+    } else {
       this.btnDisabled = true;
     }
   }
 
-  validateNum(){
+  validateNum() {
     const expresion = /^([0-9])*$/;
-
     if (this.chapterView.numcap) {
       const valor = this.chapterView.numcap;
       if (expresion.test(valor.toString())) {
@@ -170,21 +212,6 @@ export class NewchapterComponent implements OnInit {
       } else {
         this.errNum = true;
       }
-    }
-
-  }
-
-  validate(e: any) {
-
-    this.parent = e.parentElement.lastChild;
-    this.evet = e;
-
-    if (!e.value) {
-      this.parent.hidden = false;
-      this.evet.className = "form-control border-danger ng-valid ng-dirty ng-touched";
-    } else {
-      this.parent.hidden = true;
-      this.evet.className = "form-control border-success ng-valid ng-dirty ng-touched";
     }
   }
 

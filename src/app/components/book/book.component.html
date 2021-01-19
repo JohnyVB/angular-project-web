@@ -6,18 +6,18 @@
      <div ngClass="row d-flex justify-content-center mt-3">
 
        <div ngClass="col-4">
-         <h6 ngClass="bg-danger w-100 p-2 m-0 text-center text-white">{{article.type}}</h6>
-         <img ngClass="w-100" *ngIf="!article.image" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
+         <h6 ngClass="bg-danger w-100 p-2 m-0 text-center text-white">{{this.article.type}}</h6>
+         <img ngClass="w-100" *ngIf="!this.article.image" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
            alt="defaultBook">
-         <img ngClass="w-100" *ngIf="article.image" src="{{this.url + 'get-coverimage/' + this.article.image}}">
-         <h6 [ngClass]="{'w-100 p-2 m-0 text-center text-white': article.state,
-                          'bg-danger': article.state == 'Finalizado',
-                          'bg-success': article.state == 'Publicandose',
-                          'bg-warning': article.state == 'Abandonado'}">{{article.state}}</h6>
+         <img ngClass="w-100" *ngIf="this.article.image" src="{{this.url + 'get-coverimage/' + this.article.image}}">
+         <h6 [ngClass]="{'w-100 p-2 m-0 text-center text-white': this.article.state,
+                          'bg-danger': this.article.state === 'Finalizado',
+                          'bg-success': this.article.state === 'Publicandose',
+                          'bg-warning': this.article.state === 'Abandonado'}">{{this.article.state}}</h6>
        </div>
 
        <div ngClass="col-7 bg-secondary text-white text-left">
-         <div id="controlBook" ngClass="text-right" *ngIf="userXarticle">
+         <div id="controlBook" ngClass="text-right" *ngIf="this.userXarticle">
 
            <a href="#modal" data-toggle="modal" role="button" ngClass="rounded m-2 p-2 bg-warning text-white"><i
                ngClass="fas fa-edit mr-1"></i>Editar</a>
@@ -46,8 +46,8 @@
                    <div ngClass="row m-1">
 
                      <div ngClass="col-12 d-flex justify-content-center">
-                       <img ngClass="widthBookEdit" src="{{this.url + 'get-coverimage/defaultBook.jpg'}}"
-                         *ngIf="!this.urlImage || this.urlImage === ''">
+                       <img ngClass="widthBookEdit" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
+                         *ngIf="!this.urlImage">
                        <img ngClass="widthBookEdit" [src]="this.urlImage" *ngIf="this.urlImage">
                      </div>
 
@@ -100,7 +100,8 @@
                          <select multiple ngClass="form-control" id="exampleFormControlSelect2" name="genders"
                            #genders="ngModel" [(ngModel)]="this.article.genders">
                            <option value="" disabled>Generos</option>
-                           <option [value]="itemGene" *ngFor="let itemGene of this.listaGeneros">{{itemGene}}</option>
+                           <option [value]="itemGene" *ngFor="let itemGene of this.listaGeneros">{{itemGene}}
+                           </option>
                          </select>
                        </div>
 
@@ -141,12 +142,12 @@
            </div>
          </div>
 
-         <h3 ngClass="mt-4">{{article.title}}</h3>
-         <label ngClass="mt-3 mb-4">Publicado: {{article.date | amLocale: 'es' | amTimeAgo}}</label>
+         <h3 ngClass="mt-4">{{this.article.title}}</h3>
+         <label ngClass="mt-3 mb-4">Publicado: {{this.article.date | amLocale: 'es' | amTimeAgo}}</label>
          <p>
-           Descripción: {{article.description}}
+           Descripción: {{this.article.description}}
          </p>
-         <div ngClass="d-inline mt-4" *ngFor="let gender of article.genders">
+         <div ngClass="d-inline mt-4" *ngFor="let gender of this.article.genders">
            <label [ngClass]="{'p-1 pr-3 pl-3 m-1 rounded' : gender,
                                    'bg-danger': gender == 'Accion',
                                    'bg-primary': gender == 'Aventura',
@@ -158,39 +159,77 @@
          </div>
          <div ngClass="mt-4">
            <label>Autor: <a ngClass="text-decoration-none text-white"
-               [routerLink]="['/profile/' + user._id]">{{user.name}}
-               {{user.lastname}}</a></label>
+               [routerLink]="['/profile/' + user._id]">{{this.user.name}}
+               {{this.user.lastname}}</a></label>
          </div>
-         
+
          <div ngClass="mt-4">
 
-          <!-- <button [disabled]="this.btnDisabled" (click)="addList()" ngClass="btn btn-primary">{{this.btnList}}</button> -->
+           <!-- <button [disabled]="this.btnDisabled" (click)="addList()" ngClass="btn btn-primary">{{this.btnList}}</button> -->
 
-          
-          <!-- Button trigger modal -->
-          <button type="button" ngClass="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            {{this.btnList}}
-          </button>
 
-          <!-- Modal -->
-          <div ngClass="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div ngClass="modal-dialog">
-              <div ngClass="modal-content">
-                <div ngClass="modal-header">
-                  <h5 ngClass="modal-title" id="exampleModalLabel">Modal title</h5>
-                  <button type="button" ngClass="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div ngClass="modal-body">
-                  ...
-                </div>
-                <div ngClass="modal-footer">
-                  <button type="button" ngClass="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" ngClass="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
+           <!-- Button trigger modal -->
+           <button [disabled]="this.btnListModal === 'En lista' || this.btnListModal === 'Propietario'" ngClass="btn btn-info"
+             href="#ListModal"
+             data-toggle="modal"
+             role="button">{{this.btnListModal}}</button>
+
+           <!-- Modal -->
+           <div id="ListModal" ngClass="modal fade">
+             <div ngClass="modal-dialog">
+               <div ngClass="modal-content">
+                 <div ngClass="modal-header">
+                   <h4 ngClass="modal-title text-black-50">Crear/Agregar lista de lectura</h4>
+                   <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true"
+                     (click)="ngOnInit()">&times;</button>
+                 </div>
+
+                 <div ngClass="modal-body">
+                   <div ngClass="row m-1 text-dark">
+
+                     <div ngClass="col-12" *ngIf="this.listAction">
+                       <h5>Mis listas</h5>
+                       <ul ngClass="row m-4 justify-content-between" *ngFor="let list of this.list">
+                         <li ngClass="col mt-2">{{list.name}}</li><button [disabled]="this.btnListDisabled" (click)="this.addBookToList(list._id)"
+                           ngClass="col btn btn-success btn-sm text-white ml-3">{{this.btnList}}</button>
+                       </ul>
+                     </div>
+
+                     <div ngClass="col-12" *ngIf="!this.listAction">
+                       <h5>No hay listas creadas</h5>
+                       <p>Crea tu primera lista abajo</p>
+                     </div>
+                     
+                     <div ngClass="col-12">
+                       <h5>Crear lista</h5>
+
+                       <div ngClass="input-group mb-3">
+                         <input type="text" ngClass="form-control" #namelist [(ngModel)]="this.listAdd.name" placeholder="Nombre de la lista" aria-label="Recipient's username"
+                           aria-describedby="button-addon2">
+                         <button (click)="addList()" ngClass="btn btn-outline-secondary" type="button" id="button-addon2">Guardar</button>
+                         <!-- <span *ngIf="addList() === false">Por favor ingresar el nombre de la lista</span> -->
+                       </div>
+                       
+                     </div>
+
+
+
+
+
+
+                   </div>
+                 </div>
+
+                 <div ngClass="modal-footer">
+                   <button type="button" ngClass="btn btn-success" data-dismiss="modal">Listo</button>
+                   <!-- <button type="button" ngClass="btn btn-danger" data-dismiss="modal">Cancelar</button> -->
+                 </div>
+
+
+
+               </div>
+             </div>
+           </div>
 
 
 
@@ -207,7 +246,7 @@
 
                <div ngClass="col p-0">
                  <div>
-                   <a [routerLink]="['/newchapter/'+ article._id]"><i
+                   <a [routerLink]="['/newchapter/'+ this.article._id]"><i
                        ngClass="fas fa-file-import fa-lg float-sm-left m-2"></i></a>
                  </div>
                </div>
@@ -215,13 +254,14 @@
                <div ngClass="col-10 p-0">
                  <label ngClass="mb-0 m-1 text-center">Añadir capitulo</label>
 
-                 <a [routerLink]="['/newchapter/'+ article._id]"><i ngClass="fas fa-plus fa-2x float-sm-right"></i></a>
+                 <a [routerLink]="['/newchapter/'+ this.article._id]"><i
+                     ngClass="fas fa-plus fa-2x float-sm-right"></i></a>
 
                </div>
              </div>
            </div>
-           <div *ngIf="article.chapter" ngClass="col-12">
-             <div *ngFor="let chapter of article.chapter">
+           <div *ngIf="this.article.chapter" ngClass="col-12">
+             <div *ngFor="let chapter of this.article.chapter">
 
 
 
@@ -252,7 +292,7 @@
 
 
            </div>
-           <div *ngIf="article.chapter.length == 0" ngClass="col-12 text-white text-center">
+           <div *ngIf="this.article.chapter.length == 0" ngClass="col-12 text-white text-center">
              <h2 ngClass="mt-3 p-4 rounded bg-dark">Aun no hay capitulos</h2>
            </div>
 
@@ -289,11 +329,13 @@
                        <div ngClass="col-12 form-group p-0 mt-3">
                          <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel"
                            [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" (change)="validateNum()">
-                           <small *ngIf="this.errNum" ngClass="p-1 rounded bg-danger text-white">Solo valores numericos</small>
+                         <small *ngIf="this.errNum" ngClass="p-1 rounded bg-danger text-white">Solo valores
+                           numericos</small>
                        </div>
 
                        <div ngClass="col-12 form-group p-0 mt-1">
-                         <input type="text" ngClass="form-control" name="titlecap" #titlecap="ngModel" [(ngModel)]="this.chapter.titlecap">
+                         <input type="text" ngClass="form-control" name="titlecap" #titlecap="ngModel"
+                           [(ngModel)]="this.chapter.titlecap">
                        </div>
 
                      </div>

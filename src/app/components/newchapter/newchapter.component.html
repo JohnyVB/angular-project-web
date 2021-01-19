@@ -30,7 +30,7 @@
 
 
           <div ngClass="row justify-content-center">
-            <form #newChapterForm="ngForm" (ngSubmit)="onSubmit(newChapterForm)" ngClass="text-white col-8 bg-secondary mt-5 p-5 rounded">
+            <div ngClass="text-white col-8 bg-secondary mt-5 p-5 rounded">
 
               <div ngClass="mb-3 text-center text-white">
                 <h4>libro: {{this.titleBook}}</h4>
@@ -40,7 +40,7 @@
 
               <div ngClass="custom-file">
                 <input type="file" ngClass="custom-file-input" id="customFile" name="imgpage" #impage="ngModel"
-                  [(ngModel)]="this.chapterView.imgpage" (change)="validarExtens(); imgpageIsEmpty(); getFile($event.target.files)">
+                  [(ngModel)]="this.chapterView.imgpage" (change)="getFile($event.target.files)">
                 <label ngClass="custom-file-label" for="customFile">Seleccionar archivo...</label>
 
                 <small *ngIf="this.errorExtend === false" ngClass="text-white rounded bg-success p-2 mt-2">Extención del archivo valido</small>
@@ -49,25 +49,25 @@
 
               <div ngClass="form-group mt-3">
                 <label for="num">Numero del capitulo</label>
-                <input id="num" ngClass="form-control"(change)="validate($event.target); validateEmpty(); validateNum()" 
+                <input id="num" ngClass="form-control"(change)="validateEmpty(); validateNum()" 
                 type="number" placeholder="1, 2, 3" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapterView.numcap">
                 <small hidden="true" ngClass="text-white rounded bg-danger p-2 mt-2">Por favor ingresar la información</small>
               </div>
 
               <div ngClass="form-group mt-3">
                 <label for="cap">Ttitulo del capitulo</label>
-                <input id="cap" ngClass="form-control" (change)="validate($event.target); validateEmpty()" type="text"
+                <input id="cap" ngClass="form-control" (change)="validateEmpty()" type="text"
                   placeholder="Titulo" name="titlecap" #titlecap="ngModel" [(ngModel)]="this.chapterView.titlecap">
                 <small hidden="true" ngClass="text-white rounded bg-danger p-2 mt-2">Por favor ingresar la información</small>
               </div>
 
 
               <div ngClass="form-group d-flex justify-content-center mt-5">
-                <button type="submit" [disabled]="this.btnDisabled" ngClass="btn btn-success">Guardar</button>
+                <button (click)="saveChapter()" [disabled]="this.btnDisabled" ngClass="btn btn-success">Guardar</button>
               </div>
               
               
-            </form>
+            </div>
 
             <div ngClass="col-12 d-flex justify-content-center">
               <a ngClass="btn btn-warning text-white mt-4" [routerLink]="['/book/' + this.articleId]">Volver al libro</a>

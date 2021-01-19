@@ -36,10 +36,10 @@
           
           <div ngClass="dropdown" *ngIf="!this.userOn">
 
-            <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
+            <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="true">Login</button>
               
-            <div ngClass="dropdown-menu dropdown-menu-right mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenu">
+            <div ngClass="dropdown-menu dropdown-menu-right mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenuLogin">
               <form>
                 <div ngClass="form-group">
 
@@ -61,7 +61,7 @@
                   <h5>Por favor ingrese sus datos completos</h5>
                 </div> -->
 
-                <button type="submit" [disabled]="this.errorOn" ngClass="btn btn-success w-100" (click)="loginUser()">Login</button>
+                <button ngClass="btn btn-success w-100" (click)="loginUser()">Login</button>
                 <div ngClass="text-center mt-3">
                   <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
                     cuenta</a>
@@ -73,11 +73,11 @@
           </div>
 
           <div ngClass="dropdown" *ngIf="this.userOn">
-            <button id="dropdownMenu" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
+            <button id="dropdownMenuUser" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="true"><i *ngIf="this.alert"
                 ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.user}}</button>
 
-            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenu">
+            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenuUser">
               <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
                 <i ngClass="fas fa-user pr-2"></i>
                 <label>Mi perfil</label>
