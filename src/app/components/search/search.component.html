@@ -1,24 +1,24 @@
 <div class="row">
 
 
-  <section id="contentMain" ngClass="col-8" *ngIf="this.articles.length != 0">
+  <section id="contentMain" ngClass="col-8" *ngIf="this.articles.length">
     <h2>Libros encontrados</h2>
     <div ngClass="container-fluid">
 
       <div ngClass="row">
 
-        <article ngClass="article-item col-2" *ngFor="let article of this.articles">
+        <article ngClass="article-item col-2" *ngFor="let articles of this.articles">
 
-          <h6><a [routerLink]="['/book/'+article._id]">{{article.title}}</a></h6>
+         <h6 ngClass="titleBook"><a [routerLink]="['/book/'+articles._id]">{{articles.title}}</a></h6>
           <div ngClass="img-fluid h-75 over-flow">
-            <img *ngIf="article.image" ngClass="marginCenter" src="{{url + 'get-coverimage/' + article.image}}"
-              alt="{{article.title}}">
-            <img *ngIf="!article.image" ngClass="marginCenter" src="../../../assets/img/defaultBook.jpg"
+            <img *ngIf="articles.image" ngClass="marginCenter" src="{{this.url + 'get-coverimage/' + articles.image}}"
+              alt="{{articles.title}}">
+            <img *ngIf="!articles.image" ngClass="marginCenter" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
               alt="Imagen default">
           </div>
-          <p>
-            {{article.type}}
-          </p>
+          <h6 ngClass="TypeBook">
+            {{articles.type}}
+          </h6>
 
         </article>
 
@@ -29,7 +29,7 @@
 
   </section>
 
-  <section id="contentMain" ngClass="col-8" *ngIf="this.articles.length == 0">
+  <section id="contentMain" ngClass="col-8" *ngIf="!this.articles.length">
     <h2>No se encontraron resultados por los parametros de busqueda: {{this.searchString}}</h2>
   </section>
 

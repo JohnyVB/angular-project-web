@@ -44,6 +44,7 @@ export class BookComponent implements OnInit {
   public listAction: boolean;
   public btnListDisabled: boolean;
   public btnListModal: string;
+  public errOnNameList: boolean;
 
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
@@ -72,6 +73,7 @@ export class BookComponent implements OnInit {
     this.listAction = null;
     this.btnListDisabled = false;
     this.btnListModal = 'Añadir a lista';
+    this.errOnNameList = false;
 
 
     this.article = new Article('', '', '', '', '', '', [], '', []);
@@ -129,14 +131,14 @@ export class BookComponent implements OnInit {
           this.getList(this.userLogged._id);
         } else {
           console.warn('No hay usuario logeado');
+          this.btnListDisabled = true;
+          this.btnListModal = 'No hay usuario';
         }
-
       },
       error => {
         console.log('Error al traer el usuario logeado...');
       }
     );
-
   }
 
   addBookToList(listid: any) {
@@ -159,8 +161,9 @@ export class BookComponent implements OnInit {
 
   addList() {
     if (!this.listAdd.name) {
-      return false;
+      this.errOnNameList = true;
     } else {
+      this.errOnNameList = false;
       this._listService.saveList(this.userLogged._id, this.listAdd).subscribe(
         response => {
           if (response) {

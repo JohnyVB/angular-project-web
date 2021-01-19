@@ -169,7 +169,9 @@
 
 
            <!-- Button trigger modal -->
-           <button [disabled]="this.btnListModal === 'En lista' || this.btnListModal === 'Propietario'" ngClass="btn btn-info"
+           <button
+             [disabled]="this.btnListModal === 'En lista' || this.btnListModal === 'Propietario' || this.btnListDisabled"
+             ngClass="btn btn-info"
              href="#ListModal"
              data-toggle="modal"
              role="button">{{this.btnListModal}}</button>
@@ -203,11 +205,20 @@
                      <div ngClass="col-12">
                        <h5>Crear lista</h5>
 
-                       <div ngClass="input-group mb-3">
-                         <input type="text" ngClass="form-control" #namelist [(ngModel)]="this.listAdd.name" placeholder="Nombre de la lista" aria-label="Recipient's username"
-                           aria-describedby="button-addon2">
-                         <button (click)="addList()" ngClass="btn btn-outline-secondary" type="button" id="button-addon2">Guardar</button>
-                         <!-- <span *ngIf="addList() === false">Por favor ingresar el nombre de la lista</span> -->
+                       <div ngClass="row input-group mb-3">
+                         <div ngClass="col-10">
+                          <input type="text" ngClass="form-control" #namelist [(ngModel)]="this.listAdd.name"
+                            placeholder="Nombre de la lista" aria-label="Recipient's username"
+                            aria-describedby="button-addon2">
+                            <span ngClass="p-1 bg-danger text-white rounded" *ngIf="this.errOnNameList">Por favor ingresar el nombre de la lista</span>
+                         </div>
+                         <div ngClass="col-2">
+                          <button (click)="addList()" ngClass="btn btn-outline-secondary" type="button"
+                            id="button-addon2">Guardar</button>
+                         </div>
+                         
+                         
+                         
                        </div>
                        
                      </div>
