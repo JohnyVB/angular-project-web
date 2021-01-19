@@ -31,5 +31,5 @@
 
 
   </section>
-  <app-sidebar ngClass="col-4"></app-sidebar>
+  <app-sidebar *ngIf="!this.home" ngClass="col-4"></app-sidebar>
 </div>
