@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Article } from '../../models/article';
-import { User } from '../../models/user';
-import { Chapter } from '../../models/chapter';
-import { List } from '../../models/list';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
 import { ChapterService } from '../../services/chapter.service';
 import { ListService } from '../../services/list.service';
 import { Global } from '../../services/global';
 import Swal from 'sweetalert2';
-
-
 
 @Component({
   selector: 'app-book',
@@ -21,31 +16,17 @@ import Swal from 'sweetalert2';
 })
 export class BookComponent implements OnInit {
 
-
-  public article: Article;
-  public user: User;
-  public chapter: Chapter;
-  public list: List[];
-  public listAdd: List;
-  public chapterId: any;
-  public articleid: string;
   public url: string;
-  public articleSearch: Array<any>;
-  public userXarticle: boolean;
+  public articleid: string;
+  public article: Article;
+  public userId: string;
   public file: any;
-  public fileChapter: any
   public urlImage: any;
   public editOn: boolean;
-  public errFileChapter: boolean;
-  public reader: boolean;
-  public userLogged: any;
-  public btnList: string;
-  public errNum: boolean;
-  public listAction: boolean;
-  public btnListDisabled: boolean;
-  public btnListModal: string;
-  public errOnNameList: boolean;
-
+  public commentsOn: boolean;
+  public chaptersOn: boolean;
+  public userProp: boolean;
+  public updateArticle: any;
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
@@ -61,367 +42,164 @@ export class BookComponent implements OnInit {
   ) {
 
     this.url = Global.url;
-    this.userXarticle = false;
-    this.urlImage = '';
+    this.urlImage = null;
     this.editOn = false;
-    this.errFileChapter = null;
-    this.chapterId = '';
-    this.reader = false;
-    this.userLogged = {};
-    this.btnList = 'Agregar';
-    this.errNum = false;
-    this.listAction = null;
-    this.btnListDisabled = false;
-    this.btnListModal = 'Añadir a lista';
-    this.errOnNameList = false;
-
-
-    this.article = new Article('', '', '', '', '', '', [], '', []);
-    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
-    this.chapter = new Chapter('', null, '', [], null, '');
-    this.listAdd = new List('', '', null, null);
+    this.commentsOn = true;
+    this.chaptersOn = false;
+    this.article = new Article('', '', '', '', null, '', null, '', null, '');
+    this.updateArticle = {
+      title: '',
+      description: '',
+      progress: '',
+      genders: []
+    }
+    this.userProp = false;
+    this.userId = '';
+    this.urlImage = 'https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg'
 
   }
 
   ngOnInit(): void {
-    //id del articulo
+    this.getparams();
+  }
+
+  toggle(){
+    this.commentsOn = !this.commentsOn;
+    this.chaptersOn = !this.chaptersOn;
+  }
+
+  toggleEdit(){
+    this.editOn = !this.editOn;
+  }
+
+  getparams(){
     this._route.params.subscribe(
       response => {
         this.articleid = response.id;
+        this.getArticle(response.id);
       },
       error => {
         console.log('Error al traer el id del articulo');
       }
     );
+  }
 
-    // articulo
-    this._articleService.getArticleService(this.articleid, false).subscribe(
+  getArticle(articleId: string){
+    this._articleService.getArticle(articleId).subscribe(
       response => {
-        if (response) {
-          this.article = response.article;
-        } else {
-          console.warn('No hay articulo');
-        }
+        this.article = response.articulo;
+        this.getUserLogged();
       },
       error => {
-        console.log('Error al traer el articulo');
+        console.log('Error al traer el articulo', error);
       }
     );
+  }
 
-    // Usuario del articulo
-    this._userService.getUserXArticle(this.articleid, this.reader).subscribe(
-      response => {
-        if (response) {
-          this.user = response.user;
-        } else {
-          console.warn('No hay usuario...');
-        }
-      },
-      error => {
-        console.log('Error al traer el usuario');
-      }
-    );
 
-    //Usuario logeado
+  getUserLogged(){
     this._userService.getUserLogged().subscribe(
       response => {
-        if (response) {
-          this.userLogged = response.user;
-          this.getUserCompared(this.userLogged);
-          this.getList(this.userLogged._id);
-        } else {
-          console.warn('No hay usuario logeado');
-          this.btnListDisabled = true;
-          this.btnListModal = 'No hay usuario';
-        }
-      },
-      error => {
-        console.log('Error al traer el usuario logeado...');
-      }
-    );
-  }
-
-  addBookToList(listid: any) {
-    let params = {
-      articleid: this.articleid
-    }
-    this._listService.addBookToList(listid, params).subscribe(
-      response => {
-        if (response) {
-          this.btnListDisabled = true;
-          this.btnList = 'En lista';
-        }
-      },
-      error => {
-        console.warn('Error al añadir el libro a la lista');
-
-      }
-    );
-  }
-
-  addList() {
-    if (!this.listAdd.name) {
-      this.errOnNameList = true;
-    } else {
-      this.errOnNameList = false;
-      this._listService.saveList(this.userLogged._id, this.listAdd).subscribe(
-        response => {
-          if (response) {
-            console.log('Lista guardada con exito');
-            this.listAdd.name = '';
-            this.getList(this.userLogged._id);
-          }
-        },
-        error => {
-          console.warn('Error al guardar la lista');
-
-        }
-      );
-    }
-  }
-
-  getList(userid: any) {
-    this._listService.getList(userid).subscribe(
-      response => {
-        if (response) {
-          this.list = response.user.list;
-          this.listAction = true;
-          this.bookList(response.user.list);
-        } else {
-          console.warn('No llega usuario con la lista...');
-          this.listAction = false;
-        }
-      },
-      error => {
-        console.warn('Error al traer las listas...');
-
-      }
-    );
-  }
-
-  bookList(list: any) {
-
-    list.forEach(element => {
-      
-      element.articleid.forEach(element => {
-        if (element._id === this.articleid) {
-          this.btnListModal = 'En lista';
+        this.userId = response.usuario._id;
+        if (this.userId === this.article.user['_id']) {
+          this.userProp = true;
         }else{
-          this.btnListModal = 'Añadir a lista';
-        }
-      });
-    });
-  }
-
-  getUserCompared(user: any) {
-
-    const result = user.article.find((_element: any) => _element === this.article._id);
-    console.log(result);
-    
-    if (result) {
-      this.userXarticle = true;
-      this.btnListModal = 'Propietario';
-    } else {
-      this.userXarticle = false;
-    }
-
+          this.userProp = false;
+        }        
+      },
+      error => {
+        console.log(error);
+        
+      }
+    );
   }
 
   getFile(files: FileList) {
     this.file = files.item(0);
-  }
+    let reader = new FileReader();
 
-  validateNum() {
-    const expresion = /^([0-9])*$/;
-
-    if (this.chapter.numcap) {
-      const valor = this.chapter.numcap;
-      if (expresion.test(valor.toString())) {
-        this.errNum = false;
-      } else {
-        this.errNum = true;
-      }
+    reader.onload = (e: any) => {
+      this.urlImage = e.target.result;
     }
 
+    reader.readAsDataURL(this.file);
   }
 
-  validatePDF() {
-    console.log(this.file.type);
-
-    if (this.file.type != "application/pdf") {
-      this.errFileChapter = true;
-    } else {
-      this.errFileChapter = false;
-    }
-
-  }
-
-  idChapter(id: any) {
-    this.chapterId = id;
-    this._chapterService.getChapter(id).subscribe(
+  updateImage(){
+    this._articleService.uploadImage(this.file, this.articleid).subscribe(
       response => {
-        this.chapter = response.chapter;
+        this.getArticle(response.modelo._id);
+        document.getElementById('modalImagenLibro').click();
       },
       error => {
-        console.log('Error al traer el capitulo', error);
-
+        console.log(error);
+        
       }
     );
   }
 
-  edit() {
+  editArticle(){
 
-    this._chapterService.updateChapter(this.chapterId, this.chapter).subscribe(
-      response => {
-
-        if (this.fileChapter) {
-          this._chapterService.uploadPDF(this.file, this.chapterId).subscribe(
-            response => {
-
-              Swal.fire(
-                'Se ha editado el capitulo!!',
-                'El capitulo fue editado correctamente',
-                'success'
-              );
-              this.ngOnInit();
-
-
-            },
-            error => {
-              Swal.fire(
-                'No de ha podido editar el archivo pdf !!',
-                'Error en editar el archivo',
-                'error'
-              );
-
-            }
-          );
-        } else {
-          Swal.fire(
-            'Se ha editado el capitulo!!',
-            'El capitulo fue editado correctamente',
-            'success'
-          );
-          this.ngOnInit();
-        }
-
-      },
-      error => {
-        Swal.fire(
-          'No de ha podido editar el capitulo !!',
-          'Error en editar el capitulo',
-          'error'
-        );
-
-      }
-    );
-
-    let close2 = document.getElementById('close2') as any;
-    close2.click();
-  }
-
-  showImage() {
-    if (this.file) {
-      let reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.urlImage = e.target.result;
-      }
-
-      reader.readAsDataURL(this.file);
+    const {...data} = this.updateArticle
+    const dataUpdate = {
+      ...data
     }
-  }
-
-  onSubmit() {
-    this._articleService.updateArticle(this.articleid, this.article).subscribe(
+    
+    this._articleService.updateArticle(dataUpdate, this.articleid).subscribe(
       response => {
-
-        if (this.file) {
-          this._articleService.uploadImage(this.file, response.articleUpdated._id).subscribe(
-            response => {
-              Swal.fire(
-                'Se ha editado el libro!!',
-                'El libro fue editado correctamente',
-                'success'
-              );
-              this.ngOnInit();
-            },
-            error => {
-              Swal.fire(
-                'No de ha podido editar la image del libro !!',
-                'Error en editar la imagen',
-                'error'
-              );
-
-            }
-          );
-        } else {
-          Swal.fire(
-            'Se ha editado el libro!!',
-            'El libro fue editado correctamente',
-            'success'
-          );
-        }
+        this.editOn = false;
+        this.getArticle(response.articulo._id);
       },
       error => {
-        Swal.fire(
-          'No de ha podido editar el libro !!',
-          'Error en editar el libro',
-          'error'
-        );
-
+        console.log(error);
+        
       }
     );
-
-    var modal = document.getElementById('close') as any;
-    modal.click();
   }
 
-  deleteChapter(chapterId: any) {
 
+  deleteArticle(){
     Swal.fire({
-      title: '¿Esta seguro de eliminar el capitulo?',
-      text: 'una vez eliminado no podra recuperarse',
+      title: '¿Esta seguro de eliminar el libro?',
+      text: "Una vez eliminado no se podra recuperar!",
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: `Eliminar`,
       denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._articleService.patchArticle(this.articleid).subscribe(
+          response => {            
+            Swal.fire({
+              text: "El libro de ha eliminado correctamente",
+              icon: "success",
+            });
+
+            this._router.navigate(['/profile/' + this.userId]);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      } else if (result.isDenied) {
+        Swal.fire({
+          title: "No se ha eliminado el libro!",
+          icon: 'info'
+        });
+      }
     })
-      .then((result) => {
-        if (result.isConfirmed) {
-
-          this._chapterService.deleteChapter(chapterId).subscribe(
-            response => {
-              console.log('Capitulo borrado correctamente', response);
-              this.ngOnInit();
-
-            },
-            error => {
-              Swal.fire({
-                title: 'Error al eliminar el capitulo',
-                icon: 'warning'
-              });
-              console.log('Error al eliminar el capitulo', error);
-
-            }
-          );
-
-          Swal.fire({
-            text: "El capitulo de ha eliminado correctamente",
-            icon: "success",
-          });
-        } else if (result.isDenied) {
-          Swal.fire({
-            title: "No se ha eliminado el capitulo!",
-            icon: 'info'
-          });
-        }
-      });
-
-
   }
 
-  deleteArticle(articleId: any) {
+
+
+
+
+ 
+
+
+
+
+  /* deleteArticle(articleId: any) {
 
     Swal.fire({
       title: '¿Esta seguro de eliminar el libro?',
@@ -445,11 +223,6 @@ export class BookComponent implements OnInit {
 
             }
           );
-
-          Swal.fire({
-            text: "El libro de ha eliminado correctamente",
-            icon: "success",
-          });
         } else if (result.isDenied) {
           Swal.fire({
             title: "No se ha eliminado el libro!",
@@ -457,7 +230,7 @@ export class BookComponent implements OnInit {
           });
         }
       });
-  }
+  } */
 
 
 }

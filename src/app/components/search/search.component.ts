@@ -23,18 +23,6 @@ export class SearchComponent implements OnInit {
     private _route: ActivatedRoute
   ) {
     this.url = Global.url;
-
-    this.articles = [{
-      _id: '',
-      title: '',
-      description: '',
-      date: '',
-      image: '',
-      type: '',
-      genders: [],
-      state: '',
-      chapter: []
-    }];
   }
 
   ngOnInit(): void {

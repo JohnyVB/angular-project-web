@@ -1,132 +1,73 @@
-<div class="row">
-
-  <section id="contentMain" ngClass="col-8">
-    <h2 ngClass="center-2 mt-4 mb-4">Registrarse</h2>
+<section ngClass="container">
+  <h2 ngClass="text-center m-4">Registrarse</h2>
 
 
-    <form ngClass="row justify-content-center" #userForm="ngForm">
-
-      <div ngClass="bg-dark p-3 pt-4 text-white rounded col-7">
-        <div ngClass="mb-3 m-4 row justify-content-center border p-4">
+  <div ngClass="bg-light rounded border border-warning">
 
 
-          <div ngClass="justify-content-center col-5 mb-4" *ngIf="user.image != '' else noImagen">
+    <div ngClass="m-5 row">
 
-            <div *ngIf="validarExtend == 'jpg' || validarExtend == 'png' || validarExtend == 'jpeg'; else noValida">
-              <img ngClass="img-thumbnail rounded-circle" [src]="url">
-            </div>
-
-            <ng-template #noValida>
-
-              <small ngClass="bg-danger">
-                Extencion del archivo no valida, por favor intente con un archivo correcto!!!
-              </small>
-
-            </ng-template>
-
-          </div>
-
-          <ng-template #noImagen>
-            <!-- <img ngClass="img-thumbnail rounded-circle col-5 mb-4" src="../../../assets/img/default-user.png"> -->
-            <img ngClass="img-thumbnail rounded-circle col-5 mb-4"
-              src="{{this.defaultUrl + 'get-defaultimage/'+ this.imageDefault}}">
-          </ng-template>
-
-
-
-          <div ngClass="custom-file mb-3 col-12">
-            <input type="file" ngClass="custom-file-input"
-              (change)="validarImagen($event); getFile($event.target.files)" id="validatedCustomFile" required
-              name="imagen" #imagen="ngModel" [(ngModel)]="user.image">
-            <label ngClass="custom-file-label" for="validatedCustomFile">Selecciona tu imagen</label>
-            <div ngClass="invalid-feedback">Example invalid custom file feedback</div>
-          </div>
-
-        </div>
-        <div ngClass="row m-2 mt-3">
-          <div ngClass="col">
-
-
-            <label for="nombre">Nombre(s)*</label>
-            <input id="nombre" type="text" ngClass="form-control" (change)="validate($event.target); validateEmty()"
-              placeholder="Escriba sus nombres" name="nombres" #nombres="ngModel" [(ngModel)]="user.name">
-            <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
-
-
-          </div>
-          <div ngClass="col">
-
-            <label for="apellido">Apellido(s)*</label>
-            <input id="apellido" type="text" ngClass="form-control" (change)="validate($event.target); validateEmty()"
-              placeholder="Escriba sus apellidos" name="apellidos" #apellidos="ngModel" [(ngModel)]="user.lastname">
-            <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
-
-          </div>
-        </div>
-        <div ngClass="row m-2 mt-4">
-          <div ngClass="col">
-
-            <label for="user">Nombre Usuario*</label>
-            <input id="user" type="text" ngClass="form-control" (change)="validate($event.target); validateEmty()"
-              placeholder="Apodo" name="nombreUsuario" #nombreUsuario="ngModel" [(ngModel)]="user.user">
-            <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
-
-          </div>
-          <div ngClass="col">
-            <label for="email">Email*</label>
-            <input id="email" type="email" ngClass="form-control"
-              (change)="validateEmail($event.target); validateEmty()" placeholder="name@example.com" name="correo" #correo="ngModel" [(ngModel)]="user.email">
-            <small *ngIf="this.errEmail" ngClass="p-2 bg-danger rounded">Correo no valido</small>
-            <small *ngIf="this.emailDupli === true" ngClass="p-2 bg-danger rounded">Ya hay un usuario registrado con este correo</small>
-            <small *ngIf="this.emailDupli === false" ngClass="p-2 bg-success rounded">Correo valido</small>
-          </div>
-        </div>
-
-        <div ngClass="bg-primary rounded d-flex justify-content-around m-4">
-          <label ngClass="d-inline m-4">Preferencia de lectura:</label>
-
-          <div ngClass="form-check form-check-inline m-4">
-            <input ngClass="form-check-input" type="radio" name="paginada" #paginada value="paginada" [(ngModel)]="this.user.prefreader">
-            <label ngClass="form-check-label">
-              Paginada
-            </label>
-          </div>
-
-          <div ngClass="form-check form-check-inline m-4">
-            <input ngClass="form-check-input" type="radio" name="cascada" #cascada value="cascada" [(ngModel)]="this.user.prefreader">
-            <label ngClass="form-check-label">
-              Cascada
-            </label>
-          </div>
-
-        </div>
-
-        <div ngClass="form-group m-4">
-
-          <label for="password">Contraseña*</label>
-          <input id="password" type="password" (change)="validate($event.target); validateEmty(); validatePassword()" ngClass="form-control"
-            placeholder="Contraseña" name="contrasena" #contrasena="ngModel" [(ngModel)]="this.user.password">
-          <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
-
-        </div>
-
-        <div ngClass="form-group m-4">
-
-          <label for="cpassword">Confirmar contraseña*</label>
-          <input id="cpassword" type="password" (change)="validate($event.target); validateEmty(); validatePassword()"
-            ngClass="form-control" placeholder="Confirmar contraseña" name="confirmPass" #confirmPass="ngModel" [(ngModel)]="this.cpassword">
-          <small hidden="true" ngClass="p-2 bg-danger rounded">Campo obligatorio</small>
-          <small *ngIf="this.errPass" ngClass="p-2 bg-danger rounded">Contraseña no coincide</small>
-
-        </div>
-
-        <div ngClass="d-flex justify-content-center m-4 mt-6">
-          <button type="button" ngClass="btn btn-success" (click)="registerUser()" [disabled]="this.errorOn">Enviar</button>
-        </div>
+      <div ngClass="col-12">
+        <img ngClass="img-thumbnail mx-auto d-block w-25" [src]="this.urlImage">
       </div>
 
-    </form>
+      <div ngClass="col-12 mb-3">
+        <label for="formFile" ngClass="form-label">Imagen de usuario</label>
+        <input ngClass="form-control" type="file" id="formFile" [(ngModel)]="this.user.image"
+          (change)="mostrarImagen($event); getFile($event.target.files)">
+      </div>
 
-  </section>
-  <app-sidebar ngClass="col-4"></app-sidebar>
-</div>
+
+      <div ngClass="col-6 mb-3">
+        <label for="name" ngClass="form-label">Nombre(s)*</label>
+        <input type="text" ngClass="form-control" id="name" placeholder="Nombre(s)" [(ngModel)]="this.user.name">
+      </div>
+
+      <div ngClass="col-6 mb-3">
+        <label for="lastname" ngClass="form-label">Apellido(s)*</label>
+        <input type="text" ngClass="form-control" id="lastname" placeholder="Apellido(s)"
+          [(ngModel)]="this.user.lastname">
+      </div>
+
+      <div ngClass="col-12 mb-3">
+        <label for="floatingTextarea">Sobre mi</label>
+        <textarea [(ngModel)]="this.user.biography" rows="5" ngClass="form-control" placeholder="Biografia" id="floatingTextarea"></textarea>
+      </div>
+
+      <div ngClass="col-12 mb-3">
+        <hr>
+        <label>Preferencia de lectura</label>
+        <select [(ngModel)]="this.user.reader" ngClass="form-select" aria-label="Default select example">
+          <option [ngValue]="false">Paginada</option>
+          <option [ngValue]="true">Cascada</option>
+        </select>
+        <hr>
+      </div>
+
+      <div ngClass="col-12 mb-3">
+        <label for="email" ngClass="form-label">Correo electronico*</label>
+        <input type="email" ngClass="form-control" id="email" placeholder="Correo electronico"
+          [(ngModel)]="this.user.email">
+      </div>
+      <div ngClass="col-12 mb-3">
+        <label for="password" ngClass="form-label">Password*</label>
+        <input type="password" ngClass="form-control" id="password" placeholder="Password"
+          [(ngModel)]="this.user.password">
+      </div>
+
+      <div ngClass="col-12 mb-3">
+        <label for="cnpassword" ngClass="form-label">Confirmar password*</label>
+        <input type="password" ngClass="form-control" id="cnpassword" placeholder="Confirmar password"
+          [(ngModel)]="this.password" (keyup)="confirmPass()">
+      </div>
+
+      <div ngClass="d-grid gap-2 col-6 mx-auto">
+        <button [disabled]="this.errorOn" ngClass="btn btn-primary" type="button" (click)="registerUser()">Enviar</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>

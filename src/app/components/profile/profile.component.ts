@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user';
+import { Article } from '../../models/article';
 import { UserService } from '../../services/user.service';
+import { ArticleService } from '../../services/article.service';
 import { Global } from '../../services/global';
 import Swal from "sweetalert2";
 
@@ -9,160 +11,152 @@ import Swal from "sweetalert2";
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  providers: [UserService]
+  providers: [UserService, ArticleService]
 })
 export class ProfileComponent implements OnInit {
 
   public user: User;
-  public userUpdate: any;
+  public articles: Article[];
+  public cantidadArticles: number;
   public url: string;
-  public imgUrl: any;
-  public validarExtend: any;
-  public file: any;
-  public userEdit: boolean;
-  public userid: any;
-
-
+  public userId: string;
+  public userProp: boolean;
+  public confirmPassword: string;
+  public editOn: boolean;
+  public imageUser: string;
+  public file: File;
+  public imageUpdate: any;
+  public archivosValidos: Array<string>;
 
   constructor(
     private _route: ActivatedRoute,
-    private _userService: UserService
-
+    private _userService: UserService,
+    private _articleService: ArticleService
   ) {
-
+    this.user = new User('', '', '', '', '', '', null, null, '', null, null);
     this.url = Global.url;
-    this.userEdit = false;
-
-    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
+    this.userProp = false;
+    this.editOn = false;
+    this.confirmPassword = '';
+    this.imageUser = null;
+    this.file = null;
+    this.imageUpdate = 'https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png';
+    this.archivosValidos = ['image/png', 'image/jpg', 'image/jpeg'];
+    this.articles = [];
   }
 
   ngOnInit(): void {
-
     this.getParams();
-    this.getUser(this.userid);
   }
 
   getParams() {
     this._route.params.subscribe(
       params => {
-        this.userid = params.id;
-
-
+        this.userId = params.id;
+        this.getUser(params.id);
       },
       error => {
         console.log('Error al obtener el id del usuario', error);
-
       });
   }
 
-  getUser(id: any) {
-    this._userService.getUserPopulateArticle(id).subscribe(
-
+  getUser(userId: string) {
+    this._userService.getUser(userId).subscribe(
       response => {
-
-        this.user = response.user;
-        this.validarUsuario();
-
+        this.user = response.usuario;
+        this.getArticlesPorUser(response.usuario._id);
+        this.getUserLogged(response.usuario._id);
       },
       error => {
-        console.warn(error);
+        console.log('Error al obtener el usuario', error);
       });
   }
 
-  validarUsuario() {
+  getArticlesPorUser(userId: string) {
+    this._articleService.getArticlesPorUser(userId).subscribe(
+      response => {
+        this.articles = response.articles;
+        this.cantidadArticles = response.total;
+      },
+      error => {
+        console.log('Error al obtener los articulos del usuario', error);
+      }
+    );
+  }
 
+  getUserLogged(userId: string) {
     this._userService.getUserLogged().subscribe(
       response => {
-
-        if (this.user._id === response['user']._id) {
-          this.userEdit = true;
+        if (response.usuario._id === userId) {
+          this.userProp = true;
         } else {
-          this.userEdit = false;
+          this.userProp = false;
         }
-
       },
       error => {
-        console.log('No hay usuario logeado', error);
-        this.userEdit = false;
+        console.log(error);
 
       }
     );
   }
 
   editUser() {
-    this._userService.updateUser(this.user._id, this.user).subscribe(
-      response => {
-
-        if (this.file != '' || this.file != null || this.file != undefined) {
-          this.uploadimageUser(response.user._id);
-        } else {
-          Swal.fire(
-            'Usuario editado!!!',
-            'Se ha editado correctamente el usuario',
-            'success'
-          );
-          this.ngOnInit();
-        }
-      },
-      error => {
-        Swal.fire(
-          'Error al editar usuario',
-          'El usuario no fue editado correctamente',
-          'error'
-        );
-
-      }
-    );
-    this.ngOnInit();
-    var close = document.getElementById('close') as any;
-    close.click();
+    this.editOn = !this.editOn;
   }
 
-  validarImagen(event: any) {
-    if (this.user.image != '') {
-      let extend = this.user.image.split('.')[1];
-      this.validarExtend = extend;
+  getFile(file: FileList) {
+    this.file = file.item(0);
 
-      if (event.target.files && event.target.files[0]) {
-        let reader = new FileReader();
+    if (this.archivosValidos.includes(this.file.type)) {
+      let reader = new FileReader();
 
-        reader.onload = (e: any) => {
-          this.imgUrl = e.target.result;
-        }
-
-        reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (e: any) => {
+        this.imageUpdate = e.target.result;
       }
+
+      reader.readAsDataURL(this.file);
     }
   }
 
-  getFile(files: FileList) {
-    this.file = files.item(0);
-  }
+  actualizarUsuario() {
 
-  uploadimageUser(userId: any) {
-    this._userService.uploadImageUser(this.file, userId).subscribe(
+    this._userService.updateUser(this.user._id, this.user).subscribe(
       response => {
-        Swal.fire(
-          'Imagen editada!!!',
-          'Se ha editado correctamente la imagen de usuario',
-          'success'
-        );
-        this.ngOnInit();
+
+        this.editOn = false;
+        this.getUser(this.user._id);
+
       },
       error => {
-        Swal.fire(
-          'Error al editar la imagen!!!',
-          'La imagen no fue editada correctamente',
-          'error'
-        );
-
+        console.log(error);
       }
     );
+
   }
 
+  updateImage() {
 
+    if (this.file) {
+      this._userService.uploadImageUser(this.file, this.user._id).subscribe(
+        response => {
+          this.editOn = false;
+          this.getUser(this.user._id);
+          document.getElementById('modalImagenUsuario').click();
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }else{
+      Swal.fire(
+        'No hay imagen',
+        'No se ha seleccionado ninguna imagen para subir',
+        'info'
+      );
+    }
 
-
+  
+  }
 
 
 }

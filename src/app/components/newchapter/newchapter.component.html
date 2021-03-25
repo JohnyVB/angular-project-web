@@ -1,84 +1,71 @@
 <div ngClass="row">
-  <section id="contentMain" ngClass="col-8">
-    <h2 ngClass="mb-4">Nuevo capitulo</h2>
+  <section ngClass="col-8 minHeight">
+    <h2 ngClass="mb-4 text-center">Nuevo capitulo</h2>
 
-    <div ngClass="row justify-content-center heightChapters">
-      <div ngClass="col-10 row p-0">
+    <div ngClass="row m-3">
 
-        <div ngClass="col-5 border-right bg-light text-black rounded-left">
-          <div ngClass="text-center p-0">
-            <h4 ngClass="mt-4 border-bottom pb-2">Capitulos</h4>
-          </div>
-          <div ngClass="divscroll" *ngIf="this.chapter.length != 0">
-            <div *ngFor="let chapter of this.chapter">
-              <div ngClass="bg-dark row rounded text-white m-2 p-1">
-                <label ngClass="col">Capitulo: {{chapter.numcap}}</label>
-                <label ngClass="col">Titulo: {{chapter.titlecap}}</label>
-                <label ngClass="col">Fecha: {{chapter.datechapter | amLocale: 'es' | amTimeAgo}}</label>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="this.chapter.length === 0">
-            <h4 ngClass="text-center">No hay capitulos</h4>
+      <div ngClass="col-7 border-right bg-light text-black rounded-left">
+        <div ngClass="text-center">
+          <h4 ngClass="border-bottom p-3 text-center">Capitulos</h4>
+        </div>
+        <div ngClass="divscroll" *ngIf="this.chapters.length > 0">
+          <div ngClass="bg-dark rounded text-white m-3" *ngFor="let chapter of this.chapters">
+            <label ngClass="p-3 m-0">Capitulo: {{chapter.number}}</label>
+            <label ngClass="p-3 m-0">Titulo: {{chapter.title}}</label>
+            <label ngClass="p-3 m-0">Fecha: {{chapter.date | amLocale: 'es' | amTimeAgo}}</label>
           </div>
         </div>
 
-
-        <div ngClass="col-7 bg-dark rounded-right">
-          <h4 ngClass="mt-4 border-bottom pb-2 text-center text-white">Ingresar nuevo</h4>
-
-
-          <div ngClass="row justify-content-center">
-            <div ngClass="text-white col-8 bg-secondary mt-5 p-5 rounded">
-
-              <div ngClass="mb-3 text-center text-white">
-                <h4>libro: {{this.titleBook}}</h4>
-              </div>
-
-              <label for="customFile">Archivo PDF (capitulo.pdf)</label>
-
-              <div ngClass="custom-file">
-                <input type="file" ngClass="custom-file-input" id="customFile" name="imgpage" #impage="ngModel"
-                  [(ngModel)]="this.chapterView.imgpage" (change)="getFile($event.target.files)">
-                <label ngClass="custom-file-label" for="customFile">Seleccionar archivo...</label>
-
-                <small *ngIf="this.errorExtend === false" ngClass="text-white rounded bg-success p-2 mt-2">Extención del archivo valido</small>
-                <small *ngIf="this.errorExtend === true" ngClass="text-white rounded bg-danger p-2 mt-2">Extención del archivo no valido</small>
-              </div>
-
-              <div ngClass="form-group mt-3">
-                <label for="num">Numero del capitulo</label>
-                <input id="num" ngClass="form-control"(change)="validateEmpty(); validateNum()" 
-                type="number" placeholder="1, 2, 3" name="numcap" #numcap="ngModel" [(ngModel)]="this.chapterView.numcap">
-                <small hidden="true" ngClass="text-white rounded bg-danger p-2 mt-2">Por favor ingresar la información</small>
-              </div>
-
-              <div ngClass="form-group mt-3">
-                <label for="cap">Ttitulo del capitulo</label>
-                <input id="cap" ngClass="form-control" (change)="validateEmpty()" type="text"
-                  placeholder="Titulo" name="titlecap" #titlecap="ngModel" [(ngModel)]="this.chapterView.titlecap">
-                <small hidden="true" ngClass="text-white rounded bg-danger p-2 mt-2">Por favor ingresar la información</small>
-              </div>
-
-
-              <div ngClass="form-group d-flex justify-content-center mt-5">
-                <button (click)="saveChapter()" [disabled]="this.btnDisabled" ngClass="btn btn-success">Guardar</button>
-              </div>
-              
-              
-            </div>
-
-            <div ngClass="col-12 d-flex justify-content-center">
-              <a ngClass="btn btn-warning text-white mt-4" [routerLink]="['/book/' + this.articleId]">Volver al libro</a>
-            </div>
-
-          </div>
-          
-          
-
+        <div *ngIf="this.chapters.length === 0">
+          <h4 ngClass="text-center">No hay capitulos</h4>
         </div>
       </div>
+
+
+      <div ngClass="col-5 bg-secondary rounded-right text-white">
+        <h4 ngClass="border-bottom p-3 text-center">Ingresar nuevo</h4>
+
+
+        <div ngClass="row justify-content-center">
+
+
+          <div ngClass="mb-3 text-center text-white">
+            <h4>libro: {{this.articleTitle}}</h4>
+          </div>
+
+
+          <div ngClass="m-3">
+            <label for="num">Numero del capitulo</label>
+            <input id="num" ngClass="form-control" type="number" placeholder="1, 2, 3"
+              [(ngModel)]="this.chapterSave.number">
+          </div>
+
+          <div ngClass="m-3">
+            <label for="cap">Titulo del capitulo</label>
+            <input id="cap" ngClass="form-control" type="text" placeholder="Titulo"
+              [(ngModel)]="this.chapterSave.title">
+          </div>
+
+          <div ngClass="m-3">
+            <label for="formFile" ngClass="form-label">Archivo PDF (capitulo.pdf)</label>
+            <input ngClass="form-control" type="file" id="formFile" (change)="getFile($event.target.files)">
+          </div>
+
+          <div ngClass="m-3">
+            <button [disabled]="this.errorOn" (click)="saveChapter()" ngClass="btn btn-success float-start"><i
+                ngClass="fas fa-save mr-2"></i>Guardar</button>
+            <a ngClass="btn btn-primary float-end text-white" [routerLink]="['/book/' + this.articleId]">
+              <i ngClass="fas fa-backward mr-2"></i>
+              Volver al libro
+            </a>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
     </div>
 
   </section>

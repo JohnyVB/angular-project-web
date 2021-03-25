@@ -1,31 +1,37 @@
 <div ngClass="row">
 
 
-  <section id="contentMain" ngClass="col-8">
-    <h2>Últimos libros añadidos</h2>
-    <div ngClass="container-fluid">
+  <section ngClass="col-9 text-center">
 
-      <div ngClass="row">
+    <h2>Últimos libros</h2>
 
-        <article ngClass="article-item col-2" *ngFor="let articles of this.articles">
+    <div ngClass="row mt-4 mb-4 ml-2">
 
-          <h6 ngClass="titleBook"><a [routerLink]="['/book/'+articles._id]">{{articles.title}}</a></h6>
-          <div ngClass="img-fluid h-75 over-flow">
-            <img *ngIf="articles.image" ngClass="marginCenter" src="{{this.url + 'get-coverimage/' + articles.image}}"
-              alt="{{articles.title}}">
-            <img *ngIf="!articles.image" ngClass="marginCenter" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
-              alt="Imagen default">
+      <article ngClass="col-2 mt-2 articlePaddin" *ngFor="let article of this.articles">
+
+        <div ngClass="card text-center">
+
+          <div ngClass="card-body cardBody">
+            <h5 ngClass="card-title cardTitle"><a ngClass="linkdecoration"
+                [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
+
+            <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">
+            <img *ngIf="!article.image" ngClass="card-img-top"
+              src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg"
+              alt="Card image cap">
+
           </div>
-          <h6 ngClass="TypeBook">
-            {{articles.type}}
-          </h6>
 
-        </article>
+          <div ngClass="card-footer text-muted cardFooter">
+            <h6 ngClass="card-title cardText">{{article.type}}</h6>
+          </div>
+        </div>
 
-      </div>
+      </article>
+
     </div>
 
   </section>
 
-<app-sidebar ngClass="col-4"></app-sidebar>
+  <app-sidebar ngClass="col-3"></app-sidebar>
 </div>

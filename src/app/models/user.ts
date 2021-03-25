@@ -5,17 +5,14 @@ export class User {
         public _id: any,
         public name: string,
         public lastname: string,
-        public image: string,
-        public article: any,
+        public biography: string,
         public email: string,
+        public password: string,
+        public image: string,
+        public state: boolean,
         public role: string,
-        public prefreader: string,
-        public token: string,
-        public notify: any,
-        public regdate: any,
-        public list: any,
-        public user: string,
-        public password: string
+        public reader: boolean,
+        public date: any
 
     ) { }
 }

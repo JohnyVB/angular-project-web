@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../models/user';
 import { CookieService } from "ngx-cookie-service";
 import { Global } from './global';
 
@@ -17,41 +16,48 @@ import { Global } from './global';
     }
 
     getToken() {
-        //return this.cookie.get('token');
-        return sessionStorage.getItem('tokenSession');
+        return this.cookie.get('x-token');
+    }
+
+    getChapters(): Observable<any> {
+        return this._http.get(this.url + 'chapters');
+    }
+
+    getChaptersPorUnArticle(articleid: string, order: number): Observable<any> {
+        return this._http.get(this.url + 'chapters/art/' + articleid + '/' + order);
+    }
+
+    saveChapter(chapter: any, articleId: string): Observable<any> {
+        const token = this.getToken();
+
+        if (token) {
+            let params = JSON.stringify(chapter);
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.post(this.url + 'chapters/' + articleId, params, { headers: headers });
+        }
+    }
+
+    uploadFile(file: File, chapterId: any): Observable<any> {
+
+        let formdata = new FormData();
+        formdata.append("archivo", file, file.name);
+        return this._http.patch(this.url + 'uploads/chapters/' + chapterId, formdata);
     }
 
     getChapter(chapterId: any): Observable<any> {
 
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this._http.get(this.url + 'get-chapter/' + chapterId, { headers: headers })
+        return this._http.get(this.url + 'chapters/' + chapterId, { headers: headers })
 
     }
 
-    saveChapter(chapter: any, chapterId: any): Observable<any> {
-        const token = this.getToken();
 
-        if (token) {
-            let params = JSON.stringify(chapter);
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.post(this.url + 'save-chapter/' + chapterId, params, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
 
-    uploadPDF(file: File, chapterId: any): Observable<any> {
-        let token = this.getToken();
-        var formdata = new FormData();
-        formdata.append("file0", file, file.name);
 
-        if (token) {
-            let headers = new HttpHeaders({ 'Authorization': "Bearer " + token });
-            return this._http.put(this.url + 'upload-pages/' + chapterId, formdata, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
+
+
+
+
 
     updateChapter(chapterId: any, chapter: any): Observable<any> {
         const token = this.getToken();
@@ -65,12 +71,12 @@ import { Global } from './global';
         }
     }
 
-    deleteChapter(chapterId: string){
+    deleteChapter(chapterId: string) {
         const token = this.getToken();
 
         if (token) {
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.delete(this.url + 'delete-chapter/' + chapterId, {headers: headers});
+            return this._http.delete(this.url + 'delete-chapter/' + chapterId, { headers: headers });
         } else {
             return this._http.get(this.url + 'error');
         }

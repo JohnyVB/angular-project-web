@@ -17,32 +17,32 @@ import { CookieService } from 'ngx-cookie-service';
         this.url = Global.url;
     }
     getToken() {
-        //return this.cookie.get("token");
-        return sessionStorage.getItem('tokenSession');
+        return this.cookie.get("x-token");
     }
 
-    getComments(articleId: string, reader: boolean): Observable<any> {
+    getComments(articleId: string, order: string): Observable<any> {
 
-        return this._http.get(this.url + 'get-commentspopulate/' + articleId + '/' + reader);
+        return this._http.get(this.url + 'comments/article/' + articleId + '/' + order);
 
     }
 
-    saveComment(articleId: any, comment: Comment, reader: boolean): Observable<any> {
+    saveComment(articleId: any, textComment: string, coleccion: string): Observable<any> {
 
         const token = this.getToken();
 
         if (token) {
-            let params = JSON.stringify(comment);
+            const data = {
+                text: textComment
+            }
+            let params = JSON.stringify(data);
             let headers = new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token
+                "Content-Type": "application/json",
+                "x-token": token
             });
-            return this._http.post(this.url + 'save-comment/' + articleId + '/' + reader, params, { headers: headers });
-
-        } else {
-            return this._http.get(this.url + 'error');
+            
+            return this._http.post(this.url + 'comments/' + coleccion + '/' + articleId, params, { headers });
         }
-        
+
 
     }
 }

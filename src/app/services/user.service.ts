@@ -16,23 +16,67 @@ import { CookieService } from "ngx-cookie-service";
         private cookie: CookieService
     ) {
         this.url = Global.url;
+    }
 
+    login(login: any): Observable<any> {
+
+        return this._http.post(this.url + 'auth/login', login);
+    }
+
+    getUserLogged(): Observable<any> {
+
+        const token = this.getToken();
+        if (token) {
+            return this._http.get(this.url + 'users/key/' + token);
+        }
     }
 
     setToken(token: string) {
-        //this.cookie.set("token", token);
-        sessionStorage.setItem("tokenSession", token);
+        this.cookie.set("x-token", token);
     }
 
     getToken() {
-        //return this.cookie.get('token');
-        return sessionStorage.getItem('tokenSession');
+        return this.cookie.get('x-token');
     }
 
     sessionClosed() {
-        //this.cookie.delete('token');
-        sessionStorage.removeItem("tokenSession");
+        this.cookie.delete('x-token');
     }
+
+    register(user: User): Observable<any> {
+        return this._http.post(this.url + 'users/', user);
+    }
+
+    uploadImageUser(file: File, userId: any): Observable<any> {
+        const formdata = new FormData();
+        formdata.append("archivo", file, file.name);
+        return this._http.patch(this.url + 'uploads/users/' + userId, formdata);
+    }
+
+    getUser(userid: string): Observable<any> {
+        return this._http.get(this.url + 'users/' + userid);
+    }
+
+
+    updateUser(userId: any, user: any): Observable<any> {
+        const token = this.getToken();
+        if (token) {
+            let params = JSON.stringify(user);
+            let headers = new HttpHeaders({
+                'Content-Type': 'application/json',
+                'x-token': token
+            });
+
+            return this._http.put(this.url + 'users/' + userId, params, { headers: headers });
+        }
+    }
+
+
+
+
+
+
+
 
 
     getUsers(): Observable<any> {
@@ -52,31 +96,6 @@ import { CookieService } from "ngx-cookie-service";
 
     }
 
-
-    login(user: User): Observable<any> {
-        return this._http.post(this.url + 'login', user);
-    }
-
-    register(user: User): Observable<any> {
-        return this._http.post(this.url + 'save-user', user);
-    }
-
-
-
-    getUserLogged(): Observable<any> {
-
-        const token = this.getToken();
-
-        if (token) {
-            return this._http.get(this.url + 'get-usertoken/' + token);
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-
-    }
-
-   
-
     getUserXArticle(articleId: string, reader: any): Observable<any> {
         return this._http.get(this.url + 'get-userxarticle/' + articleId + '/' + reader);
     }
@@ -93,30 +112,11 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.get(this.url + 'get-userxtoken/' + token);
     }
 
-    getUser(userid: any): Observable<any> {
-        return this._http.get(this.url + 'get-user/' + userid);
-    }
 
-    uploadImageUser(file: File, userId: any): Observable<any> {
-        const formdata = new FormData();
-        formdata.append("file0", file, file.name);
-        return this._http.post(this.url + 'upload-user/' + userId, formdata);
-    }
 
-    updateUser(userId: any, user: User): Observable<any> {
-        const token = this.getToken();
-        if (token) {
-            let params = JSON.stringify(user);
-            let headers = new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token
-            });
 
-            return this._http.put(this.url + 'update-user/' + userId, params, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
+
+
     updateUserParam(userid: any, params: any): Observable<any> {
 
         const token = this.getToken();

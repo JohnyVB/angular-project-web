@@ -28,7 +28,6 @@ export class UsersComponent implements OnInit {
     this.url = Global.url;
     this.admin = false;
     this.imageDefault = 'default-user.png';
-    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
 
   }
 
@@ -71,8 +70,6 @@ export class UsersComponent implements OnInit {
 
   deleteUser(userId: any) {
 
-
-
     Swal.fire({
       title: '¿Esta seguro?',
       text: "Una vez eliminado el usuario no podra ser recuperado",
@@ -88,9 +85,6 @@ export class UsersComponent implements OnInit {
         Swal.fire('Changes are not saved', '', 'info')
       }
     })
-
-
-
 
     Swal.fire({
       title: '¿Esta seguro?',

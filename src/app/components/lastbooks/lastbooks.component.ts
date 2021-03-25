@@ -18,41 +18,25 @@ export class LastbooksComponent implements OnInit {
 
   constructor(
     private _articleService: ArticleService
-  ) { 
+  ) {
     this.url = Global.url;
     this.home = false;
   }
 
   ngOnInit(): void {
 
-    if (this.home == true) {
-      this._articleService.getArticles().subscribe(
-        response => {
 
-          if (response.articles) {
-            this.articles = response.articles;
-          }
+    this._articleService.getArticles('user').subscribe(
+      response => {
+        this.articles = response.articulos;
+      },
+      error => {
+        console.log(error);
+      }
+    );
 
-        },
-        error => {
 
-          console.log(error);
 
-        }
-      );
-    }else{
-      this._articleService.getArticlesLibrary().subscribe(
-        response => {
-          this.articles = response.articles
-        },
-        error => {
-          console.log(error);
-          
-        }
-      );
-    }
-
-    
   }
 
 }

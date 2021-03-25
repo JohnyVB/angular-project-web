@@ -15,11 +15,9 @@ import Swal from 'sweetalert2';
 export class HeaderComponent implements OnInit {
 
   public login: any;
-  public errorOn: boolean;
   public user: User;
+  public userActivo: boolean;
   public url: string;
-  public alert: boolean;
-  public userOn: boolean;
   public searchString: string;
 
   constructor(
@@ -28,95 +26,63 @@ export class HeaderComponent implements OnInit {
     public _router: Router
   ) {
 
-    this.userOn = null;
-    this.errorOn = true;
+
     this.url = Global.url;
-    this.alert = false;
-    this.user = new User('', '', '', '', null, '', '', '', '', null, null, null, '', '');
 
     this.login = {
-      email: '',
-      password: ''
+      email: null,
+      password: null
     };
+
+    this.userActivo = null;
+    this.user = new User('', '', '', '', '', '', null, null, '', null, null);
 
   }
   ngOnInit(): void {
-    this.getLogged();  
+    this.getToken()
   }
 
-  getLogged() {
-    this._userService.getUserLogged().subscribe(
-      response => {               
-        if (response) {
-          this.user = response.user;
-          this.userOn = true;
-          this.notifyAlert();
-        }else{
-          console.warn('No hay usuario logeado');
-          this.userOn = false;
-        }
-      },
-      error => {
-        console.log('Error al traer el usuario logeado...');
-        
-      });
-  }
-
-  notifyAlert(){
-    this.user.notify.forEach((noti:any) => {
-      if (noti.alert) {
-        this.alert = true;
-      }else{
-        this.alert = false;
-      }
-    });
-  }
-
-
-  validarEmail() {
-    if (!this.login.email) {
-      this.errorOn = true;
-    } else {
-      this.errorOn = false;
+  getToken(){
+    const token = this._userService.getToken();
+    if (token) {
+      this.getUserLogged();
     }
   }
 
-  validarPassword() {
-    if (!this.login.password) {
-      this.errorOn = true;
-    } else {
-      this.errorOn = false;
-    }
-  }
-
-  loginUser() {
+  loginUser() {    
     this._userService.login(this.login).subscribe(
-
       response => {
-        this._userService.setToken(response.userUpdated.token);
-        this.user = response.userUpdated;
-        this.userOn = true;
-        //this.ngOnInit();
+        this.user = response.usuario;
+        this._userService.setToken(response.token);
+        this._router.navigate(['/home']);
+        this.userActivo = true;
       },
       error => {
+        this.userActivo = false;
         Swal.fire(
           'Error al ingresar',
           'Las credenciales no concuerdan',
           'error'
         );
+      });
+  }
 
+  getUserLogged() {
+    this._userService.getUserLogged().subscribe(response => {
+      this.user = response.usuario;
+      this.userActivo = true;
+    },
+      error => {
+        this.userActivo = false;
       });
   }
 
   cerrarSession() {
-
     this._userService.sessionClosed();
-    this.userOn = false;
+    this._router.navigate(['/home']);
   }
 
   sendString() {
     this._router.navigate(['/search/' + this.searchString]);
   }
-
-
 }

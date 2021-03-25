@@ -2,82 +2,94 @@
   <div ngClass="center">
     <div id="title">
 
-      <h1><a [routerLink]="['/home']">Reader<strong>Book</strong></a></h1>
+      <h1><a routerLink="/home">Reader<strong>Book</strong></a></h1>
 
     </div>
     <nav id="menu" ngClass="navbar navbar-expand-lg">
       <ul>
-        <li><a [routerLink]="['/library']" [routerLinkActive]="['active']">Biblioteca</a></li>
-        <li><a [routerLink]="['/chapters']" [routerLinkActive]="['active']">Capitulos</a></li>
-        <li><a [routerLink]="['/developer']" [routerLinkActive]="['active']">Desarrollo</a></li>
-        <li><a [routerLink]="['/users']" [routerLinkActive]="['active']" *ngIf="this.user.role === 'admin'">Usuarios</a>
+        <li><a routerLink="/library" routerLinkActive="active">Biblioteca</a></li>
+        <li><a routerLink="/chapters" routerLinkActive="active">Capitulos</a></li>
+        <li><a routerLink="/developer" routerLinkActive="active">Desarrollo</a></li>
+        <li><a routerLink="/users" routerLinkActive="active" *ngIf="this.user.role === 'admin-role'">Usuarios</a>
         </li>
-
+        <!-- -------------------------------------- Inicio servicio de busqueda -------------------------------------- -->
         <li>
-          <form ngClass="row" #searchForm="ngForm" (submit)="sendString()">
-            <input type="text" ngClass="form-control col mr-1" name="search" #search="ngModel"
-              [(ngModel)]="this.searchString" placeholder="Buscar...">
-
-            <button type="submit" ngClass="btn btn-warning text-white mb-1 col mr-3"><i
+          <div ngClass="input-group mb-3">
+            <input type="text" ngClass="form-control" placeholder="Buscar...."
+              aria-describedby="button-addon2" name="search">
+            <button ngClass="btn btn-info" type="button" id="button-addon2" (click)="sendString()"><i
                 ngClass="fas fa-search"></i></button>
-          </form>
+          </div>
         </li>
-
+        <!-- -------------------------------------- Fin servicio de busqueda -------------------------------------- -->
 
         <li><a hidden="true" ngClass="mb-1"><i id="icon-theme" ngClass="fas fa-adjust fa-rotate-180"></i></a></li>
-        <li><img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
-            src="{{this.url + 'get-image-user/' + this.user.image }}" alt="{{this.user.user}}"
-            *ngIf="this.userOn && this.user.image">
-          <img ngClass="img-thumbnail rounded-circle width-img-user mb-1"
-            src="{{this.url + 'get-defaultimage/default-user.png'}}"
-            alt="imgUser" *ngIf="!this.userOn || !this.user.image">
-        </li>
-        <li>
-          
-          <div ngClass="dropdown" *ngIf="!this.userOn">
 
-            <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true">Login</button>
-              
-            <div ngClass="dropdown-menu dropdown-menu-right mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenuLogin">
-              <form>
-                <div ngClass="form-group">
+        <!-- -------------------------------------- Inicio imagen de usuario inactivo -------------------------------------- -->
+        <li>
+        </li>
+        <!-- -------------------------------------- Fin imagen de usuario inactivo -------------------------------------- -->
+
+        <!-- -------------------------------------- Inicio dropdown de usuario inactivo -------------------------------------- -->
+        <li>
+          <div ngClass="dropdown" *ngIf="!this.userActivo">
+
+            <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle mb-1" type="button"
+              data-bs-toggle="dropdown" aria-expanded="false">Login</button>
+
+            <div ngClass="dropdown-menu dropdown-menu-end mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenuLogin">
+              <div ngClass="row">
+                <div ngClass="form-group col-12">
 
                   <label for="exampleInputEmail1">Correo</label>
-                  <input type="email" ngClass="form-control" name="correo" #correo="ngModel"
-                    [(ngModel)]="this.login.email" (change)="validarEmail()">
+                  <input type="email" ngClass="form-control" name="email" [(ngModel)]="this.login.email">
 
                 </div>
 
-                <div ngClass="form-group">
+                <div ngClass="form-group col-12">
 
                   <label for="exampleInputPassword1">Contraseña</label>
-                  <input type="password" ngClass="form-control" name="contrasena" #contrasena="ngModel"
-                    [(ngModel)]="this.login.password" (change)="validarPassword()">
+                  <input type="password" ngClass="form-control" name="contrasena" [(ngModel)]="this.login.password">
 
                 </div>
 
-                <!-- <div ngClass="text-danger text-center" *ngIf='this.errorOn == true'>
-                  <h5>Por favor ingrese sus datos completos</h5>
-                </div> -->
+                <div ngClass="form-group  col-12">
+                  <button ngClass="btn btn-success form-control" (click)="loginUser()">Login</button>
+                </div>
 
-                <button ngClass="btn btn-success w-100" (click)="loginUser()">Login</button>
-                <div ngClass="text-center mt-3">
+                
+                <div ngClass="text-center mt-3 col-12">
                   <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
                     cuenta</a>
                 </div>
 
-              </form>
+              </div>
             </div>
 
           </div>
+          <!-- -------------------------------------- Fin dropdown de usuario inactivo -------------------------------------- -->
 
-          <div ngClass="dropdown" *ngIf="this.userOn">
-            <button id="dropdownMenuUser" ngClass="btn btn-warning text-white dropdown-toggle mb-1" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true"><i *ngIf="this.alert"
-                ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.user}}</button>
 
-            <div ngClass="dropdown-menu" aria-labelledby="dropdownMenuUser">
+
+          <!-- -------------------------------------- Inicio dropdown de usuario activo -------------------------------------- -->
+          <div ngClass="dropdown" *ngIf="this.userActivo">
+
+            <button id="dropdownMenuUser" ngClass="btn btn-warning text-white dropdown-toggle mb-1" type="button"
+              data-bs-toggle="dropdown" aria-expanded="false"><i *ngIf="this.alert"
+                ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.name}}</button>
+
+
+            <div ngClass="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
+
+              <div ngClass="text-center">
+                <img ngClass="img-thumbnail width-img-user mb-2" src="{{this.user.image}}" alt="{{this.user.name}}"
+                  *ngIf="this.user.image">
+                <img ngClass="img-thumbnail width-img-user mb-2"
+                  src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png"
+                  alt="No hay usuario activo" *ngIf="!this.user.image">
+              </div>
+
+
               <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
                 <i ngClass="fas fa-user pr-2"></i>
                 <label>Mi perfil</label>
@@ -97,8 +109,8 @@
               </a>
             </div>
           </div>
-
         </li>
+        <!-- -------------------------------------- Fin dropdown de usuario activo -------------------------------------- -->
       </ul>
     </nav>
   </div>

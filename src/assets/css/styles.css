@@ -13,11 +13,6 @@ body {
   -moz-osx-font-smoothing: antialiased;
   background-color: #E9EAED;
 }
-
-.mHeight{
-  min-height: 800px;
-}
-
 .iconAlertNotify{
   color: red;
   margin-right: 5px;
@@ -74,7 +69,11 @@ body {
 }
 
 .imageUserComment{
-  width: 130%;
+  width: 70%;
+}
+
+.fontSizeTextComment{
+  font-size: 12px;
 }
 .labelblockcomment label{
   display: block;
@@ -120,10 +119,6 @@ header ul li a{
   width: 100%;
 }
 
-.center-2 {
-  text-align: center;
-}
-
 #title {
   width: 20%;
   display: block;
@@ -150,7 +145,9 @@ header ul li a{
 }
 
 .width-img-user {
-  width: 42px;
+  width: 40%;
+  height: 40%;
+  size: 40%;
 }
 
 #menu {
@@ -193,38 +190,16 @@ header ul li a{
 .terror{
   background: black;
 }
-#contentMain {
-  float: left;
-  min-height: 800px;
-}
 
 .minHeight{
-  min-height: 800px;
+  min-height: 1200px;
 }
-
-.heightChapters{
-  height: 700px;
-}
-
-#contentlector {
-  float: left;
-  min-height: 450px;
-}
-
 
 #contentUlticaps {
   width: 70%;
   float: left;
   min-height: 450px;
   margin-right: 20px;
-}
-
-#sidebar {
-  float: left;
-}
-
-#contentformulario {
-  min-height: 450px;
 }
 
 .sidebar-item {
@@ -250,50 +225,44 @@ header ul li a{
   font-size: 20px;
 }
 
-.btnMain {
-  display: block;
-  background: black;
-  color: white;
-  padding: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 14px;
-  transition: 300ms all;
-  text-align: center;
-  border-radius: 5px;
-  border: none;
-  margin: 1px;
-}
-
-.btnMainColor {
-  color: white;
-}
-
-.btnMainColor:hover {
-  text-decoration: none;
-  color: black;
-}
-
-.btnMain:hover {
-  text-decoration: none;
-  color: black;
-}
-
 #create-article a:hover {
   background: #E7BD02;
 
 }
 
-#contentMain h2 {
-  text-align: center;
-  margin-top: 25px;
+.linkdecoration{
+  text-decoration: none;
+  color: #343A40;
+  font-size: 15px;
 }
 
-.article-item {
-  margin-top: 20px;
+.linkdecoration:hover{
+  text-decoration: none;
+  color: #343A40;
 }
+
+.cardTitle {
+  margin: 0px auto;
+}
+
+.cardText{
+  font-size: 15px;
+  margin: auto;
+}
+
+.cardBody{
+  padding: 0px;
+}
+
+.cardFooter{
+  padding: 8px;
+}
+
+.widthImage{
+  width: 25%;
+  padding: 0px;
+}
+
 
 .titleBook {
   width: 100%;
@@ -305,33 +274,9 @@ header ul li a{
   font-size: 14px;
 }
 
-.article-item .typeBook {
-  width: 100%;
-  background: red;
-  text-align: center;
-  margin-bottom: 0;
-  padding: 2px;
-  color: white;
-
+.articlePaddin{
+  padding: 0px 5px;
 }
-
-.article-item h6 a {
-  color: white;
-
-}
-
-.article-item h6 a:hover {
-  text-decoration: none;
-}
-
-/* .article-item p {
-  position: absolute;
-  color: white;
-  text-align: center;
-  background: red;
-  top: 75.5%;
-  width: 85.7%;
-} */
 
 .over-flow {
   overflow: hidden !important;
@@ -389,8 +334,15 @@ header ul li a{
   height: 40px;
 }
 
-#imagenPortada img {
-  width: 94%;
+
+.profile-head {
+  transform: translateY(5rem)
+}
+
+.cover {
+  background-image: url(https://res.cloudinary.com/dr0wxllnu/image/upload/v1616178675/backend-lector/covers/cover_exr6zk.jpg);
+  background-size: cover;
+  background-repeat: no-repeat
 }
 
 .logoAngular{

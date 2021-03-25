@@ -1,381 +1,171 @@
  <div ngClass="row">
 
 
-   <section id="contentMain" ngClass="col-8">
+   <section ngClass="container col-9 minHeight">
+     <article ngClass="m-2 row">
+       <div ngClass="col-4 row">
+         <h5 ngClass="col-12 text-center bg-info text-white rounded p-1">{{this.article.progress.toUpperCase()}}</h5>
 
-     <div ngClass="row d-flex justify-content-center mt-3">
+         <img *ngIf="this.article.image" ngClass="rounded col-12 img-fluid widthImage" src="{{this.article.image}}"
+           alt="{{this.article.title}}">
+         <img *ngIf="!this.article.image" ngClass="rounded col-12 img-fluid widthImage"
+           src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg">
 
-       <div ngClass="col-4">
-         <h6 ngClass="bg-danger w-100 p-2 m-0 text-center text-white">{{this.article.type}}</h6>
-         <img ngClass="w-100" *ngIf="!this.article.image" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
-           alt="defaultBook">
-         <img ngClass="w-100" *ngIf="this.article.image" src="{{this.url + 'get-coverimage/' + this.article.image}}">
-         <h6 [ngClass]="{'w-100 p-2 m-0 text-center text-white': this.article.state,
-                          'bg-danger': this.article.state === 'Finalizado',
-                          'bg-success': this.article.state === 'Publicandose',
-                          'bg-warning': this.article.state === 'Abandonado'}">{{this.article.state}}</h6>
-       </div>
+         <button *ngIf="this.userProp" data-bs-toggle="modal" data-bs-target="#modalImagenLibro"
+           ngClass="col-12 btn btn-success mt-2"><i ngClass="fas fa-file-image mr-2"></i>Editar imagen</button>
 
-       <div ngClass="col-7 bg-secondary text-white text-left">
-         <div id="controlBook" ngClass="text-right" *ngIf="this.userXarticle">
-
-           <a href="#modal" data-toggle="modal" role="button" ngClass="rounded m-2 p-2 bg-warning text-white"><i
-               ngClass="fas fa-edit mr-1"></i>Editar</a>
-
-           <a (click)="deleteArticle(this.article._id)"
-             ngClass="cursorPointer rounded m-2 mr-0 p-2 bg-danger text-white"><i
-               ngClass="fas fa-trash-alt mr-1"></i>Eliminar</a>
-         </div>
-
-         <!-- Modal / Ventana / Overlay en HTML -->
-
-         <div id="modal" ngClass="modal fade">
+         <!-- Modal imagen usuario -->
+         <div ngClass="modal fade" id="modalImagenLibro" data-bs-keyboard="false" tabindex="-1"
+           aria-labelledby="staticBackdropLabel" aria-hidden="true">
            <div ngClass="modal-dialog">
-             <div ngClass="modal-content widthModal">
-               <form #editBook="ngForm" (ngSubmit)="onSubmit()">
-
-                 <div ngClass="modal-header">
-
-                   <h4 ngClass="modal-title text-black-50">Editar Libro</h4>
-                   <button id="close" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true"
-                     (click)="ngOnInit()">&times;</button>
-
-                 </div>
-
-                 <div ngClass="modal-body">
-                   <div ngClass="row m-1">
-
-                     <div ngClass="col-12 d-flex justify-content-center">
-                       <img ngClass="widthBookEdit" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
-                         *ngIf="!this.urlImage">
-                       <img ngClass="widthBookEdit" [src]="this.urlImage" *ngIf="this.urlImage">
-                     </div>
-
-                     <div ngClass="col-12 custom-file mt-3">
-                       <input type="file" ngClass="custom-file-input" name="image" #image="ngModel"
-                         [(ngModel)]="this.article.image" (change)="getFile($event.target.files); showImage()">
-                       <label ngClass="custom-file-label">Selecciona la nueva imagen...</label>
-                     </div>
-
-                     <div ngClass="col-12 form-group p-0 mt-3">
-                       <input type="text" ngClass="form-control" placeholder="Nuevo titulo" name="title"
-                         #title="ngModel" [(ngModel)]="this.article.title">
-                     </div>
-
-                     <div ngClass="col-12 form-group p-0 mt-1">
-                       <textarea ngClass="form-control" id="exampleFormControlTextarea1" placeholder="Nueva descripción"
-                         rows="2" name="description" #description="ngModel"
-                         [(ngModel)]="this.article.description"></textarea>
-                     </div>
-
-                     <div ngClass="col-12 form-group d-flex justify-content-between p-0">
-
-                       <div ngClass="col-5 p-0 row">
-
-
-                         <div ngClass="col-12 form-group">
-                           <select ngClass="form-control " name="type" #type="ngModel" [(ngModel)]="this.article.type">
-                             <option value="" disabled>Tipo de libro</option>
-                             <option ngClass="bg-success text-white" value="" disabled>Seleccionado:
-                               {{this.article.type}}
-                             </option>
-                             <option [value]="item" *ngFor="let item of this.listaTipo">{{item}}</option>
-                           </select>
-                         </div>
-
-                         <div ngClass="col-12 form-group">
-                           <select ngClass="form-control" name="state" #state="ngModel"
-                             [(ngModel)]="this.article.state">
-                             <option value="" disabled>Estado</option>
-                             <option ngClass="bg-success text-white" value="" disabled>Seleccionado:
-                               {{this.article.state}}</option>
-                             <option [value]="item" *ngFor="let item of this.listaEstado">{{item}}</option>
-                           </select>
-                         </div>
-
-
-                       </div>
-
-                       <div ngClass="col-5 form-group p-0">
-                         <select multiple ngClass="form-control" id="exampleFormControlSelect2" name="genders"
-                           #genders="ngModel" [(ngModel)]="this.article.genders">
-                           <option value="" disabled>Generos</option>
-                           <option [value]="itemGene" *ngFor="let itemGene of this.listaGeneros">{{itemGene}}
-                           </option>
-                         </select>
-                       </div>
-
-                     </div>
-
-                     <div ngClass="col-12 p-0 form-group border rounded">
-
-                       <div>
-                         <label ngClass="text-black-50 m-2 ml-3">Generos seleccionados:</label>
-                         <div ngClass="d-inline-block" *ngFor="let itemsGenders of this.article.genders">
-
-                           <label [ngClass]="{'m-1 p-1 pr-3 pl-3 rounded': itemsGenders,
-                                   'bg-danger': itemsGenders == 'Accion',
-                                   'bg-primary': itemsGenders == 'Aventura',
-                                   'bg-success': itemsGenders == 'Ciencia ficcion',
-                                  'bg-warning': itemsGenders == 'Comedia',
-                                  'terror': itemsGenders == 'Terror',
-                                'drama': itemsGenders == 'Drama',
-                              'romance': itemsGenders == 'Romance'}">{{itemsGenders}}</label>
-                         </div>
-                       </div>
-
-
-                     </div>
-                   </div>
-
-
-                 </div>
-
-                 <div ngClass="modal-footer">
-                   <button type="button" ngClass="btn btn-danger" data-dismiss="modal"
-                     (click)="ngOnInit();">Cancelar</button>
-                   <button type="submit" ngClass="btn btn-success">Editar</button>
-
-                 </div>
-               </form>
-             </div>
-           </div>
-         </div>
-
-         <h3 ngClass="mt-4">{{this.article.title}}</h3>
-         <label ngClass="mt-3 mb-4">Publicado: {{this.article.date | amLocale: 'es' | amTimeAgo}}</label>
-         <p>
-           Descripción: {{this.article.description}}
-         </p>
-         <div ngClass="d-inline mt-4" *ngFor="let gender of this.article.genders">
-           <label [ngClass]="{'p-1 pr-3 pl-3 m-1 rounded' : gender,
-                                   'bg-danger': gender == 'Accion',
-                                   'bg-primary': gender == 'Aventura',
-                                   'bg-success': gender == 'Ciencia ficcion',
-                                  'bg-warning': gender == 'Comedia',
-                                  'terror': gender == 'Terror',
-                                'drama': gender == 'Drama',
-                              'romance': gender == 'Romance'}">{{gender}}</label>
-         </div>
-         <div ngClass="mt-4">
-           <label>Autor: <a ngClass="text-decoration-none text-white"
-               [routerLink]="['/profile/' + user._id]">{{this.user.name}}
-               {{this.user.lastname}}</a></label>
-         </div>
-
-         <div ngClass="mt-4">
-
-           <!-- <button [disabled]="this.btnDisabled" (click)="addList()" ngClass="btn btn-primary">{{this.btnList}}</button> -->
-
-
-           <!-- Button trigger modal -->
-           <button
-             [disabled]="this.btnListModal === 'En lista' || this.btnListModal === 'Propietario' || this.btnListDisabled"
-             ngClass="btn btn-info"
-             href="#ListModal"
-             data-toggle="modal"
-             role="button">{{this.btnListModal}}</button>
-
-           <!-- Modal -->
-           <div id="ListModal" ngClass="modal fade">
-             <div ngClass="modal-dialog">
-               <div ngClass="modal-content">
-                 <div ngClass="modal-header">
-                   <h4 ngClass="modal-title text-black-50">Crear/Agregar lista de lectura</h4>
-                   <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true"
-                     (click)="ngOnInit()">&times;</button>
-                 </div>
-
-                 <div ngClass="modal-body">
-                   <div ngClass="row m-1 text-dark">
-
-                     <div ngClass="col-12" *ngIf="this.listAction">
-                       <h5>Mis listas</h5>
-                       <ul ngClass="row m-4 justify-content-between" *ngFor="let list of this.list">
-                         <li ngClass="col mt-2">{{list.name}}</li><button [disabled]="this.btnListDisabled" (click)="this.addBookToList(list._id)"
-                           ngClass="col btn btn-success btn-sm text-white ml-3">{{this.btnList}}</button>
-                       </ul>
-                     </div>
-
-                     <div ngClass="col-12" *ngIf="!this.listAction">
-                       <h5>No hay listas creadas</h5>
-                       <p>Crea tu primera lista abajo</p>
-                     </div>
-                     
-                     <div ngClass="col-12">
-                       <h5>Crear lista</h5>
-
-                       <div ngClass="row input-group mb-3">
-                         <div ngClass="col-10">
-                          <input type="text" ngClass="form-control" #namelist [(ngModel)]="this.listAdd.name"
-                            placeholder="Nombre de la lista" aria-label="Recipient's username"
-                            aria-describedby="button-addon2">
-                            <span ngClass="p-1 bg-danger text-white rounded" *ngIf="this.errOnNameList">Por favor ingresar el nombre de la lista</span>
-                         </div>
-                         <div ngClass="col-2">
-                          <button (click)="addList()" ngClass="btn btn-outline-secondary" type="button"
-                            id="button-addon2">Guardar</button>
-                         </div>
-                         
-                         
-                         
-                       </div>
-                       
-                     </div>
-
-
-
-
-
-
-                   </div>
-                 </div>
-
-                 <div ngClass="modal-footer">
-                   <button type="button" ngClass="btn btn-success" data-dismiss="modal">Listo</button>
-                   <!-- <button type="button" ngClass="btn btn-danger" data-dismiss="modal">Cancelar</button> -->
-                 </div>
-
-
-
+             <div ngClass="modal-content">
+               <div ngClass="modal-header">
+                 <h5 ngClass="modal-title" id="staticBackdropLabel">Actualizar imagen del libro</h5>
+                 <button type="button" ngClass="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
-             </div>
-           </div>
+               <div ngClass="modal-body">
 
-
-
-
-         </div>
-       </div>
-
-       <div ngClass="col-9 bg-secondary mt-3 text-white pb-4">
-         <h2>Capitulos</h2>
-         <div ngClass="row text-white justify-content-center">
-
-           <div ngClass="col-11">
-             <div *ngIf="userXarticle" ngClass="bg-dark rounded p-3 row  m-2 mb-1">
-
-               <div ngClass="col p-0">
+                 <div ngClass="d-flex justify-content-center">
+                   <img [src]="this.urlImage" width="300" ngClass="rounded mb-2 img-thumbnail">
+                 </div>
                  <div>
-                   <a [routerLink]="['/newchapter/'+ this.article._id]"><i
-                       ngClass="fas fa-file-import fa-lg float-sm-left m-2"></i></a>
-                 </div>
-               </div>
-
-               <div ngClass="col-10 p-0">
-                 <label ngClass="mb-0 m-1 text-center">Añadir capitulo</label>
-
-                 <a [routerLink]="['/newchapter/'+ this.article._id]"><i
-                     ngClass="fas fa-plus fa-2x float-sm-right"></i></a>
-
-               </div>
-             </div>
-           </div>
-           <div *ngIf="this.article.chapter" ngClass="col-12">
-             <div *ngFor="let chapter of this.article.chapter">
-
-
-
-               <div ngClass="row bg-dark m-2 mb-1 rounded p-3">
-
-                 <div ngClass="col-2 p-0">
-                   <div *ngIf="this.userXarticle">
-                     <a ngClass="cursorPointer" (click)="deleteChapter(chapter._id)"><i
-                         ngClass="fas fa-trash-alt fa-lg float-sm-left m-2 text-danger"></i></a>
-                     <a href="#modalChapter" data-toggle="modal" role="button"><i
-                         ngClass="fas fa-edit fa-lg float-sm-left m-2 text-warning"
-                         (click)="idChapter(chapter._id)"></i></a>
+                   <div ngClass="mb-3">
+                     <label for="formFile" ngClass="form-label text-center">Seleccionar imagen</label>
+                     <input ngClass="form-control" type="file" id="formFile" (change)="getFile($event.target.files)">
                    </div>
                  </div>
 
-                 <div ngClass="col-10 p-0 fontSize">
-                   <label ngClass="mb-0 m-1 mr-5">Capitulo: {{this.chapter.numcap}}</label>
-                   <label ngClass="mb-0 m-1 mr-5">Titulo: {{this.chapter.titlecap}}</label>
-                   <label ngClass="mb-0 m-1 p-1 bg-primary rounded">Publicado:
-                     {{chapter.datechapter | amLocale: 'es' | amTimeAgo}}</label>
-                   <a [routerLink]="['/reader/'+chapter._id]"><i ngClass="fas fa-play fa-2x float-sm-right"></i></a>
-                 </div>
-
                </div>
-
-             </div>
-
-
-
-           </div>
-           <div *ngIf="this.article.chapter.length == 0" ngClass="col-12 text-white text-center">
-             <h2 ngClass="mt-3 p-4 rounded bg-dark">Aun no hay capitulos</h2>
-           </div>
-
-
-           <div id="modalChapter" ngClass="modal fade">
-             <div ngClass="modal-dialog">
-               <div ngClass="modal-content">
-
-
-                 <form #editChapter="ngForm" (ngSubmit)="edit()">
-
-
-                   <div ngClass="modal-header">
-                     <h4 ngClass="modal-title text-black-50">Editar Capitulo</h4>
-                     <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true"
-                       (click)="ngOnInit()">&times;</button>
-                   </div>
-
-                   <div ngClass="modal-body">
-                     <div ngClass="row m-1">
-
-                       <div ngClass="col-12 custom-file mt-3">
-                         <input type="file" ngClass="custom-file-input" name="image" #image="ngModel"
-                           [(ngModel)]="this.chapter.imgpage" (change)="getFile($event.target.files); validatePDF()">
-                         <label ngClass="custom-file-label">Selecciona la nueva imagen...</label>
-
-                       </div>
-
-                       <small *ngIf="this.errFileChapter" ngClass="p-1 rounded bg-danger text-white">Archivo no
-                         valido!!</small>
-                       <small *ngIf="!this.errFileChapter" ngClass="p-1 rounded bg-success text-white">Archivo
-                         valido</small>
-
-                       <div ngClass="col-12 form-group p-0 mt-3">
-                         <input type="number" ngClass="form-control" name="numcap" #numcap="ngModel"
-                           [(ngModel)]="this.chapter.numcap" placeholder="Numero del capitulo" (change)="validateNum()">
-                         <small *ngIf="this.errNum" ngClass="p-1 rounded bg-danger text-white">Solo valores
-                           numericos</small>
-                       </div>
-
-                       <div ngClass="col-12 form-group p-0 mt-1">
-                         <input type="text" ngClass="form-control" name="titlecap" #titlecap="ngModel"
-                           [(ngModel)]="this.chapter.titlecap">
-                       </div>
-
-                     </div>
-                   </div>
-
-                   <div ngClass="modal-footer">
-                     <button type="button" ngClass="btn btn-danger" data-dismiss="modal"
-                       (click)="ngOnInit();">Cancelar</button>
-                     <button type="submit" ngClass="btn btn-success">Editar</button>
-                   </div>
-
-                 </form>
-
+               <div ngClass="modal-footer">
+                 <button type="button" ngClass="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                 <button type="button" ngClass="btn btn-success" (click)="updateImage()">Guardar</button>
                </div>
              </div>
            </div>
+         </div>
+
+         <button *ngIf="!this.userProp" ngClass="col-12 btn btn-primary mt-2"><i
+             ngClass="far fa-plus-square mr-2"></i>Agregar a lista</button>
+
+       </div>
+
+       <div ngClass="col-8 bg-white ml-3 rounded p-3">
+         <div *ngIf="this.userProp">
+
+           <button *ngIf="!this.editOn" ngClass="btn btn-danger text-white ml-2 float-end" (click)="deleteArticle()">
+             <i ngClass="fas fa-trash-alt mr-2"></i>
+             Eliminar
+           </button>
+           <button *ngIf="!this.editOn" ngClass="btn btn-warning text-white mr-2 float-end" (click)="toggleEdit()">
+             <i ngClass="fas fa-edit mr-2"></i>
+             Editar
+           </button>
 
 
+           <button *ngIf="this.editOn" ngClass="btn btn-danger text-white ml-2 float-end" (click)="toggleEdit()">
+             <i ngClass="fas fa-ban mr-2"></i>
+             Cancelar
+           </button>
+           <button *ngIf="this.editOn" ngClass="btn btn-success text-white mr-2 float-end" (click)="editArticle()">
+             <i ngClass="fas fa-save mr-2"></i>
+             Guardar
+           </button>
 
          </div>
-       </div>
 
-       <div ngClass="container">
-         <app-comments [reader]="false">
-         </app-comments>
-       </div>
+         <div *ngIf="!this.editOn">
 
+           <h2><strong>{{this.article.title}}</strong></h2>
+           <p>Fecha de publicación: {{this.article.date | amLocale: 'es' | amTimeAgo}}</p>
+           <p>{{this.article.description}}</p>
+           Generos:
+
+           <div ngClass="d-inline-block" *ngFor=" let items of this.article.genders">
+             <label [ngClass]="{'text-white rounded m-1 p-1 pr-3 pl-3': items,
+                                   'bg-danger': items == 'Accion',
+                                   'bg-primary': items == 'Aventura',
+                                   'bg-success': items == 'Ciencia ficcion',
+                                  'bg-warning': items == 'Comedia',
+                                  'terror': items == 'Terror',
+                                'drama': items == 'Drama',
+                              'romance': items == 'Romance'}">{{items}}</label>
+           </div>
+
+
+           <div ngClass="mt-3">
+             <h6>Publicado por: <a ngClass="linkdecoration"
+                 [routerLink]="['/profile/' + this.article.user['_id']]">{{this.article.user['name']}}</a></h6>
+           </div>
+
+         </div>
+
+         <div *ngIf="this.editOn">
+
+           <h2><strong>Editar</strong></h2>
+           <div ngClass="mb-3">
+             <label for="titulo" ngClass="form-label">Titulo</label>
+             <input [(ngModel)]="this.updateArticle.title" type="text" ngClass="form-control" id="titulo">
+           </div>
+           <div ngClass="mb-3">
+             <label for="description" ngClass="form-label">Descripción</label>
+             <textarea [(ngModel)]="this.updateArticle.description" type="text" rows="3" ngClass="form-control"
+               id="description"></textarea>
+           </div>
+
+           <div ngClass="mb-3">
+             <label for="estado">Estado</label>
+             <select id="estado" ngClass="form-control" title="Seleccionar" name="progress"
+               [(ngModel)]="this.updateArticle.progress">
+               <option value="" disabled>Selecciona el estado</option>
+               <option [value]="item" *ngFor="let item of this.listaEstado">{{item}}</option>
+             </select>
+           </div>
+
+
+           <div ngClass="mb-3">
+             <label for="genero">Generos</label>
+             <select id="genero" ngClass="form-control" multiple title="Seleccionar" name="genders"
+               [(ngModel)]="this.updateArticle.genders">
+               <option [value]="item" *ngFor="let item of this.listaGeneros">{{item}}</option>
+             </select>
+           </div>
+
+           <div ngClass="mb-3" *ngIf="this.article.genders">
+             <label ngClass="mr-1">Generos seleccionados:</label>
+             <div ngClass="d-inline-block" *ngFor=" let items of this.updateArticle.genders">
+               <label [ngClass]="{'text-white rounded m-1 p-1 pr-3 pl-3': items,
+                                   'bg-danger': items == 'Accion',
+                                   'bg-primary': items == 'Aventura',
+                                   'bg-success': items == 'Ciencia ficcion',
+                                  'bg-warning': items == 'Comedia',
+                                  'terror': items == 'Terror',
+                                'drama': items == 'Drama',
+                              'romance': items == 'Romance'}">{{items}}</label>
+             </div>
+           </div>
+
+         </div>
+
+
+
+
+       </div>
+     </article>
+
+     <div ngClass="row m-2">
+       <button [disabled]="this.chaptersOn" ngClass="col m-2 btn btn-primary" (click)="toggle()">Capitulos</button>
+       <button [disabled]="this.commentsOn" ngClass="col m-2 btn btn-primary" (click)="toggle()">Comentarios</button>
+     </div>
+
+
+     <div *ngIf="this.commentsOn" ngClass="bg-info m-2 p-2 rounded text-white">
+       <app-comments></app-comments>
+     </div>
+
+     <div *ngIf="this.chaptersOn" ngClass="bg-info m-2 p-2 rounded text-white">
+       <app-chapters></app-chapters>
      </div>
 
    </section>
-   <app-sidebar ngClass="col-4"></app-sidebar>
+   <app-sidebar ngClass="col-3"></app-sidebar>
  </div>

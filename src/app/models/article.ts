@@ -1,16 +1,16 @@
 export class Article{
 
     constructor(
-
         public _id: string,
         public title: string,
         public description: string,
+        public type: string,
         public date: any,
         public image: string,
-        public type: string,
-        public genders: any,
-        public state: string,
-        public chapter: any,
+        public genders: [],
+        public progress: string,
+        public state: boolean,
+        public user: string
 
     ){}
 }

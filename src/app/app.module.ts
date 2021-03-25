@@ -6,8 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'angular2-moment';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-
-
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -16,7 +14,6 @@ import { LastchaptersComponent } from './components/lastchapters/lastchapters.co
 import { FooterComponent } from './components/footer/footer.component';
 import { BookComponent } from './components/book/book.component';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
 import { NewbookComponent } from './components/newbook/newbook.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ReaderComponent } from './components/reader/reader.component';
@@ -43,7 +40,6 @@ import { ListComponent } from './components/list/list.component';
     FooterComponent,
     BookComponent,
     HomeComponent,
-    LoginComponent,
     NewbookComponent,
     ProfileComponent,
     ReaderComponent,

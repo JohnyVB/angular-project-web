@@ -2,117 +2,117 @@
 
 
 
-  <section id="contentformulario" ngClass="col-12">
-    <h2 ngClass="center-2 mt-4 mb-4">Nuevo libro</h2>
-
-    <form #newBookForm="ngForm" (ngSubmit)="onSubmit()">
-
-      <div ngClass="rounded row m-4 bg-dark text-light">
-
-        <div id="imagenPortada" ngClass="col-6 border justify-content-around">
-          <h3 ngClass="center-2 m-3">Imagen portada</h3>
-
-          <div ngClass="custom-file">
-            <input type="file" ngClass="custom-file-input" id="customFileLang" lang="es" name="imagen" #imagen="ngModel"
-              [(ngModel)]="this.article.image" (change)="validarImagen($event); getFile($event.target.files)">
-            <label ngClass="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
-          </div>
-
-          <div ngClass="m-3 d-flex justify-content-center">
-
-            <div ngClass="m-3" *ngIf="this.article.image != ''; else nohayImagen">
-
-              <div *ngIf="validarExtend == 'jpg' || validarExtend == 'png' || validarExtend == 'jpeg'; else noValida">
-                <div>
-                  <img [src]="this.url">
-                </div>
-              </div>
-
-              <ng-template #noValida>
-                <small ngClass="text-white p-2 rounded bg-danger">Extencion del archivo no valida, por favor intente con
-                  un archivo correcto!!!</small>
-              </ng-template>
-
-
-            </div>
-
-            <ng-template #nohayImagen ngClass="m-3">
-              <img src="{{this.apiUrl + 'get-defaultimage/'+ this.imageDefault}}">
-            </ng-template>
+  <section ngClass="minheight col-12">
+    <h2 ngClass="text-center mt-4 mb-4">Nuevo libro</h2>
 
 
 
-          </div>
+    <div ngClass="row m-4 justify-content-center">
+
+      <div ngClass="col-5 bg-light m-1 border border-warning rounded">
+        <h3 ngClass="text-center m-3">Imagen portada</h3>
+
+        <div ngClass="row">
 
         </div>
 
+        <div ngClass="custom-file col-12 mb-4 mt-4">
+          <input 
+          type="file" 
+          ngClass="custom-file-input" 
+          id="customFileLang" 
+          lang="es" 
+          name="image"
+          [(ngModel)]="this.article.image"
+          (change)="getFile($event)"
+          />
+          <label ngClass="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+        </div>
+        <img ngClass="col-12" [src]="this.urlImage">
+      </div>
 
 
-        <div id="fomulario" ngClass="col-6 border">
-          <h3 ngClass="center-2 m-3">Datos del libro</h3>
 
-          <!---->
-          <div ngClass="form-group m-3">
-            <label for="titulo">Titulo</label>
-            <input id="titulo" ngClass="form-control" (change)="validate($event.target); validateEmty()"
-              placeholder="Titulo del libro" type="text" name="titulo" #titulo="ngModel" [(ngModel)]="this.article.title" />
-            <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información del
-              [titulo]</small>
-          </div>
+      <div ngClass="col-5 bg-light m-1 border border-warning rounded">
+        <h3 ngClass="text-center m-3">Datos del libro</h3>
 
-          <div ngClass="form-group m-3">
-            <label for="description">Descripción</label>
-            <textarea id="description" ngClass="form-control" (change)="validate($event.target); validateEmty()"
-              placeholder="Descripción del libro" cols="1" rows="6"
-              name="descripcion" #descripcion="ngModel" [(ngModel)]="this.article.description"></textarea>
-            <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información de la
-              [descripción]</small>
-          </div>
+        <!---->
+        <div ngClass="form-group m-3">
+          <label for="titulo">Titulo</label>
+          <input 
+          id="titulo" 
+          ngClass="form-control" 
+          placeholder="Titulo del libro" 
+          type="text" 
+          name="title" 
+          [(ngModel)]="this.article.title"
+          />
+        </div>
 
-          <div ngClass="form-group m-3">
-            <label for="type">Tipo</label>
-            <select id="type" ngClass="custom-select" name="tipo" #tipo="ngModel" [(ngModel)]="this.article.type">
-              <option value="" disabled>Tipo de libro</option>
-              <option [value]="item" *ngFor="let item of this.listaTipo">{{item}}</option>
-            </select>
-            <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información del
-              [tipo]</small>
-          </div>
+        <div ngClass="form-group m-3">
+          <label for="description">Descripción</label>
+          <textarea 
+          id="description" 
+          ngClass="form-control" 
+          placeholder="Descripción del libro" 
+          cols="1" 
+          rows="6"
+          name="description"
+          [(ngModel)]="this.article.description"
+          ></textarea>
+          
+        </div>
 
-
-          <div ngClass="border  p-3 m-3 justify-content-around">
-            <div ngClass="row justify-content-around">
-
-              <div ngClass="col form-group">
-                <label for="genero">Generos</label>
-                <select id="genero" ngClass="form-control" (change)="validate($event.target); validateEmty()" multiple
-                  title="Seleccionar" name="generos"
-                  #generos="ngModel" [(ngModel)]="this.article.genders">
-                  <option [value]="item" *ngFor="let item of this.listaGeneros">{{item}}</option>
-                </select>
-                <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información de los
-                  [generos]</small>
-              </div>
-
-              <div ngClass="col form-group">
-                <label for="estado">Estado</label>
-                <select id="estado" ngClass="form-control" (change)="validate($event.target); validateEmty()"
-                  title="Seleccionar" name="estado" #estado="ngModel"
-                  [(ngModel)]="this.article.state">
-                  <option value="" disabled>Selecciona el estado</option>
-                  <option [value]="item" *ngFor="let item of this.listaEstado">{{item}}</option>
-                </select>
-                <small hidden="true" ngClass="text-white p-2 rounded bg-danger">Por favor ingresar la información del
-                  [estado]</small>
-              </div>
+        <div ngClass="form-group m-3">
+          <label for="type">Tipo</label>
+          <select 
+          id="type" 
+          ngClass="custom-select" 
+          name="type"
+          [(ngModel)]="this.article.type"
+          >
+            <option value="" disabled>Tipo de libro</option>
+            <option [value]="item" *ngFor="let item of this.listaTipo">{{item}}</option>
+          </select>
+        </div>
 
 
+        <div ngClass="border  p-3 m-3 justify-content-around">
+          <div ngClass="row justify-content-around">
+
+            <div ngClass="col form-group">
+              <label for="genero">Generos</label>
+              <select 
+              id="genero" 
+              ngClass="form-control" 
+              multiple 
+              title="Seleccionar" 
+              name="genders"
+              [(ngModel)]="this.article.genders"
+              >
+                <option [value]="item" *ngFor="let item of this.listaGeneros">{{item}}</option>
+              </select>
             </div>
 
-            <div ngClass="ml-4 mt-5" *ngIf="this.article.genders">
-              <label ngClass="mr-1">Generos seleccionados:</label>
-              <div ngClass="d-inline-block" *ngFor=" let items of this.article.genders">
-                <label [ngClass]="{'m-1 p-1 pr-3 pl-3': items,
+            <div ngClass="col form-group">
+              <label for="estado">Estado</label>
+              <select 
+              id="estado" 
+              ngClass="form-control" 
+              title="Seleccionar" 
+              name="progress"
+              [(ngModel)]="this.article.progress"
+              >
+                <option value="" disabled>Selecciona el estado</option>
+                <option [value]="item" *ngFor="let item of this.listaEstado">{{item}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div ngClass="ml-4 mt-5" *ngIf="this.article.genders">
+            <label ngClass="mr-1">Generos seleccionados:</label>
+            <div ngClass="d-inline-block" *ngFor=" let items of this.article.genders">
+              <label [ngClass]="{'text-white rounded m-1 p-1 pr-3 pl-3': items,
                                    'bg-danger': items == 'Accion',
                                    'bg-primary': items == 'Aventura',
                                    'bg-success': items == 'Ciencia ficcion',
@@ -120,61 +120,54 @@
                                   'terror': items == 'Terror',
                                 'drama': items == 'Drama',
                               'romance': items == 'Romance'}">{{items}}</label>
-              </div>
             </div>
           </div>
+        </div>
 
 
 
-          <div id="infoMain" ngClass="m-3 border p-3 h-auto">
-            <h3 ngClass="center-2 m-3">Información</h3>
-            <ol ngClass="m-5">
-              <li>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lorem malesuada, porta
-                mauris sit amet, tempus ex. Curabitur posuere eleifend mauris, at feugiat augue viverra
-                et. Sed pharetra tempor ipsum, eget maximus dui dapibus eget. Vestibulum diam quam,
-                consectetur quis eros congue, tincidunt rhoncus enim. Nunc at blandit lectus.
-              </li>
-              <li>
-                Nunc a enim porta, posuere ligula sit amet, tempor lectus. Vestibulum ipsum metus,
-                euismod sit amet tellus vitae, congue suscipit est. Aliquam tincidunt augue sed dolor
-                dignissim, id maximus ipsum rhoncus. Nam sit amet sapien euismod, pharetra quam sed,
-                tincidunt libero. Pellentesque non consequat neque, id varius lectus. Nunc nec eros
-                vitae ex pretium laoreet. Donec dictum, ex non gravida scelerisque, tellus odio suscipit
-                enim, quis ultricies diam dui consequat ligula.
-              </li>
-              <li>
-                Cras placerat est erat, a vestibulum neque accumsan vel. Morbi non odio fringilla,
-                sollicitudin nisl nec, finibus magna. Donec consectetur rhoncus elementum. Suspendisse
-                non erat vitae augue imperdiet imperdiet ut sit amet velit.
-              </li>
-              <li>
-                In maximus tincidunt vestibulum. Cras odio velit, pharetra a felis quis, facilisis
-                scelerisque justo. Mauris vulputate justo risus, non dapibus diam tincidunt quis. Nunc
-                at sem vitae purus hendrerit rhoncus vitae quis felis. Mauris a diam sagittis, dapibus
-                sapien at, blandit nibh.
-              </li>
-              <li>
-                Nulla pulvinar interdum turpis in lobortis. Suspendisse sollicitudin ut justo sit amet
-                pulvinar. Maecenas nisl lorem, lacinia ac tellus id, feugiat mollis lacus. Sed justo
-                enim, ultricies vel euismod ut, dictum nec justo. In hac habitasse platea dictumst.
-                Pellentesque faucibus lectus et mollis placerat. Proin a eros metus. Maecenas sodales
-                auctor fringilla. Sed vel vulputate ex, at molestie odio.
-              </li>
-            </ol>
-
-          </div>
-
-          <div ngClass="d-flex justify-content-center m-3">
-            <button [disabled]="this.errorOn" type="submit" ngClass="btn btn-success"><i ngClass="fas fa-upload fa-lg mr-3"></i>Publicar</button>
-          </div>
-
-          
+        <div id="infoMain" ngClass="m-3 border p-3 h-auto">
+          <h3 ngClass="m-3">Información</h3>
+          <ol ngClass="m-2">
+            <li>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lorem malesuada, porta
+              mauris sit amet, tempus ex. Curabitur posuere eleifend mauris, at feugiat augue viverra
+              et. Sed pharetra tempor ipsum, eget maximus dui dapibus eget. Vestibulum diam quam,
+              consectetur quis eros congue, tincidunt rhoncus enim. Nunc at blandit lectus.
+            </li>
+            <li>
+              Nunc a enim porta, posuere ligula sit amet, tempor lectus. Vestibulum ipsum metus,
+              euismod sit amet tellus vitae, congue suscipit est.
+            </li>
+            <li>
+              Cras placerat est erat, a vestibulum neque accumsan vel. Morbi non odio fringilla,
+              sollicitudin nisl nec, finibus magna. Donec consectetur rhoncus elementum. Suspendisse
+              non erat vitae augue imperdiet imperdiet ut sit amet velit.
+            </li>
+            <li>
+              In maximus tincidunt vestibulum. Cras odio velit, pharetra a felis quis, facilisis
+              scelerisque justo.
+            </li>
+            <li>
+              Nulla pulvinar interdum turpis in lobortis. Suspendisse sollicitudin ut justo sit amet
+              pulvinar. Maecenas nisl lorem, lacinia ac tellus id, feugiat mollis lacus. Sed justo
+              enim, ultricies vel euismod ut, dictum nec justo.
+            </li>
+          </ol>
 
         </div>
 
+        <div ngClass="d-flex justify-content-center m-3">
+          <button type="submit" ngClass="btn btn-success" (click)="saveArticle()"><i
+              ngClass="fas fa-upload fa-lg mr-3"></i>Publicar</button>
+        </div>
+
+
+
       </div>
-    </form>
+
+    </div>
+
 
   </section>
 </div>

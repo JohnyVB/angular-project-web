@@ -1,1 +1,39 @@
-<app-lastchapters></app-lastchapters>
+<div ngClass="form-floating p-4">
+  <h3><Strong>Capitulos</Strong></h3>
+
+  <div ngClass="mt-4 mb-4">
+    <button ngClass="btn btn-primary mr-2 rounded-0" (click)="getChapters(this.articleId)">Nuevo</button>
+    <button ngClass="btn btn-primary rounded-0" (click)="getChapters(this.articleId, 1)">Antiguo</button>
+    <hr>
+  </div>
+
+  <div *ngIf="this.chapters.length">
+    <div ngClass="bg-dark rounded m-3" *ngFor="let chapter of this.chapters">
+
+
+      <label ngClass="p-3 m-0">
+        Cap. {{chapter.number}}
+      </label>
+      <label ngClass="p-3 m-0">
+        Ttitulo: {{chapter.title}}
+      </label>
+      <label ngClass="p-3 m-0">
+        Fecha de publicación: {{chapter.date | amLocale: 'es' | amTimeAgo}}
+      </label>
+      <label ngClass="p-3 m-0 float-end">
+        <a [routerLink]="['/reader/' + chapter._id]"><i ngClass="fas fa-play fa-lg"></i></a>
+      </label>
+
+
+    </div>
+
+  </div>
+
+  <div *ngIf="!this.chapters.length" ngClass="mb-3 text-center">
+    <h3>Aun no se ha publicado capitulos</h3>
+  </div>
+
+  <div *ngIf="this.userProp" ngClass="d-grid gap-2">
+    <a ngClass="btn btn-primary" [routerLink]="['/newchapter/' + this.articleId]">Agregar capitulo</a>
+  </div>
+</div>

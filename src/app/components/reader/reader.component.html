@@ -1,65 +1,100 @@
-<div ngClass="row justify-content-center">
+<div ngClass="minHeight">
+  <section ngClass="row mx-2">
 
-
-  <section id="contentlector" ngClass="col-12 row">
-
-    <div ngClass="col-12 bg-warning text-center text-white p-1">
-      <h2>{{this.article.title}}</h2>
-      <h2>Capitulo: {{this.chapter.numcap}} {{this.chapter.titlecap}}</h2>
-      <h2>Autor: <a ngClass="text-decoration-none" [routerLink]="['/profile/' + this.autor._id]">{{this.autor.name}} {{this.autor.lastname}}</a></h2>
+    <div ngClass="col-12 bg-warning text-center text-white m-0">
+      <h2>{{this.chapter.article.title}}</h2>
+      <h2>Capitulo: {{this.chapter.number}} - {{this.chapter.title}}</h2>
+      <h2>Publicador por: <a ngClass="text-decoration-none text-white"
+          [routerLink]="['/profile/' + this.chapter.user._id]">{{this.chapter.user.name}}
+          {{this.chapter.user.lastname}}</a></h2>
     </div>
 
-    <div ngClass="col-12 bg-white row d-flex justify-content-center m-2 p-3">
+    <div ngClass="col-4 d-flex justify-content-center btn-group my-3" role="group">
 
-      <button type="button" (click)="returnArticle()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-arrow-alt-circle-left"></i></button>
-      <button type="button" (click)="minusZoom()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-search-minus"></i></button>
+      <a type="button" [routerLink]="['/book/'+ this.chapter.article._id]" ngClass="btn btn-dark mx-3">
+        <i ngClass="fas fa-arrow-alt-circle-left mr-2"></i>
+        Volver
+      </a>
 
-      <div *ngIf="!this.cascade" id="selected" ngClass="input-group mb-3 w-25 col-2">
+      <button type="button" (click)="this.zoom = (this.zoom - 0.1)" ngClass="btn btn-dark mx-3">
+        <i ngClass="fas fa-search-minus mr-2"></i>
+        Zoom -
+      </button>
 
-        <div ngClass="input-group-prepend">
-          <label ngClass="input-group-text" for="inputGroupSelect01">Paginas</label>
-        </div>
+    </div>
 
-        <select ngClass="custom-select" id="inputGroupSelect01" #pages="ngModel" [(ngModel)]="this.page">
-          <option selected>Seleccionar....</option>
-          <option>1</option>
+
+    <div ngClass="col-4 my-3">
+
+      <div>
+        <select ngClass="form-select" aria-label="Default select example">
+          <option selected>Pagina</option>
+          <option [value]="1">1</option>
         </select>
-
       </div>
 
-      <button type="button" (click)="plusZoom()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="fas fa-search-plus"></i></button>
-      <button type="button" *ngIf="this.cascade === true" (click)="setCascade()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="far fa-file"></i></button>
-      <button type="button" *ngIf="this.cascade === false" (click)="setCascade()" ngClass="btnMain btn-light heightBtn col-1"><i ngClass="far fa-copy"></i></button>
-    </div>
-  
-
-    <pdf-viewer ngClass="col-12" 
-      [src]="this.urlPDF" 
-      [original-size]="false"
-      [(page)]="this.page"
-      [(show-all)]="this.cascade"
-      [(zoom)]="this.zoom"
-      [autoresize]="true"
-      ></pdf-viewer>
-
-    <div ngClass="col-12 bg-white row d-flex justify-content-center m-2 p-3">
-      <button [disabled]="this.preDisabled" type="button" ngClass="btnMain btn-light col-1" (click)="preChapter()"><i ngClass="fas fa-angle-double-left"></i></button>
-      <button type="button" *ngIf="this.cascade === false" (click)="previousPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-left"></i></button>
-
-      <button type="button" *ngIf="this.cascade === false" (click)="nextPage()" ngClass="btnMain btn-light col-1"><i ngClass="fas fa-angle-right"></i></button>
-      <button [disabled]="this.nextDisabled" type="button" ngClass="btnMain btn-light col-1" (click)="nextChapter()"><i ngClass="fas fa-angle-double-right"></i></button>
     </div>
 
-    <div ngClass="container" *ngIf="this.commentsOn">
-      <app-comments [reader]="true">
-      </app-comments>
+
+    <div ngClass="col-4 row d-flex justify-content-center btn-group my-3" role="group">
+
+      <button type="button" (click)="this.zoom = (this.zoom + 0.1) " ngClass="col-5 btn btn-dark mx-3">
+        <i ngClass="fas fa-search-plus mr-2"></i>
+        Zoom +
+      </button>
+
+      <button type="button" *ngIf="this.chapter.user.reader" (click)="this.chapter.user.reader = false"
+        ngClass="col-5 btn btn-dark mx-3">
+        <i ngClass="far fa-file mr-2"></i>
+        Paginada
+      </button>
+
+      <button type="button" *ngIf="!this.chapter.user.reader" (click)="this.chapter.user.reader = true"
+        ngClass="col-5 btn btn-dark mx-3">
+        <i ngClass="far fa-copy mr-2"></i>
+        Cascada
+      </button>
+
     </div>
 
-    <div ngClass="container" *ngIf="!this.commentsOn">
+
+    <pdf-viewer ngClass="col-12" [src]="this.chapter.image" [original-size]="false" [(page)]="this.page"
+      [(show-all)]="this.chapter.user.reader" [(zoom)]="this.zoom" [autoresize]="true">
+    </pdf-viewer>
+
+    <div ngClass="col-12 d-flex justify-content-center btn-group my-3" role="group">
+
+      <button type="button" ngClass="btn btn-dark mx-2">
+        <i ngClass="fas fa-angle-double-left mr-2"></i>
+        Capitulo anterior
+      </button>
+
+      <button type="button" *ngIf="!this.chapter.user.reader" ngClass="btn btn-dark mx-2">
+        <i ngClass="fas fa-angle-left mr-2"></i>
+        Pagina anterior
+      </button>
+
+      <button type="button" *ngIf="!this.chapter.user.reader" ngClass="btn btn-dark mx-2">
+        Pagina siguiente
+        <i ngClass="fas fa-angle-right ml-2"></i>
+      </button>
+
+      <button type="button" ngClass="btn btn-dark mx-2">
+        Capitulo Siguiente
+        <i ngClass="fas fa-angle-double-right ml-2"></i>
+      </button>
+
+    </div>
+
+    <div *ngIf="!this.commentsOn">
       <button (click)="openComments()" ngClass="btn btn-primary col-12 p-3" type="button">
         <h3>Comentarios</h3>
       </button>
     </div>
 
   </section>
+  <div *ngIf="this.commentsOn" ngClass="px-5">
+    <app-comments [reader]="true">
+    </app-comments>
+  </div>
 </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Article } from '../../models/article';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
 import { Global } from '../../services/global';
@@ -15,140 +14,84 @@ import Swal from 'sweetalert2';
 })
 export class NewbookComponent implements OnInit {
 
-  public article: Article;
-
-  public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
+  public article: any;
+  public file: File;
+  public url: string;
+  public urlImage: string;
+  public listaTipo: string[] = ["Web novel", "Comic", "Manga", "Manhwa"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
   public listaEstado: string[] = ["Publicandose", "Abandonado", "Finalizado"];
 
-  public validarExtend: any;
-  public url: any;
-  public userId: any;
-  public fileImage: any;
-  public file: any;
-  public token: string;
-  public imageDefault: string;
-  public apiUrl: string;
-
-  public parent: any;
-  public evet: any;
-  public errorOn: boolean;
-
-  public articleId: string;
-
   constructor(
     private _router: Router,
+    private _route: ActivatedRoute,
     private _articleService: ArticleService,
     private _userService: UserService
   ) {
-    this.article = new Article('', '', '', null, '', '', [], '', []);
-    this.userId = '';
-    this.errorOn = true;
-    this.apiUrl = Global.url;
-    this.imageDefault = 'defaultBook.jpg';
+    this.article = {
+      image: null,
+      title: '',
+      description: '',
+      type: '',
+      genders: [],
+      progress: ''
+    }
+    this.url = Global.url;
+    this.file = null
+    this.urlImage = 'https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg';
   }
 
-
-  //------------------------------------ngOnInit()------------------------------------------------------------------
   ngOnInit(): void {
-    this.token = this._userService.getToken();
-    this._userService.getUserAdmin(this.token).subscribe(
-      response => {
-        this.userId = response.user._id;
-      },
-      error => {
-        Swal.fire({
-          title: 'Error al traer el usuario',
-          text: 'Se produjo un error al consultar el usuario' + error,
-          icon: 'error'
-        });
-      }
-    );
+
   }
 
-  //------------------------------------Validación de tipo de arhivo a subir----------------------------------------
-  validarImagen(event: any) {
-    if (this.article.image != '') {
-      let extend = this.article.image.split('.')[1];
-      this.validarExtend = extend;
-      //console.log(event.target.files[0]);
+  getFile(event: any) {
+    this.file = event.target.files;
+    if (this.file) {
+      let reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.urlImage = e.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
 
-      this.fileImage = event.target.files[0];
-
-      if (event.target.files && event.target.files[0]) {
-        let reader = new FileReader();
-
-        reader.onload = (e: any) => {
-          this.url = e.target.result;
-          //console.log(this.url);
-
+  saveArticle() {
+    this._articleService.saveArticle(this.article).subscribe(
+      response => {
+        if (this.article.image) {
+          this.uploadImage(response.articulo._id);
+        }else{
+          Swal.fire(
+            'Libro creado',
+            'Se ha creado correctamente tu libro',
+            'success'
+          );
+          this._router.navigate(['/book/' + response.articulo._id]);
         }
-
-        reader.readAsDataURL(event.target.files[0]);
-
-      }
-    }
-  }
-
-
-  //------------------------------------Envio de formulario al backend--------------------------------------------------
-  onSubmit() {
-    this._articleService.saveArticle(this.article, this.userId).subscribe(
-      response => {
+        
+      },
+      error => {
+        console.log(error);
         Swal.fire(
-          'Libro creado con exito!!',
-          'El libro fue creado correctamente',
-          'success'
+          'Error',
+          'Se ha producido un error al crear el libro',
+          'error'
         );
-        this._router.navigate(['/book/' + response.articleStored._id]);
-        this.uploadImage(response.articleStored._id);
-      },
-      error => {
-        console.log('Error al guardar el articulo', error);
-
       }
     );
   }
 
-  getFile(files: FileList) {
-
-    this.file = files.item(0);
-
-  }
-
-  uploadImage(articleId: any) {
-    this._articleService.uploadImage(this.file, articleId).subscribe(
+  uploadImage(articleId: string) {
+    this._articleService.uploadImage(this.file[0], articleId).subscribe(
       response => {
-        console.log('La imagen se guardo con exito!!', response);
-
+        this._router.navigate(['/book/' + response.modelo._id]);
       },
       error => {
-        console.log('Error al guardar la imagen', error);
-
+        console.log(error);
       }
     );
   }
 
-  validate(e: any) {
-
-    this.parent = e.parentElement.lastChild;
-    this.evet = e;
-
-    if (!e.value) {
-      this.parent.hidden = false;
-      this.evet.className = "form-control border-danger ng-valid ng-dirty ng-touched";
-    } else {
-      this.parent.hidden = true;
-      this.evet.className = "form-control border-success ng-valid ng-dirty ng-touched";
-    }
-  }
-
-  validateEmty(){
-    if (this.article.title != '' && this.article.description != '' && this.article.genders != '' && this.article.state != '' && this.article.type != '') {
-      this.errorOn = false;
-    }else{
-      this.errorOn = true;
-    }
-  }
 
 }

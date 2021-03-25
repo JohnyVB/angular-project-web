@@ -3,7 +3,10 @@ export class Comment {
 
         public date: any,
         public text: string,
-        public userid: any
+        public state: boolean,
+        public user: any,
+        public article: any,
+        public chapter: any
 
     ){}
 }

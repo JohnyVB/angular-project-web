@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ArticleService } from '../../services/article.service';
+import { ChapterService } from '../../services/chapter.service'
 import { Article } from '../../models/article';
 import { Global } from '../../services/global';
 
@@ -7,46 +8,35 @@ import { Global } from '../../services/global';
   selector: 'app-lastchapters',
   templateUrl: './lastchapters.component.html',
   styleUrls: ['./lastchapters.component.css'],
-  providers: [ArticleService]
+  providers: [ArticleService, ChapterService]
 })
 export class LastchaptersComponent implements OnInit {
 
   @Input() home: boolean;
 
-  public articles: Article[];
+  public articles: any[];
   public url: string;
+
   constructor(
-    private _articleService: ArticleService
+    private _articleService: ArticleService,
+    private _chapterService: ChapterService
   ) {
     this.home = false;
     this.url = Global.url;
-   }
+  }
 
   ngOnInit(): void {
 
-    if (this.home == true) {
-      this._articleService.getArticlesXpopulate().subscribe(
-        response => {
-          this.articles = response.articlesPopulate;
+    this._articleService.getArticles(null).subscribe(
+      response => {
+        this.articles = response.articulos;
+        console.log(this.articles);
+        
+      },
+      error => {
+        console.log(error);
 
-        },
-        error => {
-          console.log(error);
-
-        });
-    }else{
-      this._articleService.getArticlesChapters().subscribe(
-        response => {
-          this.articles = response.articlesPopulate;
-        },
-        error => {
-          console.log(error);
-          
-        }
-      );
-    }
-
-    
+      });
   }
 
 }

@@ -3,11 +3,13 @@ export class Chapter{
     constructor(
 
         public _id: string,
-        public numcap: number,
-        public titlecap: string,
-        public datechapter: any,
-        public comments: [],
-        public imgpage: string
-        
+        public number: number,
+        public title: string,
+        public state: boolean,
+        public date: any,
+        public image: string,
+        public article: any,
+        public user: any
+                
     ){}
 }
