@@ -1,40 +1,48 @@
 <header>
-  <div ngClass="center">
-    <div id="title">
 
-      <h1><a routerLink="/home">Reader<strong>Book</strong></a></h1>
+  <nav id="header" ngClass="navbar navbar-expand-lg navbar-light bg-light">
+    <div ngClass="container-fluid">
+      <h1><a ngClass="text-decoration-none text-warning" [routerLink]="['/home']">Reader<strong>Book</strong></a></h1>
+      <button ngClass="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span ngClass="navbar-toggler-icon"></span>
+      </button>
+      <div ngClass="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul ngClass="navbar-nav mx-5">
 
-    </div>
-    <nav id="menu" ngClass="navbar navbar-expand-lg">
-      <ul>
-        <li><a routerLink="/library" routerLinkActive="active">Biblioteca</a></li>
-        <li><a routerLink="/chapters" routerLinkActive="active">Capitulos</a></li>
-        <li><a routerLink="/developer" routerLinkActive="active">Desarrollo</a></li>
-        <li><a routerLink="/users" routerLinkActive="active" *ngIf="this.user.role === 'admin-role'">Usuarios</a>
-        </li>
-        <!-- -------------------------------------- Inicio servicio de busqueda -------------------------------------- -->
-        <li>
-          <div ngClass="input-group mb-3">
-            <input type="text" ngClass="form-control" placeholder="Buscar...."
-              aria-describedby="button-addon2" name="search">
-            <button ngClass="btn btn-info" type="button" id="button-addon2" (click)="sendString()"><i
-                ngClass="fas fa-search"></i></button>
-          </div>
-        </li>
-        <!-- -------------------------------------- Fin servicio de busqueda -------------------------------------- -->
+          <li ngClass="nav-item d-flex justify-content-center">
+            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/library']">Biblioteca</a>
+          </li>
 
-        <li><a hidden="true" ngClass="mb-1"><i id="icon-theme" ngClass="fas fa-adjust fa-rotate-180"></i></a></li>
+          <li ngClass="nav-item d-flex justify-content-center">
+            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/chapters']">Capitulos</a>
+          </li>
 
-        <!-- -------------------------------------- Inicio imagen de usuario inactivo -------------------------------------- -->
-        <li>
-        </li>
-        <!-- -------------------------------------- Fin imagen de usuario inactivo -------------------------------------- -->
+          <li ngClass="nav-item d-flex justify-content-center">
+            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/developer']">Desarrollo</a>
+          </li>
 
-        <!-- -------------------------------------- Inicio dropdown de usuario inactivo -------------------------------------- -->
-        <li>
+          <li ngClass="nav-item d-flex justify-content-center">
+            <a ngClass="p-2 text-center" [routerLink]="['/users']" *ngIf="this.user.role === 'admin-role'">Usuarios</a>
+          </li>
+
+        </ul>
+
+        
+
+        <div ngClass="input-group mx-5">
+          <input type="text" ngClass="form-control me-2" placeholder="Buscar por: Titulo, generos, tipo"
+            aria-describedby="button-addon2" name="search" [(ngModel)]="this.searchString">
+          <button ngClass="btn btn-info" type="button" id="button-addon2" (click)="sendString()"><i
+              ngClass="fas fa-search"></i></button>
+        </div>
+
+        <a ngClass="text-center mx-2"><i id="icon-theme" ngClass="fas fa-adjust fa-rotate-180"></i></a>
+
+        <div ngClass="d-flex mx-5">
           <div ngClass="dropdown" *ngIf="!this.userActivo">
 
-            <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle mb-1" type="button"
+            <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
               data-bs-toggle="dropdown" aria-expanded="false">Login</button>
 
             <div ngClass="dropdown-menu dropdown-menu-end mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenuLogin">
@@ -57,7 +65,7 @@
                   <button ngClass="btn btn-success form-control" (click)="loginUser()">Login</button>
                 </div>
 
-                
+
                 <div ngClass="text-center mt-3 col-12">
                   <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
                     cuenta</a>
@@ -65,16 +73,15 @@
 
               </div>
             </div>
-
           </div>
+
           <!-- -------------------------------------- Fin dropdown de usuario inactivo -------------------------------------- -->
 
-
-
           <!-- -------------------------------------- Inicio dropdown de usuario activo -------------------------------------- -->
+
           <div ngClass="dropdown" *ngIf="this.userActivo">
 
-            <button id="dropdownMenuUser" ngClass="btn btn-warning text-white dropdown-toggle mb-1" type="button"
+            <button id="dropdownMenuUser" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
               data-bs-toggle="dropdown" aria-expanded="false"><i *ngIf="this.alert"
                 ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.name}}</button>
 
@@ -109,10 +116,14 @@
               </a>
             </div>
           </div>
-        </li>
-        <!-- -------------------------------------- Fin dropdown de usuario activo -------------------------------------- -->
-      </ul>
-    </nav>
-  </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+
 </header>
-<div ngClass="clearfix"></div>
+
+
+

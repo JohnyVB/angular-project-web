@@ -18,33 +18,6 @@ body {
   margin-right: 5px;
 }
 
-.TypeBook{
-  position: absolute;
-  color: white;
-  text-align: center;
-  background: red;
-  top: 75.5%;
-  width: 85.7%;
-}
-
-.TypeBooklist{
-  position: absolute;
-  color: white;
-  text-align: center;
-  background: red;
-  top: 75.5%;
-  width: 83.4%;
-}
-
-.TypeBookProfile{
-  position: absolute;
-  color: white;
-  text-align: center;
-  background: red;
-  top: 75.5%;
-  width: 89.2%;
-}
-
 .notifyNew{
   color: red;
   background-color: #FFE1E3;
@@ -87,10 +60,8 @@ body {
 
 
 pdf-viewer {
-  display: flex;
+  display: block;
   height: auto;
-  justify-content: center;
-  width: 65%;
 }
 
 .cursorPointer:hover{
@@ -102,15 +73,8 @@ pdf-viewer {
 }
 
 header {
-  height: 60px;
-  width: 100%;
   border-top: 5px solid rgb(231, 189, 2);
   border-bottom: 1px solid #ccc;
-  background: white;
-}
-
-header ul li a{
-  color: black;
 }
 
 
@@ -119,60 +83,11 @@ header ul li a{
   width: 100%;
 }
 
-#title {
-  width: 20%;
-  display: block;
-  float: left;
-  height: 60px;
-  margin-top: 3px;
-}
-
-#title a:hover {
-  text-decoration: none;
-}
-
-#title h1 a{
-   color: rgb(231, 189, 2);
-}
-
-#title h1{
-  width: 100%;
-  height: 100%;
- 
-  font-size: 30px;
-  line-height: 47px;
-  text-align: right;
-}
 
 .width-img-user {
   width: 40%;
   height: 40%;
   size: 40%;
-}
-
-#menu {
-  width: 79%;
-}
-
-#menu>ul {
-  width: 100%;
-
-}
-
-#menu ul li {
-  display: inline-block;
-  text-decoration: none;
-  margin-left: 2%;
-}
-
-#menu ul li a:hover, .active {
-  color: rgb(231, 189, 2);
-  text-decoration: none;
-  transition: 300ms all;
-}
-
-#menu ul li:nth-child(4) {
-  margin-right: 15%;
 }
 
 .anchoWidht{
@@ -225,11 +140,6 @@ header ul li a{
   font-size: 20px;
 }
 
-#create-article a:hover {
-  background: #E7BD02;
-
-}
-
 .linkdecoration{
   text-decoration: none;
   color: #343A40;
@@ -241,22 +151,7 @@ header ul li a{
   color: #343A40;
 }
 
-.cardTitle {
-  margin: 0px auto;
-}
 
-.cardText{
-  font-size: 15px;
-  margin: auto;
-}
-
-.cardBody{
-  padding: 0px;
-}
-
-.cardFooter{
-  padding: 8px;
-}
 
 .widthImage{
   width: 25%;
@@ -272,10 +167,6 @@ header ul li a{
   padding: 2px;
   max-height: 24px;
   font-size: 14px;
-}
-
-.articlePaddin{
-  padding: 0px 5px;
 }
 
 .over-flow {

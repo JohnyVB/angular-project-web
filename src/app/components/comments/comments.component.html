@@ -1,41 +1,41 @@
 
-
-<div ngClass="form-floating p-4">
-  <h3><Strong>Comentarios</Strong></h3>
-  <p *ngIf="!this.userOn">Por favor <strong><a [routerLink]="['/register']">iniciar sesión</a></strong> para comentar</p>
-  <p *ngIf="this.userOn">Deja tu comentario aqui</p>
-  <div ngClass="mb-3">
-    <textarea 
-    ngClass="form-control" 
-    id="exampleFormControlTextarea1" 
-    rows="3"
-    [(ngModel)]="this.textComment"
-    ></textarea>
-  </div>
-  <button ngClass="btn btn-primary float-end" (click)="saveComment()">Publicar</button>
-</div>
-
-<div ngClass="m-4">
-  <button ngClass="btn btn-primary mr-2 rounded-0" (click)="getComments()">Nuevo</button>
-  <button ngClass="btn btn-primary rounded-0" (click)="getComments(1)">Antiguo</button>
-  <hr>
-</div>
-
-<div ngClass="m-4 row" *ngFor="let comment of this.comments">
-  <div ngClass="col-1 p-0">
-    <img ngClass="rounded imageUserComment" *ngIf="comment.user.image" src="{{comment.user.image}}"
-      alt="{{comment.user.name}}">
-    <img ngClass="rounded imageUserComment" *ngIf="!comment.user.image"
-      src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png"
-      alt="">
+<div ngClass="bg-info m-2 p-2 rounded text-white">
+  <div ngClass="form-floating p-4">
+    <h3><Strong>Comentarios</Strong></h3>
+    <p *ngIf="!this.userOn">Por favor <strong><a [routerLink]="['/register']">Registrarse</a></strong> o iniciar sesión para comentar
+    </p>
+    <p *ngIf="this.userOn">Deja tu comentario aqui</p>
+    <div ngClass="mb-3">
+      <textarea ngClass="form-control" id="exampleFormControlTextarea1" rows="3"
+        [(ngModel)]="this.textComment"></textarea>
+    </div>
+    <button ngClass="btn btn-primary float-end" (click)="saveComment()">Publicar</button>
   </div>
 
-  <div ngClass="col-11 p-0">
-    <h5><strong>{{comment.user.name}}</strong></h5>
-    <p ngClass="fontSizeTextComment">{{comment.date | amLocale: 'es' | amTimeAgo}}</p>
-    <p>{{comment.text}}</p>
+  <div ngClass="m-4">
+    <button ngClass="btn btn-primary mr-2 rounded-0" (click)="getComments()">Nuevo</button>
+    <button ngClass="btn btn-primary rounded-0" (click)="getComments(1)">Antiguo</button>
+    <hr>
+  </div>
+
+  <div ngClass="m-4 row" *ngFor="let comment of this.comments">
+    <div ngClass="col-1 p-0">
+      <img ngClass="rounded imageUserComment" *ngIf="comment.user.image" src="{{comment.user.image}}"
+        alt="{{comment.user.name}}">
+      <img ngClass="rounded imageUserComment" *ngIf="!comment.user.image"
+        src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png"
+        alt="">
+    </div>
+
+    <div ngClass="col-11 p-0">
+      <h5><strong>{{comment.user.name}}</strong></h5>
+      <p ngClass="fontSizeTextComment">{{comment.date | amLocale: 'es' | amTimeAgo}}</p>
+      <p>{{comment.text}}</p>
+    </div>
   </div>
 </div>
+
+
 
 
 

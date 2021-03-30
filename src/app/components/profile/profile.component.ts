@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
   public file: File;
   public imageUpdate: any;
   public archivosValidos: Array<string>;
+  public token: string;
 
   constructor(
     private _route: ActivatedRoute,
@@ -43,10 +44,16 @@ export class ProfileComponent implements OnInit {
     this.imageUpdate = 'https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png';
     this.archivosValidos = ['image/png', 'image/jpg', 'image/jpeg'];
     this.articles = [];
+    this.token = null;
   }
 
   ngOnInit(): void {
     this.getParams();
+    this.getToken();
+  }
+
+  getToken(){
+    this.token = this._userService.getToken();
   }
 
   getParams() {
@@ -65,7 +72,11 @@ export class ProfileComponent implements OnInit {
       response => {
         this.user = response.usuario;
         this.getArticlesPorUser(response.usuario._id);
-        this.getUserLogged(response.usuario._id);
+
+        if (this.token) {
+          this.getUserLogged(response.usuario._id);
+        }
+
       },
       error => {
         console.log('Error al obtener el usuario', error);

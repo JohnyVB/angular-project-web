@@ -1,95 +1,36 @@
-<div ngClass="container mt-4 minHeight">
-  <h2>Lista de programación</h2>
 
-  <div *ngIf="this.list" ngClass="mt-3">
-    <div ngClass="bg-white rounded text-center p-3" *ngFor="let list of this.list">
-      <div ngClass="row">
-        <div ngClass="col-9">
-          <h5>{{list.name}}</h5>
-        </div>
-        <div ngClass="col-3">
-
-          <a href="#ListModal" data-toggle="modal" role="button" (click)="editOn(list._id, list.name)"
-            ngClass="btn btn-warning ml-3"><i ngClass="fas fa-pencil-alt"></i></a>
-          <button (click)="deleteList(list._id)" ngClass="btn btn-danger ml-3"><i
-              ngClass="fas fa-trash-alt"></i></button>
-        </div>
+<div ngClass="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div ngClass="modal-dialog">
+    <div ngClass="modal-content">
+      <div ngClass="modal-header">
+        <h5 ngClass="modal-title" id="exampleModalLabel">Listas de lectura</h5>
+        <button type="button" ngClass="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div ngClass="modal-body">
 
-      <div ngClass="container-fluid">
-
-        <div ngClass="row">
-
-          <div *ngIf="!list.articleid.length" ngClass="container">
-            <p ngClass="text-center p-2 bg-info rounded text-white mt-2">Aun no hay libros para esta lista de lectura
-            </p>
-          </div>
-          <article ngClass="article-item col-2" *ngFor="let article of list.articleid">
-
-            <h6 ngClass="titleBook"><a [routerLink]="['/book/'+article._id]">{{article.title}}</a></h6>
-            <div ngClass="img-fluid h-75 over-flow">
-              <img *ngIf="article.image" ngClass="marginCenter" src="{{this.url + 'get-coverimage/' + article.image}}"
-                alt="">
-              <img *ngIf="!article.image" ngClass="marginCenter" src="{{this.url + 'get-defaultimage/defaultBook.jpg'}}"
-                alt="Imagen default">
-            </div>
-            <h6 ngClass="TypeBooklist">
-              {{article.type}}
-            </h6>
-            <button (click)="quitBook(article._id)" ngClass="btn btn-warning mt-3">Quitar de lista</button>
-
-          </article>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="!this.list" ngClass="mt-3">
-    <div ngClass="rounded text-dark p-3 text-center" style="background-color: white;">
-      <h3>Aun no has creado listas de lectura</h3>
-      <p>Para crear listas de lectura, ir a un libro y en el boton <strong>Agregar a lista</strong></p>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="ListModal" ngClass="modal fade">
-    <div ngClass="modal-dialog">
-      <div ngClass="modal-content">
-        <div ngClass="modal-header">
-          <h4 ngClass="modal-title text-black-50">Editar lista de lectura</h4>
-          <button id="close2" type="button" ngClass="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div *ngIf="!this.listDisabled" ngClass="input-group my-3">
+          <input type="text" ngClass="form-control" placeholder="Crear Lista" aria-label="Recipient's username"
+            aria-describedby="button-addon2" [(ngModel)]="this.nameList">
+          <button ngClass="btn btn-success" type="button" id="button-addon2" (click)="saveList()">Guardar</button>
         </div>
 
-        <div ngClass="modal-body">
 
-            <h5>{{this.nameListModal}}</h5>
+        <ul *ngIf="this.lists.length && !this.listDisabled" ngClass="list-group my-3">
+          <li *ngFor="let list of this.lists" ngClass="list-group-item d-flex justify-content-between align-items-center">
+            {{list.name}}
+            <button [disabled]="this.btnListDisabled" (click)="addBookToList(list._id)" ngClass="btn btn-primary">Agregar</button>
+          </li>
+        </ul>
 
-            <div ngClass="row">
-                <div ngClass="col-8 input-group mb-3">
-                  <input type="text" ngClass="form-control" [(ngModel)]="this.newNameList"
-                    placeholder="Nuevo nombre para la lista">
-                </div>
-
-                <div ngClass="col-4">
-                  <button (click)="editList()" ngClass="btn btn-success"><i ngClass="fas fa-save"></i></button>
-                </div>
-            </div>
-
-            
-
-          
+        <div *ngIf="this.listDisabled" ngClass="my-3">
+          <h5 ngClass="text-center">Libro en lista: <strong>{{this.listName}}</strong></h5>
         </div>
-
-        <div ngClass="modal-footer">
-          <button type="button" ngClass="btn btn-success" data-dismiss="modal">Listo</button>
-          <!-- <button type="button" ngClass="btn btn-danger" data-dismiss="modal">Cancelar</button> -->
-        </div>
-
 
 
       </div>
+      <div ngClass="modal-footer">
+        <button type="button" ngClass="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
-
 </div>

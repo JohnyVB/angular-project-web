@@ -22,14 +22,14 @@ import { CookieService } from "ngx-cookie-service";
     }
 
 
-    getArticles(populate: string): Observable<any> {
-        return this._http.get(this.url + 'articles/populate/' + populate);
+    getArticles(cantidad: number): Observable<any> {
+        return this._http.get(this.url + 'articles/count/' + cantidad);
     }
 
     getArticle(id: string): Observable<any> {
         return this._http.get(this.url + 'articles/' + id);
     }
-
+ 
     saveArticle(article: any): Observable<any> {
 
         let token = this.getToken();
@@ -105,9 +105,7 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.get(this.url + 'get-articlexchapter/' + chapterId);
     }
 
-    search(searchString: string): Observable<any> {
-        return this._http.get(this.url + 'search/' + searchString);
-    }
+    
 
 
 

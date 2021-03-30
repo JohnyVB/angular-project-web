@@ -1,40 +1,42 @@
-<div ngClass="row">
+<div ngClass="row mt-4 minHeight">
 
-  <section ngClass="container col-9 text-center">
 
-    <h2>Series populares</h2>
+  <section ngClass="col-9 row text-center mt-3 m-0 p-0 justify-content-end">
 
-    <div ngClass="row mt-4 mb-4 ml-2">
+    <h2>Últimos capítulos</h2>
 
-      <article ngClass="col-2 articlePaddin" *ngFor="let article of this.articles">
+    <article ngClass="col-6 row my-2 p-0" *ngFor="let article of this.articles">
 
-        <div ngClass="card text-center">
+      <div ngClass="card text-center col-6 col-sm-4 p-0">
 
-          <div ngClass="card-body cardBody">
-            <h5 ngClass="card-title cardTitle"><a ngClass="linkdecoration"
-                [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
+        <div ngClass="card-body p-0">
+          <h5 ngClass="card-title m-1"><a ngClass="linkdecoration"
+              [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
 
-            <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">
-            <img *ngIf="!article.image" ngClass="card-img-top"
-              src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg"
-              alt="Card image cap">
+          <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">
+          <img *ngIf="!article.image" ngClass="card-img-top"
+            src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg"
+            alt="Card image cap">
 
-          </div>
-
-          <div ngClass="card-footer text-muted cardFooter">
-            <h6 ngClass="card-title cardText">{{article.type}}</h6>
-          </div>
         </div>
 
-      </article>
+        <div ngClass="card-footer text-muted p-0">
+          <h6 ngClass="card-title m-1">{{article.type}}</h6>
+        </div>
+      </div>
 
-    </div>
+
+      <div ngClass="card text-start col-6 p-0">
+
+        <app-listchapters [articleId]="article._id"></app-listchapters>
+
+
+      </div>
+
+    </article>
+
 
   </section>
 
-  <div ngClass="col-3">
-    <app-sidebar *ngIf="!this.home"></app-sidebar>
-  </div>
-
-
+  <app-sidebar ngClass="col-3 p-0" *ngIf="!this.home"></app-sidebar>
 </div>

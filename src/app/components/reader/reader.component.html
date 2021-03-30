@@ -1,12 +1,14 @@
-<div ngClass="minHeight">
+<div id="inicio" ngClass="minHeight">
   <section ngClass="row mx-2">
 
     <div ngClass="col-12 bg-warning text-center text-white m-0">
       <h2>{{this.chapter.article.title}}</h2>
       <h2>Capitulo: {{this.chapter.number}} - {{this.chapter.title}}</h2>
-      <h2>Publicador por: <a ngClass="text-decoration-none text-white"
+      <h2>Publicador por:
+        <a ngClass="text-decoration-none text-white"
           [routerLink]="['/profile/' + this.chapter.user._id]">{{this.chapter.user.name}}
-          {{this.chapter.user.lastname}}</a></h2>
+          {{this.chapter.user.lastname}}</a>
+      </h2>
     </div>
 
     <div ngClass="col-4 d-flex justify-content-center btn-group my-3" role="group">
@@ -16,7 +18,7 @@
         Volver
       </a>
 
-      <button type="button" (click)="this.zoom = (this.zoom - 0.1)" ngClass="btn btn-dark mx-3">
+      <button type="button" (click)="setMinusZoom()" ngClass="btn btn-dark mx-3">
         <i ngClass="fas fa-search-minus mr-2"></i>
         Zoom -
       </button>
@@ -26,19 +28,19 @@
 
     <div ngClass="col-4 my-3">
 
-      <div>
+      <!-- <div>
         <select ngClass="form-select" aria-label="Default select example">
           <option selected>Pagina</option>
           <option [value]="1">1</option>
         </select>
-      </div>
+      </div> -->
 
     </div>
 
 
     <div ngClass="col-4 row d-flex justify-content-center btn-group my-3" role="group">
 
-      <button type="button" (click)="this.zoom = (this.zoom + 0.1) " ngClass="col-5 btn btn-dark mx-3">
+      <button type="button" (click)="setPlusZoom() " ngClass="col-5 btn btn-dark mx-3">
         <i ngClass="fas fa-search-plus mr-2"></i>
         Zoom +
       </button>
@@ -59,8 +61,18 @@
 
 
     <pdf-viewer ngClass="col-12" [src]="this.chapter.image" [original-size]="false" [(page)]="this.page"
-      [(show-all)]="this.chapter.user.reader" [(zoom)]="this.zoom" [autoresize]="true">
+      [(show-all)]="this.chapter.user.reader" [(zoom)]="this.zoom" [zoom-scale]="'page-width'">
     </pdf-viewer>
+
+
+
+    <!-- <div style="width:760px;">
+      <div>
+        <iframe id="pdf-js-viewer" [src]="this.chapter.image" title="webviewer"
+          frameborder="0" width="500" height="600"></iframe>
+      </div>
+
+    </div> -->
 
     <div ngClass="col-12 d-flex justify-content-center btn-group my-3" role="group">
 
@@ -69,12 +81,12 @@
         Capitulo anterior
       </button>
 
-      <button type="button" *ngIf="!this.chapter.user.reader" ngClass="btn btn-dark mx-2">
+      <button (click)="previusPague()" type="button" *ngIf="!this.chapter.user.reader" ngClass="btn btn-dark mx-2">
         <i ngClass="fas fa-angle-left mr-2"></i>
         Pagina anterior
       </button>
 
-      <button type="button" *ngIf="!this.chapter.user.reader" ngClass="btn btn-dark mx-2">
+      <button (click)="nextPague()" type="button" *ngIf="!this.chapter.user.reader" ngClass="btn btn-dark mx-2">
         Pagina siguiente
         <i ngClass="fas fa-angle-right ml-2"></i>
       </button>
@@ -93,8 +105,7 @@
     </div>
 
   </section>
-  <div *ngIf="this.commentsOn" ngClass="px-5">
-    <app-comments [reader]="true">
-    </app-comments>
+  <div *ngIf="this.commentsOn">
+    <app-comments [reader]="true"></app-comments>
   </div>
 </div>

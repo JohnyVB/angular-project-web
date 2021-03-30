@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
-import { ChapterService } from '../../services/chapter.service';
 import { ListService } from '../../services/list.service';
 import { Global } from '../../services/global';
 import Swal from 'sweetalert2';
@@ -12,7 +11,7 @@ import Swal from 'sweetalert2';
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css'],
-  providers: [ArticleService, UserService, ChapterService, ListService]
+  providers: [ArticleService, UserService, ListService]
 })
 export class BookComponent implements OnInit {
 
@@ -27,6 +26,10 @@ export class BookComponent implements OnInit {
   public chaptersOn: boolean;
   public userProp: boolean;
   public updateArticle: any;
+  public token: string;
+  public articleUserId: string;
+  public btnListString: string;
+  public btnListOff: boolean;
 
   public listaTipo: string[] = ["Tipo 1", "Tipo 2", "Tipo 3"];
   public listaGeneros: string[] = ["Accion", "Aventura", "Ciencia ficcion", "Comedia", "Terror", "Drama", "Romance"];
@@ -37,7 +40,6 @@ export class BookComponent implements OnInit {
     private _route: ActivatedRoute,
     private _articleService: ArticleService,
     private _userService: UserService,
-    private _chapterService: ChapterService,
     private _listService: ListService
   ) {
 
@@ -46,33 +48,28 @@ export class BookComponent implements OnInit {
     this.editOn = false;
     this.commentsOn = true;
     this.chaptersOn = false;
-    this.article = new Article('', '', '', '', null, '', null, '', null, '');
+    this.article = new Article('', '', '', '', null, '', null, '', null, {});
     this.updateArticle = {
       title: '',
       description: '',
       progress: '',
       genders: []
     }
+    this.btnListString = 'Agregar a lista';
+    this.btnListOff = false;
+    this.articleUserId = null;
+    this.token = null;
     this.userProp = false;
-    this.userId = '';
-    this.urlImage = 'https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg'
-
+    this.userId = null;
+    this.urlImage = 'https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg';
   }
 
-  ngOnInit(): void {
-    this.getparams();
+  async ngOnInit(): Promise<any> {
+    await this.getparams();
+    await this.getToken();
   }
 
-  toggle(){
-    this.commentsOn = !this.commentsOn;
-    this.chaptersOn = !this.chaptersOn;
-  }
-
-  toggleEdit(){
-    this.editOn = !this.editOn;
-  }
-
-  getparams(){
+  getparams() {
     this._route.params.subscribe(
       response => {
         this.articleid = response.id;
@@ -84,11 +81,11 @@ export class BookComponent implements OnInit {
     );
   }
 
-  getArticle(articleId: string){
+  getArticle(articleId: string) {
     this._articleService.getArticle(articleId).subscribe(
       response => {
         this.article = response.articulo;
-        this.getUserLogged();
+        this.articleUserId = response.articulo.user._id;
       },
       error => {
         console.log('Error al traer el articulo', error);
@@ -96,22 +93,48 @@ export class BookComponent implements OnInit {
     );
   }
 
+  getToken() {
+    this.token = this._userService.getToken();
+    if (this.token) {
+      this.getUserLogged();
+    }
+  }
 
-  getUserLogged(){
+  getUserLogged() {
     this._userService.getUserLogged().subscribe(
       response => {
         this.userId = response.usuario._id;
-        if (this.userId === this.article.user['_id']) {
-          this.userProp = true;
-        }else{
+        this.getArticleInList(response.usuario._id);
+        if (this.userId === this.articleUserId) {
+          this.userProp = true;   
+        } else {
           this.userProp = false;
-        }        
+        }
       },
       error => {
         console.log(error);
-        
       }
     );
+  }
+
+  getArticleInList(userId: string) {
+    this._listService.getListPorArticle(userId, this.article._id).subscribe(
+      response => {
+        if (response.lista) {
+          this.btnListString = 'En lista';
+          this.btnListOff = true;
+        }
+      }
+    );
+  }
+
+  toggle(){
+    this.commentsOn = !this.commentsOn;
+    this.chaptersOn = !this.chaptersOn;
+  }
+
+  toggleEdit(){
+    this.editOn = !this.editOn;
   }
 
   getFile(files: FileList) {
@@ -157,7 +180,6 @@ export class BookComponent implements OnInit {
     );
   }
 
-
   deleteArticle(){
     Swal.fire({
       title: '¿Esta seguro de eliminar el libro?',
@@ -189,48 +211,4 @@ export class BookComponent implements OnInit {
       }
     })
   }
-
-
-
-
-
- 
-
-
-
-
-  /* deleteArticle(articleId: any) {
-
-    Swal.fire({
-      title: '¿Esta seguro de eliminar el libro?',
-      text: "Una vez eliminado no se podra recuperar!",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: `Eliminar`,
-      denyButtonText: `Cancelar`,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-
-          this._articleService.deleteArticle(articleId).subscribe(
-            response => {
-              console.log('El libro ha sido eliminado correctamente', response);
-              this._router.navigate(['/profile/' + this.user._id]);
-
-            },
-            error => {
-              console.log('Error al borrar el libro', error);
-
-            }
-          );
-        } else if (result.isDenied) {
-          Swal.fire({
-            title: "No se ha eliminado el libro!",
-            icon: 'info'
-          });
-        }
-      });
-  } */
-
-
 }

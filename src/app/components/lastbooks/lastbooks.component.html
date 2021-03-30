@@ -1,18 +1,18 @@
 <div ngClass="row">
 
 
-  <section ngClass="col-9 text-center">
+  <section ngClass="col-9 text-center mt-3">
 
     <h2>Últimos libros</h2>
 
-    <div ngClass="row mt-4 mb-4 ml-2">
+    <div ngClass="row my-4 m-2">
 
-      <article ngClass="col-2 mt-2 articlePaddin" *ngFor="let article of this.articles">
+      <article ngClass="col-sm-2 m-3 p-0" *ngFor="let article of this.articles">
 
         <div ngClass="card text-center">
 
-          <div ngClass="card-body cardBody">
-            <h5 ngClass="card-title cardTitle"><a ngClass="linkdecoration"
+          <div ngClass="card-body p-0">
+            <h5 ngClass="card-title m-1"><a ngClass="linkdecoration"
                 [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
 
             <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">
@@ -22,8 +22,8 @@
 
           </div>
 
-          <div ngClass="card-footer text-muted cardFooter">
-            <h6 ngClass="card-title cardText">{{article.type}}</h6>
+          <div ngClass="card-footer text-muted p-0">
+            <h6 ngClass="card-title m-1">{{article.type}}</h6>
           </div>
         </div>
 

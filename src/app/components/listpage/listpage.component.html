@@ -1,0 +1,104 @@
+<div ngClass="container mt-4 minHeight">
+  <h2 ngClass="text-center">Lista de programación</h2>
+
+  <div *ngIf="this.list" ngClass="mt-3">
+    <div ngClass="bg-white rounded text-center p-3" *ngFor="let list of this.list">
+      <div ngClass="row">
+        <div ngClass="col-9">
+          <h5>{{list.name}}</h5>
+        </div>
+        <div ngClass="col-3">
+
+          <button data-bs-target="#ListModal" data-bs-toggle="modal" role="button" (click)="editOn(list._id, list.name)"
+            ngClass="btn btn-warning ml-3 text-white">
+            <i ngClass="fas fa-pencil-alt"></i>
+          </button>
+          <button (click)="deleteList(list._id)" ngClass="btn btn-danger ml-3"><i
+              ngClass="fas fa-trash-alt"></i></button>
+        </div>
+      </div>
+
+      <div ngClass="container-fluid">
+
+        <div ngClass="row">
+
+          <div *ngIf="!this.list.article.length" ngClass="container">
+            <p ngClass="text-center p-2 bg-info rounded text-white mt-2">
+              Aun no hay libros para esta lista de lectura
+            </p>
+          </div>
+
+          <article ngClass="col-sm-2 m-3 p-0" *ngFor="let article of this.list.article">
+
+            <div ngClass="card text-center">
+
+              <div ngClass="card-body p-0">
+                <h5 ngClass="card-title m-1"><a ngClass="linkdecoration"
+                    [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
+
+                <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">
+                <img *ngIf="!article.image" ngClass="card-img-top"
+                  src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/defaultBook_njteg0.jpg"
+                  alt="Card image cap">
+
+              </div>
+
+              <div ngClass="card-footer text-muted p-0">
+                <h6 ngClass="card-title m-1">{{article.type}}</h6>
+              </div>
+            </div>
+            <button (click)="quitBook(list._id, article._id)" ngClass="btn btn-warning mt-3 text-white">Quitar de lista</button>
+
+          </article>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!this.list" ngClass="mt-3">
+    <div ngClass="rounded text-dark p-3 text-center" style="background-color: white;">
+      <h3>Aun no has creado listas de lectura</h3>
+      <p>Para crear listas de lectura, ir a un libro y en el boton <strong>Agregar a lista</strong></p>
+    </div>
+  </div>
+
+
+
+  <!-- Modal -->
+  <div id="ListModal" ngClass="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div ngClass="modal-dialog">
+      <div ngClass="modal-content">
+        <div ngClass="modal-header">
+          <h4 ngClass="modal-title text-black-50">Editar lista de lectura</h4>
+          <button id="close2" type="button" ngClass="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div ngClass="modal-body">
+
+          <h5>{{this.nameListModal}}</h5>
+
+          <div ngClass="input-group">
+            <input type="text" ngClass="form-control" placeholder="Nuevo nombre"
+              aria-describedby="button-addon2" [(ngModel)]="this.newNameList">
+            <button (click)="editList()" ngClass="btn btn-success" type="button"
+              id="button-addon2"><i ngClass="fas fa-save"></i></button>
+          </div>
+
+
+
+        </div>
+        <div ngClass="modal-footer">
+          <button type="button" ngClass="btn btn-success" data-bs-dismiss="modal">Listo</button>
+          <!-- <button type="button" ngClass="btn btn-danger" data-dismiss="modal">Cancelar</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

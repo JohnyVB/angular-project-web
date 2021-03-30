@@ -16,6 +16,7 @@ export class LastbooksComponent implements OnInit {
 
   @Input() home: boolean;
 
+
   constructor(
     private _articleService: ArticleService
   ) {
@@ -25,8 +26,8 @@ export class LastbooksComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-    this._articleService.getArticles('user').subscribe(
+    const cantidad = (!this.home) ? 20 : 10;
+    this._articleService.getArticles(cantidad).subscribe(
       response => {
         this.articles = response.articulos;
       },

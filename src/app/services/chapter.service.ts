@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie-service";
 import { Global } from './global';
@@ -19,8 +19,8 @@ import { Global } from './global';
         return this.cookie.get('x-token');
     }
 
-    getChapters(): Observable<any> {
-        return this._http.get(this.url + 'chapters');
+    getChapters(cantidad: number): Observable<any> {
+        return this._http.get(this.url + 'chapters/count/' + cantidad);
     }
 
     getChaptersPorUnArticle(articleid: string, order: number): Observable<any> {

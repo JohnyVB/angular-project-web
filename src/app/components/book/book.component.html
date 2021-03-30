@@ -44,8 +44,13 @@
            </div>
          </div>
 
-         <button *ngIf="!this.userProp" ngClass="col-12 btn btn-primary mt-2"><i
-             ngClass="far fa-plus-square mr-2"></i>Agregar a lista</button>
+         <button [disabled]="this.btnListOff" *ngIf="!this.userProp && this.userId" ngClass="col-12 btn btn-primary mt-2" data-bs-toggle="modal"
+           data-bs-target="#exampleModal">
+           <i ngClass="far fa-plus-square mr-2"></i>
+           {{this.btnListString}}
+          </button>
+
+          <app-list></app-list>
 
        </div>
 
@@ -158,11 +163,11 @@
      </div>
 
 
-     <div *ngIf="this.commentsOn" ngClass="bg-info m-2 p-2 rounded text-white">
+     <div *ngIf="this.commentsOn">
        <app-comments></app-comments>
      </div>
 
-     <div *ngIf="this.chaptersOn" ngClass="bg-info m-2 p-2 rounded text-white">
+     <div *ngIf="this.chaptersOn">
        <app-chapters></app-chapters>
      </div>
 

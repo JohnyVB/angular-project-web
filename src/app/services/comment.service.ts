@@ -20,9 +20,9 @@ import { CookieService } from 'ngx-cookie-service';
         return this.cookie.get("x-token");
     }
 
-    getComments(articleId: string, order: string): Observable<any> {
+    getComments(articleId: string, order: string, coleccion: string): Observable<any> {
 
-        return this._http.get(this.url + 'comments/article/' + articleId + '/' + order);
+        return this._http.get(this.url + 'comments/' + coleccion + '/' + articleId + '/' + order);
 
     }
 

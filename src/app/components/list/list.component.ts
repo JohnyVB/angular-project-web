@@ -1,154 +1,110 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'
 import { ListService } from '../../services/list.service';
+import { UserService } from '../../services/user.service';
 import { List } from '../../models/list';
-import { Global } from '../../services/global';
 import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
-  providers: [ListService]
+  providers: [ListService, UserService]
 })
 export class ListComponent implements OnInit {
 
-  public userid: any;
-  public url: string;
-  public list: List[];
-  public newNameList: string;
-  public listIdupdate: string;
-  public nameListModal: string;
+  public lists: List[];
+  public userId: string;
+  public nameList: string;
+  public articleId: string;
+  public listDisabled: boolean;
+  public listName: string;
+
 
   constructor(
-    private _route: ActivatedRoute,
-    private _listService: ListService
+    private _listService: ListService,
+    private _userService: UserService,
+    private _route: ActivatedRoute
   ) {
-    this.url = Global.url;
-    this.newNameList = '';
-    this.listIdupdate = '';
-    this.nameListModal = '';
+    this.lists = [];
+    this.userId = null;
+    this.nameList = null;
+    this.articleId = null;
+    this.listDisabled = false;
   }
 
-  ngOnInit(): void {
-    this.getUserId();
-    this.getList();
+  async ngOnInit(): Promise<any> {
+    await this.getParams();
+    await this.getToken();
   }
 
-  getUserId(){
-    this._route.params.subscribe(params => {
-      this.userid = params.id;
-    });
-  }
-
-  getList(){
-    this._listService.getList(this.userid).subscribe(
+  getParams() {
+    this._route.params.subscribe(
       response => {
-        if (response) {
-          this.list = response.user.list;          
-        }else{
-          console.warn('No hay listas');
-        }
-      },
-      error => {
-        console.warn('Error al traer la lista');
-        
+        this.articleId = response.id;
       }
     );
   }
 
-  editList(){
+  getToken() {
+    const token = this._userService.getToken();
 
-    if (this.newNameList === '' || !this.newNameList) {
+    if (token) {
+      this.getUserLogged();
+    }
+  }
+
+  getUserLogged() {
+    this._userService.getUserLogged().subscribe(
+      response => {
+        this.userId = response.usuario._id;
+        this.getLists(response.usuario._id);
+      }
+    );
+  }
+
+  getLists(userId: string) {
+    this._listService.getLists(userId).subscribe(
+      response => {
+        this.lists = response.listas;
+      }
+    );
+  }
+
+  saveList() {
+    if (!this.nameList) {
       Swal.fire(
         'Campo vacio',
-        'Por favor ingrese un nuevo nombre a la lista',
+        'Por favor ingrese un nombre a la lista',
         'error'
       );
-    }else{
-
-      let update = {
-        name: this.newNameList
+    } else {
+      const data = {
+        name: this.nameList
       }
-
-      this._listService.editList(this.listIdupdate, update).subscribe(
+      this._listService.saveList(data).subscribe(
         response => {
-          if (response) {
-            this.nameListModal = response.listUpdated.name;
-            this.newNameList = '';
-            this.getList();
-          }
-        },
-        error => {
-          console.warn('Error en la edición de la lista');
-          
+          this.nameList = '';
+          this.getLists(this.userId);
         }
       );
     }
   }
 
-  editOn(listid:string, namelist:string){
-    this.listIdupdate = listid;
-    this.nameListModal = namelist;
-  }
 
-  deleteList(listid:string){
-
-    Swal.fire({
-      title: '¿Esta seguro de eliminar la lista?',
-      text: "Una vez eliminado no se podra recuperar!",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: `Eliminar`,
-      denyButtonText: `Cancelar`,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-
-          this._listService.deleteList(listid).subscribe(
-            response => {
-              if (response) {
-                this.getList();
-              }
-            },
-            error => {
-              console.warn('Error al eliminar la lista');
-              
-            }
-          );
-          
-
-          Swal.fire({
-            text: "La lista se ha eliminado correctamente",
-            icon: "success",
-          });
-        } else if (result.isDenied) {
-          Swal.fire({
-            title: "No se ha eliminado la lista",
-            icon: 'info'
-          });
-        }
-      });
-
-  }
-
-  quitBook(articleid:string){
-
-    console.log(articleid);
-    
-    this._listService.deleteBookList(articleid).subscribe(
+  addBookToList(listId: string) {
+    this._listService.addBookToList(listId, this.articleId).subscribe(
       response => {
-        console.log(response);
-        
-        this.getList();
-      },
-      error => {
-        console.warn('Error al quitar el libro de la lista');
-        console.log(error);
-        
-        
+        if (response.lista) {
+          this.listDisabled = true;
+          this.listName = response.lista.name;
+        }
       }
-    );
+    )
   }
+
+
+
+
 
 }

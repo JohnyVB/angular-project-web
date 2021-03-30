@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
       email: null,
       password: null
     };
-
+    this.searchString = null;
     this.userActivo = null;
     this.user = new User('', '', '', '', '', '', null, null, '', null, null);
 
@@ -79,10 +79,20 @@ export class HeaderComponent implements OnInit {
 
   cerrarSession() {
     this._userService.sessionClosed();
-    this._router.navigate(['/home']);
+    this.user = null;
+    /* this._router.navigate(['/home']); */
   }
 
   sendString() {
-    this._router.navigate(['/search/' + this.searchString]);
+
+    if (!this.searchString) {
+      Swal.fire(
+        'No hay datos para la busqueda',
+        'Por favor ingrese datos para buscar',
+        'warning'
+      );
+    }else{
+      this._router.navigate(['/search/' + this.searchString]);
+    }
   }
 }

@@ -29,6 +29,8 @@ import { SearchComponent } from './components/search/search.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { NotifyComponent } from './components/notify/notify.component';
 import { ListComponent } from './components/list/list.component';
+import { ListchaptersComponent } from './components/listchapters/listchapters.component';
+import { ListpageComponent } from './components/listpage/listpage.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { ListComponent } from './components/list/list.component';
     SearchComponent,
     CommentsComponent,
     NotifyComponent,
-    ListComponent
+    ListComponent,
+    ListchaptersComponent,
+    ListpageComponent
   ],
   imports: [
     BrowserModule,

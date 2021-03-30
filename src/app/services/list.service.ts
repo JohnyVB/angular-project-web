@@ -16,52 +16,51 @@ import { CookieService } from 'ngx-cookie-service';
     }
 
     getToken() {
-        //return this.cookie.get('token');
-        return sessionStorage.getItem('tokenSession');
+        return this.cookie.get('x-token');
     }
 
-    saveList(userid: any, params: any): Observable<any> {
+    getLists(userid: string): Observable<any> {
         const token = this.getToken();
-
         if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.post(this.url + "save-list/" + userid, params, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
-
-    addBookToList(listid: any, articleid: any): Observable<any> {
-        const token = this.getToken();
-
-        if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.put(this.url + "add-book-list/" + listid, articleid, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.get(this.url + "lists/" + userid, { headers: headers });
         }
 
     }
 
-    getList(userid: string): Observable<any> {
+    getListPorArticle(userId: string, article: string): Observable<any> {
         const token = this.getToken();
         if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.get(this.url + "get-list/" + userid, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.get(this.url + "lists/article/" + userId + '/' + article, { headers: headers });
+        }
+    }
+
+    addBookToList(listId: string, article: string): Observable<any> {
+        const token = this.getToken();
+        if (token) {
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.put(this.url + "lists/" + listId, { article }, { headers: headers });
         }
 
     }
 
-    editList(listid: any, params: any): Observable<any> {
+    saveList(data: any): Observable<any> {
         const token = this.getToken();
 
         if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.put(this.url + "edit-list/" + listid, params, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
+            let params = JSON.stringify(data)
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.post(this.url + "lists", params, { headers: headers });
+        }
+    }
+
+    editList(listid: any, name: any): Observable<any> {
+        const token = this.getToken();
+
+        if (token) {
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.put(this.url + "lists/editlist/" + listid, { name }, { headers: headers });
         }
     }
 
@@ -69,43 +68,18 @@ import { CookieService } from 'ngx-cookie-service';
         const token = this.getToken();
 
         if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.delete(this.url + "delete-list/" + listid, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.patch(this.url + "lists/" + listid, null,{ headers: headers });
+        } 
     }
 
-    deleteBookList(articleid: string): Observable<any> {
-        const token = this.getToken();
-        
-        if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.get(this.url + "delete-booklist/" + articleid, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
-
-    getListArticle(articleid:string):Observable<any>{
+    deleteBookList(listId: string, article: string): Observable<any> {
         const token = this.getToken();
 
         if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.get(this.url + "get-list-article/" + articleid, { headers: headers }); 
-        }else{
-            return this._http.get(this.url + 'error');
-        }
+            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
+            return this._http.patch(this.url + "lists/deletebook/" + listId, { article }, { headers: headers });
+        } 
     }
 
-    updateUserList(listid:any, params:any):Observable<any>{
-        const token = this.getToken();
-
-        if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.put(this.url + "update-user-list/" + listid, params, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
 }

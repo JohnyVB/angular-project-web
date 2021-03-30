@@ -1,9 +1,11 @@
  <aside ngClass="m-3">
    
-   <div id="create-article" ngClass="sidebar-item p-3 bg-white" *ngIf="!this.chapterOff">
-     <h3><i ngClass="fas fa-book"></i>Añadir un libro</h3>
-     <p>Añade el libro que estás creando</p>
-     <a (click)="sendIdUser()" ngClass="btnMain text-white">Añadir libro</a>
+   <div ngClass="p-3 bg-white rounded" *ngIf="!this.chapterOff">
+     <h3 ngClass="text-center"><i ngClass="fas fa-book mr-2"></i>Añadir un libro</h3>
+     <hr>
+     <p ngClass="text-center">Añade el libro que estás creando</p>
+     <a (click)="sendIdUser()" ngClass="btn btn-dark text-white text-center d-flex justify-content-center">Añadir
+       libro</a>
    </div>
 
    <div hidden ngClass="sidebar-item mt-3 p-3 bg-white">

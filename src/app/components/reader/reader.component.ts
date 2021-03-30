@@ -24,8 +24,8 @@ export class ReaderComponent implements OnInit {
     private _route: ActivatedRoute,
     private _chapterService: ChapterService,
   ) {
-    this.zoom = 1;
-    this.page = null;
+    this.zoom = 1.0;
+    this.page = 1;
     this.url = Global.url;
     this.chapterId = '';
     this.commentsOn = false;
@@ -51,14 +51,29 @@ export class ReaderComponent implements OnInit {
     this._chapterService.getChapter(chapterId).subscribe(
       response => {
         this.chapter = response.capitulo;
-        console.log(this.chapter);
-        
       }
     );
   }
 
   openComments(){
     this.commentsOn = !this.commentsOn;
+  }
+
+  setPlusZoom(){
+    this.zoom += 0.1;
+
+  }
+
+  setMinusZoom(){
+    this.zoom -= 0.1;
+  }
+
+  nextPague(){
+    this.page += 1;
+  }
+
+  previusPague(){
+    this.page -= 1;
   }
 
 }

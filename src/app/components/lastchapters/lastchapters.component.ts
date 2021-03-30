@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ArticleService } from '../../services/article.service';
 import { ChapterService } from '../../services/chapter.service'
 import { Article } from '../../models/article';
-import { Global } from '../../services/global';
 
 @Component({
   selector: 'app-lastchapters',
@@ -14,29 +13,43 @@ export class LastchaptersComponent implements OnInit {
 
   @Input() home: boolean;
 
-  public articles: any[];
-  public url: string;
+  public articles: Article[];
 
   constructor(
     private _articleService: ArticleService,
     private _chapterService: ChapterService
   ) {
     this.home = false;
-    this.url = Global.url;
   }
 
   ngOnInit(): void {
+    this.getChapters();
+    this.getArticles();
+  }
 
-    this._articleService.getArticles(null).subscribe(
+  getArticles(){
+    const cantidad = (!this.home) ? 20 : 10;
+
+    this._articleService.getArticles(cantidad).subscribe(
       response => {
         this.articles = response.articulos;
         console.log(this.articles);
-        
+
       },
       error => {
         console.log(error);
 
       });
+  }
+
+  getChapters(){
+    const cantidad = (!this.home) ? 20 : 10;
+    this._chapterService.getChapters(cantidad).subscribe(
+      response => {
+        console.log(response.capitulo);
+        
+      }
+    );
   }
 
 }

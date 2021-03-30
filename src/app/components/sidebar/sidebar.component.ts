@@ -14,22 +14,19 @@ export class SidebarComponent implements OnInit {
 
   @Input() chapterOff: boolean;
 
-  public token: string;
-
   constructor(
     private _userService: UserService,
     private _router: Router
   ) {
     this.chapterOff = false;
-    this.token = '';
   }
 
   ngOnInit(): void {
   }
 
   sendIdUser() {
-    this.token = this._userService.getToken();
-    if (this.token) {
+    const token = this._userService.getToken();
+    if (token) {
       this._router.navigate(['/newbook/']);
     } else {
       Swal.fire({

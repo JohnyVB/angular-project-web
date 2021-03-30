@@ -2,11 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommentService } from '../../services/comment.service';
-import { NotifyService } from '../../services/notify.service';
-import { ArticleService } from '../../services/article.service';
-import { ListService } from '../../services/list.service';
 import { Global } from '../../services/global';
-import { User } from '../../models/user';
 import { Comment } from '../../models/comment';
 import Swal from 'sweetalert2';
 
@@ -39,7 +35,7 @@ export class CommentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParams();
-    this.getUserLogged();
+    this.getToken();
   }
 
   getParams(){
@@ -54,8 +50,18 @@ export class CommentsComponent implements OnInit {
     );
   }
 
+  getToken(){
+    const token = this._userService.getToken();
+    if (token) {
+      this.getUserLogged();
+    }
+  }
+
   getComments(order: any = -1) {
-    this._commentService.getComments(this.articleId, order).subscribe(
+
+    const coleccion = (this.reader) ? 'chapter' : 'article';
+
+    this._commentService.getComments(this.articleId, order, coleccion).subscribe(
       response => {
         this.comments = response.comentarios;
       },
@@ -82,7 +88,10 @@ export class CommentsComponent implements OnInit {
         'error'
       );
     } else {
-      this._commentService.saveComment(this.articleId, this.textComment, 'article').subscribe(
+
+      const coleccion = (this.reader) ? 'chapter' : 'article';
+
+      this._commentService.saveComment(this.articleId, this.textComment, coleccion).subscribe(
         response => {
           this.textComment = '';
           this.getComments();

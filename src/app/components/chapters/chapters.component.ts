@@ -32,7 +32,7 @@ export class ChaptersComponent implements OnInit {
   ngOnInit(): void {
     
     this.getParams();
-    this.getUserLogged()
+    this.getToken();
   }
 
   getParams(){
@@ -46,6 +46,13 @@ export class ChaptersComponent implements OnInit {
         console.warn('No hay libro');
       }
     );
+  }
+
+  getToken(){
+    const token = this._articleService.getToken();
+    if (token) {
+      this.getUserLogged();
+    }
   }
 
   getChapters(articleId: string, order: number = -1){
