@@ -64,6 +64,12 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development":{
+              "fileReplacements": [{
+                "replace": "src/environments/environment.prod.ts",
+                "with": "src/environments/environment.ts"
+              }]
             }
           }
         },
@@ -75,6 +81,9 @@
           "configurations": {
             "production": {
               "browserTarget": "angular-project-web:build:production"
+            },
+            "development": {
+              "browserTarget": "angular-project-web:build:development"
             }
           }
         },
