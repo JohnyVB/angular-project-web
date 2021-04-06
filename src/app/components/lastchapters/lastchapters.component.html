@@ -5,13 +5,16 @@
 
     <h2>Últimos capítulos</h2>
 
+    <div *ngIf="!this.articles">
+      <i ngClass="fas fa-spinner fa-pulse fa-10x text-info mt-2"></i>
+    </div>
+
     <article ngClass="col-6 row my-2 p-0" *ngFor="let article of this.articles">
 
       <div ngClass="card text-center col-6 col-sm-4 p-0">
 
         <div ngClass="card-body p-0">
-          <h5 ngClass="card-title m-1"><a ngClass="linkdecoration"
-              [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
+          
 
           <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">
           <img *ngIf="!article.image" ngClass="card-img-top"
@@ -28,7 +31,29 @@
 
       <div ngClass="card text-start col-6 p-0">
 
-        <app-listchapters [articleId]="article._id"></app-listchapters>
+        <div ngClass="card-body p-0">
+          <h4 ngClass="card-title text-truncate text-center border-bottom">
+            <a ngClass="linkdecoration" [routerLink]="['/book/'+ article._id]">
+              {{article.title}}
+            </a>
+          </h4>
+
+          <div *ngIf="!article.chapter.length" ngClass="m-3">
+            <h6 ngClass="text-center text-info"><strong>Aun no hay capitulos</strong></h6>
+          </div>
+
+          <div *ngIf="article.chapter.length" ngClass="m-3">
+            <div *ngFor="let chapter of article.chapter">
+              <p ngClass="card-text fs-6 my-4">
+                <a ngClass="text-decoration-none text-dark" [routerLink]="['/reader/' + chapter._id]">
+                  <strong>{{chapter.number}} - {{chapter.title}}</strong>
+                </a>
+                <span ngClass="float-end">{{chapter.date | amLocale: 'es' | amTimeAgo }}</span>
+              </p>
+            </div>
+          </div>
+
+        </div>
 
 
       </div>

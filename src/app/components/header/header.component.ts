@@ -42,14 +42,14 @@ export class HeaderComponent implements OnInit {
     this.getToken()
   }
 
-  getToken(){
+  getToken() {
     const token = this._userService.getToken();
     if (token) {
       this.getUserLogged();
     }
   }
 
-  loginUser() {    
+  loginUser() {
     this._userService.login(this.login).subscribe(
       response => {
         this.user = response.usuario;
@@ -69,18 +69,36 @@ export class HeaderComponent implements OnInit {
 
   getUserLogged() {
     this._userService.getUserLogged().subscribe(response => {
-      this.user = response.usuario;
-      this.userActivo = true;
+      
+      if (response.usuario) {
+        this.user = response.usuario;
+        this.getNotify(response.usuario._id);
+        this.userActivo = true;
+      }else{
+        this.userActivo = false;
+      }
+
     },
       error => {
-        this.userActivo = false;
+        console.log(error);
+        
+      });
+  }
+
+  getNotify(userid: any) {
+    this._notifyService.getNotifys(userid).subscribe(
+      response => {
+        this._notifyService.notifyCount = response.totalNews;
+      },
+      error => {
+        console.log(error);
       });
   }
 
   cerrarSession() {
-    this._userService.sessionClosed();
     this.user = null;
-    /* this._router.navigate(['/home']); */
+    this._userService.sessionClosed();
+    this._router.navigate(['/home']);
   }
 
   sendString() {
@@ -91,7 +109,7 @@ export class HeaderComponent implements OnInit {
         'Por favor ingrese datos para buscar',
         'warning'
       );
-    }else{
+    } else {
       this._router.navigate(['/search/' + this.searchString]);
     }
   }

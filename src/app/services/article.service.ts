@@ -29,7 +29,7 @@ import { CookieService } from "ngx-cookie-service";
     getArticle(id: string): Observable<any> {
         return this._http.get(this.url + 'articles/' + id);
     }
- 
+
     saveArticle(article: any): Observable<any> {
 
         let token = this.getToken();
@@ -70,10 +70,10 @@ import { CookieService } from "ngx-cookie-service";
     patchArticle(articleId: string): Observable<any> {
 
         const token = this.getToken();
-        
+
         if (token) {
             let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'x-token': token });
-            return this._http.patch(this.url + 'articles/' + articleId, '' ,{ headers: headers });
+            return this._http.patch(this.url + 'articles/' + articleId, '', { headers: headers });
         }
     }
 
@@ -105,7 +105,7 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.get(this.url + 'get-articlexchapter/' + chapterId);
     }
 
-    
+
 
 
 

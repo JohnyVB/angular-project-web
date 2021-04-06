@@ -22,9 +22,9 @@
             <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/developer']">Desarrollo</a>
           </li>
 
-          <li ngClass="nav-item d-flex justify-content-center">
+         <!--  <li ngClass="nav-item d-flex justify-content-center">
             <a ngClass="p-2 text-center" [routerLink]="['/users']" *ngIf="this.user.role === 'admin-role'">Usuarios</a>
-          </li>
+          </li> -->
 
         </ul>
 
@@ -81,7 +81,7 @@
 
           <div ngClass="dropdown" *ngIf="this.userActivo">
 
-            <button id="dropdownMenuUser" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
+            <button id="dropdownMenuUser" (mouseenter)="getNotify(this.user._id)" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
               data-bs-toggle="dropdown" aria-expanded="false"><i *ngIf="this.alert"
                 ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.name}}</button>
 
@@ -108,7 +108,8 @@
               <a [routerLink]="['/notify/'+this.user._id]" ngClass="dropdown-item">
                 <i *ngIf="!this.alert" ngClass="fas fa-bell pr-2"></i>
                 <i *ngIf="this.alert" ngClass="fas fa-bell pr-2" style="color: red;"></i>
-                <label>Notificaciones</label>
+                <label>Notificaciones</label> <span *ngIf="this._notifyService.notifyCount !== 0"
+                  ngClass="ml-2 badge bg-danger">{{this._notifyService.notifyCount}}</span>
               </a>
               <a href="#" ngClass="dropdown-item" (click)="cerrarSession()">
                 <i ngClass="fas fa-sign-out-alt pr-2"></i>

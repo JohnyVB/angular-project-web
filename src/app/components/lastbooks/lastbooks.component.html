@@ -5,14 +5,18 @@
 
     <h2>Últimos libros</h2>
 
-    <div ngClass="row my-4 m-2">
+    <div *ngIf="!this.articles" ngClass="row my-4 m-2 d-flex justify-content-center">
+      <i ngClass="fas fa-spinner fa-pulse fa-10x text-info mt-5"></i>
+    </div>
+
+    <div *ngIf="this.articles" ngClass="row my-4 m-2">
 
       <article ngClass="col-sm-2 m-3 p-0" *ngFor="let article of this.articles">
 
         <div ngClass="card text-center">
 
           <div ngClass="card-body p-0">
-            <h5 ngClass="card-title m-1"><a ngClass="linkdecoration"
+            <h5 ngClass="card-title m-1 text-truncate"><a ngClass="linkdecoration"
                 [routerLink]="['/book/'+ article._id]">{{article.title}}</a></h5>
 
             <img *ngIf="article.image" ngClass="card-img-top" src="{{article.image}}" alt="Card image cap">

@@ -10,7 +10,8 @@ export class Article{
         public genders: [],
         public progress: string,
         public state: boolean,
-        public user: any
+        public user: any,
+        public chapter: {}
 
     ){}
 }

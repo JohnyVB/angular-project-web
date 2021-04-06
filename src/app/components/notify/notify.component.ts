@@ -12,37 +12,38 @@ import { Notify } from '../../models/notify';
 })
 export class NotifyComponent implements OnInit {
 
-  public userid:any;
+  public userid: any;
   public notify: Notify[];
 
   constructor(
     private _notifyService: NotifyService,
     private _route: ActivatedRoute
-  ) {}
+  ) {
+    this.notify = [];
+  }
 
   ngOnInit(): void {
     this.getUserId();
-    this.getNotify(this.userid);
   }
 
-  getUserId(){
-    this._route.params.subscribe((params) => {
-      this.userid = params.id;
+  getUserId() {
+    this._route.params.subscribe(response => {
+      this.userid = response.id;
+      this.getNotify(response.id);
     });
   }
 
-  getNotify(userid:any){
-    this._notifyService.getNotify(userid).subscribe(
+  getNotify(userid: any) {
+    this._notifyService.getNotifys(userid).subscribe(
       response => {
-        this.notify = response.user.notify;                
+        this.notify = response.notificacion;
       },
       error => {
-        console.warn('Error al traer las notificaciones');
-        
+        console.warn(error);
       });
   }
 
-  alertNotify(notify:any){
+  alertNotify(notify: any) {
 
     if (notify.alert) {
       let update = {
@@ -51,11 +52,10 @@ export class NotifyComponent implements OnInit {
 
       this._notifyService.updateAlert(notify._id, update).subscribe(
         response => {
-          
-          this.ngOnInit();
+          this.getNotify(this.userid);
         },
         error => {
-          console.log('Error al actualizar la notificación: ' + notify._id, error); 
+          console.log('Error al actualizar la notificación: ' + notify._id, error);
         }
       );
     }

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommentService } from '../../services/comment.service';
+import { NotifyService } from '../../services/notify.service'
 import { Global } from '../../services/global';
 import { Comment } from '../../models/comment';
 import Swal from 'sweetalert2';
@@ -10,12 +11,13 @@ import Swal from 'sweetalert2';
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css'],
-  providers: [CommentService, UserService]
+  providers: [CommentService, UserService, NotifyService]
 })
 export class CommentsComponent implements OnInit {
 
   public userOn: boolean;
   public articleId: string;
+  public userXarticle: string;
   public comments: Comment[];
   public url: string;
   public textComment: string;
@@ -26,11 +28,13 @@ export class CommentsComponent implements OnInit {
   constructor(
     private _commentService: CommentService,
     private _userService: UserService,
+    private _notifyService: NotifyService,
     private _route: ActivatedRoute
   ) {
     this.url = Global.url;
     this.userOn = false;
     this.textComment = '';
+    this.userXarticle = null;
   }
 
   ngOnInit(): void {
@@ -43,9 +47,22 @@ export class CommentsComponent implements OnInit {
       response => {
         this.articleId = response.id;
         this.getComments();
+        this.getUserPorArticle(response.id);
       },
       error => {
         console.warn('No hay libro');
+      }
+    );
+  }
+
+  getUserPorArticle(articleId: string){
+    this._userService.getUserXArticle(articleId).subscribe(
+      response => {
+        this.userXarticle = response.usuario;
+      },
+      error => {
+        console.log(error);
+        
       }
     );
   }
@@ -78,6 +95,8 @@ export class CommentsComponent implements OnInit {
       }
     )
   }
+
+ 
 
   saveComment() {
 

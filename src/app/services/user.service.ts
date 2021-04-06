@@ -57,6 +57,10 @@ import { CookieService } from "ngx-cookie-service";
         return this._http.get(this.url + 'users/' + userid);
     }
 
+    getUserXArticle(articleId: string): Observable<any> {
+        return this._http.get(this.url + 'users/article/' + articleId);
+    }
+
 
     updateUser(userId: any, user: any): Observable<any> {
         const token = this.getToken();
@@ -96,9 +100,7 @@ import { CookieService } from "ngx-cookie-service";
 
     }
 
-    getUserXArticle(articleId: string, reader: any): Observable<any> {
-        return this._http.get(this.url + 'get-userxarticle/' + articleId + '/' + reader);
-    }
+    
 
     getUserXEmail(email: string): Observable<any> {
         return this._http.get(this.url + 'get-userxemail/' + email);

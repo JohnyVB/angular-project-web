@@ -69,9 +69,7 @@ export class NewchapterComponent implements OnInit {
   getChapters(articleId: string, order: number = -1) {
     this._chapterService.getChaptersPorUnArticle(articleId, order).subscribe(
       response => {
-        this.chapters = response.capitulo;
-        console.log(this.chapters);
-        
+        this.chapters = response.capitulo;   
       }
     );
   }

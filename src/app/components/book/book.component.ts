@@ -48,7 +48,7 @@ export class BookComponent implements OnInit {
     this.editOn = false;
     this.commentsOn = true;
     this.chaptersOn = false;
-    this.article = new Article('', '', '', '', null, '', null, '', null, {});
+    this.article = new Article('', '', '', '', null, '', null, '', null, {}, {});
     this.updateArticle = {
       title: '',
       description: '',

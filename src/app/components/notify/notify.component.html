@@ -1,22 +1,23 @@
 <div ngClass="container mt-4 minHeight">
   <h4>Notificaciones</h4>
   <div (mouseenter)="alertNotify(notifys)" *ngFor="let notifys of this.notify"
-    ngClass="shadow p-3 mb-5 mt-2 bg-white rounded">
+    ngClass="shadow-sm p-3 m-3 bg-white rounded">
 
     <p>
       <strong>
-        <a href="#" ngClass="notifyDecorationText" [routerLink]="['/profile/'+ notifys.userid]">
-          {{notifys.username}}
+        <a href="#" ngClass="notifyDecorationText" [routerLink]="['/profile/'+ notifys.userPost._id]">
+          {{notifys.userPost.name}}
         </a>
       </strong>
-      {{notifys.message}}
+      {{notifys.data.title}}
       <strong>
-        <a *ngIf="!notifys.chapter" href="#" ngClass="notifyDecorationText" [routerLink]="['/book/' + notifys.articleid]">
-          {{notifys.articletitle}}
+        <a *ngIf="!notifys.data.chapter" href="#" ngClass="notifyDecorationText" [routerLink]="['/book/' + notifys.data.article._id]">
+          {{notifys.data.article.title}}
         </a>
 
-        <a *ngIf="notifys.chapter" href="#" ngClass="notifyDecorationText" [routerLink]="['/reader/' + notifys.articleid]">
-          {{notifys.articletitle}}
+        <a *ngIf="notifys.data.chapter" href="#" ngClass="notifyDecorationText"
+          [routerLink]="['/reader/' + notifys.data.chapter._id]">
+          {{notifys.data.chapter.title}}
         </a>
       </strong>
     </p>

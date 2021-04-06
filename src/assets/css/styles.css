@@ -37,6 +37,11 @@ body {
   float: none;
 }
 
+.spinnersWidth{
+  width: 5%;
+  height: 5%;
+}
+
 .bg-comment{
   background-color: #343A40;
 }
