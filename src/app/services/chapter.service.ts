@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie-service";
 import { Global } from './global';
@@ -49,37 +49,6 @@ import { Global } from './global';
         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         return this._http.get(this.url + 'chapters/' + chapterId, { headers: headers })
 
-    }
-
-
-
-
-
-
-
-
-
-    updateChapter(chapterId: any, chapter: any): Observable<any> {
-        const token = this.getToken();
-        if (token) {
-            let params = JSON.stringify(chapter);
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-
-            return this._http.put(this.url + 'update-chapter/' + chapterId, params, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
-
-    deleteChapter(chapterId: string) {
-        const token = this.getToken();
-
-        if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.delete(this.url + 'delete-chapter/' + chapterId, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
     }
 
 }

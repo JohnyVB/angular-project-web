@@ -269,25 +269,6 @@ header {
   width: 89.4% !important;
 }
 
-.imguserfileWidth {
-  width: 90%;
-
-}
-
-#datosUserprofile label {
-  display: block;
-  margin: 13px;
-}
-
-#datosUserprofile label:last-child {
-  margin-top: 20px;
-  margin-bottom: 15px;
-}
-
-#datosUserprofile label a:hover {
-  text-decoration: none;
-}
-
 .widthBookEdit{
   width: 200px;
 }
@@ -308,10 +289,6 @@ header {
 
   .typeBookProfile {
     width: 85.5% !important;
-  }
-
-  .imageUserProfile {
-    margin-top: 20px;
   }
 }
 

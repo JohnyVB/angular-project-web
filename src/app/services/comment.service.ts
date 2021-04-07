@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Comment } from '../models/comment';
 import { Global } from './global';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -39,7 +38,7 @@ import { CookieService } from 'ngx-cookie-service';
                 "Content-Type": "application/json",
                 "x-token": token
             });
-            
+
             return this._http.post(this.url + 'comments/' + coleccion + '/' + articleId, params, { headers });
         }
 

@@ -77,47 +77,4 @@ import { CookieService } from "ngx-cookie-service";
         }
     }
 
-
-
-
-
-
-
-
-    getArticlesXpopulate(): Observable<any> {
-        return this._http.get(this.url + 'articles/chapters');
-    }
-
-    getArticlesChapters(): Observable<any> {
-        return this._http.get(this.url + 'get-articles-chapter');
-    }
-
-    getArticlesLibrary(): Observable<any> {
-        return this._http.get(this.url + 'library');
-    }
-
-
-    getArticleService(articleId: string, reader: boolean): Observable<any> {
-        return this._http.get(this.url + 'get-chapters-populate/' + articleId + '/' + reader);
-    }
-
-    getArticleXchapter(chapterId: string): Observable<any> {
-        return this._http.get(this.url + 'get-articlexchapter/' + chapterId);
-    }
-
-
-
-
-
-    deleteArticle(articleId: any): Observable<any> {
-        const token = this.getToken();
-
-        if (token) {
-            let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': "Bearer " + token });
-            return this._http.delete(this.url + 'delete-book/' + articleId, { headers: headers });
-        } else {
-            return this._http.get(this.url + 'error');
-        }
-    }
-
 }

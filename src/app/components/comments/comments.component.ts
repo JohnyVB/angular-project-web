@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommentService } from '../../services/comment.service';
-import { NotifyService } from '../../services/notify.service'
 import { Global } from '../../services/global';
 import { Comment } from '../../models/comment';
 import Swal from 'sweetalert2';
@@ -11,7 +10,7 @@ import Swal from 'sweetalert2';
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css'],
-  providers: [CommentService, UserService, NotifyService]
+  providers: [CommentService, UserService]
 })
 export class CommentsComponent implements OnInit {
 
@@ -28,7 +27,6 @@ export class CommentsComponent implements OnInit {
   constructor(
     private _commentService: CommentService,
     private _userService: UserService,
-    private _notifyService: NotifyService,
     private _route: ActivatedRoute
   ) {
     this.url = Global.url;
@@ -95,8 +93,6 @@ export class CommentsComponent implements OnInit {
       }
     )
   }
-
- 
 
   saveComment() {
 

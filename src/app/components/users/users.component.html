@@ -1,38 +1,31 @@
-<div class="row">
+<div ngClass="row">
 
+  <section ngClass="col-8 minHeight">
+      <h2 ngClass="m-3">Usuarios</h2>
 
+        <div ngClass="row row-cols-1 row-cols-md-3 g-4 m-2">
 
-  <section id="contentMain" ngClass="col-8 mHeight">
-    <h2>Usuarios</h2>
+          <div *ngFor="let user of this.users" ngClass="col">
+            <div ngClass="card h-100">
+              <img src="{{user.image}}" ngClass="card-img-top" alt="{{user.name}}">
+              <div ngClass="card-body">
+                <h5 ngClass="card-title">ID: {{user._id}}</h5>
+                <h5 ngClass="card-title">{{user.name}} {{user.lastname}}</h5>
+                <h5 ngClass="card-title">{{user.email}}</h5>
+                <p ngClass="card-text">{{user.biography}}</p>
+                <button ngClass="btn btn-danger" (click)="deleteUser(user._id)"><i
+                    ngClass="fas fa-trash-alt text-white mr-2"></i>Eliminar</button>
+              </div>
+              <div ngClass="card-footer">
+                <small ngClass="text-muted">{{user.date | amLocale: 'es' | amTimeAgo}}</small>
+              </div>
+            </div>
+          </div>
 
-    <div ngClass="row bg-white m-3">
-
-
-
-      <div ngClass="col-11 row bg-light border rounded m-3 d-flex" *ngFor="let users of this.user">
-        <div ngClass="col-2 m-2 text-center">
-          <img src="{{this.url + 'get-defaultimage/'+ this.imageDefault}}"
-            ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="!this.users.image">
-          <img src="{{this.url + 'get-image-user/' + this.users.image}}" ngClass="imageUserProfile imguserfileWidth rounded-circle" *ngIf="this.users.image">
-          <label ngClass="p-1 bg-success m-2 text-white">@{{users.user}}</label>
         </div>
 
-        <div id="datosUserprofile" ngClass="col-4">
-          <label>Nombres: {{users.name}}</label>
-          <label>Apellidos: {{users.lastname}}</label>
-          <label>Email: {{users.email}}</label>
-          <label>Publicaciones: {{this.users.article.length}}</label>
-          <label><a [routerLink]="['/profile/' + users._id]" ngClass="p-2 bg-primary text-white">Ir al perfil</a></label>
-        </div>
-        <div ngClass="col-4 ml-auto text-center">
-          <button ngClass="btn btn-secondary mt-5" (click)="deleteUser(this.users._id)"><i
-              ngClass="fas fa-trash-alt fa-4x m-4 text-danger"></i></button>
-        </div>
-      </div>
+        
 
-
-
-    </div>
 
 
 

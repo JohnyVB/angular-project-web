@@ -18,13 +18,14 @@
             <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/chapters']">Capitulos</a>
           </li>
 
-          <li ngClass="nav-item d-flex justify-content-center">
-            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/developer']">Desarrollo</a>
-          </li>
-
          <!--  <li ngClass="nav-item d-flex justify-content-center">
-            <a ngClass="p-2 text-center" [routerLink]="['/users']" *ngIf="this.user.role === 'admin-role'">Usuarios</a>
+            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/developer']">Desarrollo</a>
           </li> -->
+
+         <li ngClass="nav-item d-flex justify-content-center">
+            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/users']"
+              *ngIf="this.user.role === 'admin-role'">Usuarios</a>
+          </li>
 
         </ul>
 

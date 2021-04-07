@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
-import { UserService } from '../../services/user.service';
 import { Global } from '../../services/global';
 import Swal from 'sweetalert2';
 
@@ -10,7 +9,7 @@ import Swal from 'sweetalert2';
   selector: 'app-newbook',
   templateUrl: './newbook.component.html',
   styleUrls: ['./newbook.component.css'],
-  providers: [ArticleService, UserService]
+  providers: [ArticleService]
 })
 export class NewbookComponent implements OnInit {
 
@@ -24,9 +23,7 @@ export class NewbookComponent implements OnInit {
 
   constructor(
     private _router: Router,
-    private _route: ActivatedRoute,
     private _articleService: ArticleService,
-    private _userService: UserService
   ) {
     this.article = {
       image: null,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { ChapterService } from '../../services/chapter.service';
 import { UserService } from '../../services/user.service';
@@ -22,8 +22,7 @@ export class ChaptersComponent implements OnInit {
     private _articleService: ArticleService,
     private _chapterService: ChapterService,
     private _userService: UserService,
-    private _route: ActivatedRoute,
-    private _router: Router
+    private _route: ActivatedRoute
   ) { 
     this.chapters = [];
     this.userProp = false;

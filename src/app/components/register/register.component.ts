@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { User } from '../../models/user';
 import { Global } from "../../services/global";
 import Swal from 'sweetalert2';
-import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-register',
@@ -62,8 +61,6 @@ export class RegisterComponent implements OnInit {
 
     this._userService.register(this.user).subscribe(
       response => {
-         console.log(response.usuario);
-
         if (this.user.image) {
           this.uploadimageUser(response.usuario._id);
         }
@@ -88,7 +85,6 @@ export class RegisterComponent implements OnInit {
   uploadimageUser(userId: any) {
     this._userService.uploadImageUser(this.file, userId).subscribe(
       response => {
-        console.log(response.modelo);
       },
       error => {
         console.log('Error al guardar la imagen', error);
