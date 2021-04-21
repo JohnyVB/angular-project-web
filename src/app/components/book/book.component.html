@@ -50,11 +50,11 @@
            {{this.btnListString}}
           </button>
 
-          <app-list></app-list>
+          <app-list *ngIf="true"></app-list>
 
        </div>
 
-       <div ngClass="col-8 bg-white ml-3 rounded p-3">
+       <div ngClass="col-8 ml-3 rounded p-3">
          <div *ngIf="this.userProp">
 
            <button *ngIf="!this.editOn" ngClass="btn btn-danger text-white ml-2 float-end" (click)="deleteArticle()">
@@ -99,7 +99,8 @@
 
            <div ngClass="mt-3">
              <h6>Publicado por: <a ngClass="linkdecoration"
-                 [routerLink]="['/profile/' + this.article.user['_id']]">{{this.article.user['name']}}</a></h6>
+                 [routerLink]="['/profile/' +
+                 this.article.user['_id']]"><strong>{{this.article.user['name']}}</strong></a></h6>
            </div>
 
          </div>
@@ -172,5 +173,5 @@
      </div>
 
    </section>
-   <app-sidebar ngClass="col-3"></app-sidebar>
+   <app-sidebar *ngIf="true" ngClass="col-3"></app-sidebar>
  </div>

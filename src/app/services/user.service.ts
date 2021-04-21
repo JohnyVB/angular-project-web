@@ -30,6 +30,18 @@ import { CookieService } from "ngx-cookie-service";
 
     }
 
+    setTheme(theme:string){
+        this.cookie.set("theme", theme);
+    }
+
+    removeTheme(){
+        this.cookie.delete('theme');
+    }
+
+    getTheme(){
+        return (this.cookie.get('theme')) ? this.cookie.get('theme') : "light";
+    }
+
     setToken(token: string) {
         this.cookie.set("x-token", token);
     }

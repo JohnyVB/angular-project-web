@@ -1,131 +1,121 @@
 <header>
-
-  <nav id="header" ngClass="navbar navbar-expand-lg navbar-light bg-light">
+  <nav ngClass="navbar navbar-expand-lg">
     <div ngClass="container-fluid">
-      <h1><a ngClass="text-decoration-none text-warning" [routerLink]="['/home']">Reader<strong>Book</strong></a></h1>
+      <h1><a ngClass="text-decoration-none text-warning" routerLink="/home">Reader<strong>Book</strong></a></h1>
       <button ngClass="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
         <span ngClass="navbar-toggler-icon"></span>
       </button>
       <div ngClass="collapse navbar-collapse" id="navbarSupportedContent">
         <ul ngClass="navbar-nav mx-5">
 
           <li ngClass="nav-item d-flex justify-content-center">
-            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/library']">Biblioteca</a>
+            <a ngClass="p-2 text-center text-decoration-none" *ngIf="true" [routerLink]="['/library']">Biblioteca</a>
           </li>
 
           <li ngClass="nav-item d-flex justify-content-center">
-            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/chapters']">Capitulos</a>
+            <a ngClass="p-2 text-center text-decoration-none" *ngIf="true" [routerLink]="['/chapters']">Capitulos</a>
           </li>
 
-         <!--  <li ngClass="nav-item d-flex justify-content-center">
-            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/developer']">Desarrollo</a>
-          </li> -->
-
-         <li ngClass="nav-item d-flex justify-content-center">
-            <a ngClass="p-2 text-center text-dark text-decoration-none" [routerLink]="['/users']"
-              *ngIf="this.user.role === 'admin-role'">Usuarios</a>
+          <li ngClass="nav-item d-flex justify-content-center">
+            <a ngClass="p-2 text-center text-decoration-none" [routerLink]="['/users']" *ngIf="this.user.role === 'admin-role'">Usuarios</a>
           </li>
 
         </ul>
 
-        
-
         <div ngClass="input-group mx-5">
           <input type="text" ngClass="form-control me-2" placeholder="Buscar por: Titulo, generos, tipo"
-            aria-describedby="button-addon2" name="search" [(ngModel)]="this.searchString">
+            aria-describedby="button-addon2" (ngModel)="this.searchString" name="search">
           <button ngClass="btn btn-info" type="button" id="button-addon2" (click)="sendString()"><i
               ngClass="fas fa-search"></i></button>
         </div>
 
-        <a ngClass="text-center mx-2"><i id="icon-theme" ngClass="fas fa-adjust fa-rotate-180"></i></a>
-
-        <div ngClass="d-flex mx-5">
-          <div ngClass="dropdown" *ngIf="!this.userActivo">
-
-            <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
-              data-bs-toggle="dropdown" aria-expanded="false">Login</button>
-
-            <div ngClass="dropdown-menu dropdown-menu-end mt-0 p-3 anchoWidht" aria-labelledby="dropdownMenuLogin">
-              <div ngClass="row">
-                <div ngClass="form-group col-12">
-
-                  <label for="exampleInputEmail1">Correo</label>
-                  <input type="email" ngClass="form-control" name="email" [(ngModel)]="this.login.email">
-
-                </div>
-
-                <div ngClass="form-group col-12">
-
-                  <label for="exampleInputPassword1">Contraseña</label>
-                  <input type="password" ngClass="form-control" name="contrasena" [(ngModel)]="this.login.password">
-
-                </div>
-
-                <div ngClass="form-group  col-12">
-                  <button ngClass="btn btn-success form-control" (click)="loginUser()">Login</button>
-                </div>
+        <div ngClass="form-check form-switch mx-5">
+          <input ngClass="form-check-input" type="checkbox" id="toggleTheme" (click)="changeTheme($event.target)">
+        </div>
 
 
-                <div ngClass="text-center mt-3 col-12">
-                  <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
-                    cuenta</a>
-                </div>
+        <!-- -------------------------------------- Inicio dropdown de usuario inactivo -------------------------------------- -->
+        <div ngClass="dropdown" *ngIf="!this.userActivo">
+
+          <button id="dropdownMenuLogin" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false">Login</button>
+
+          <div ngClass="dropdown-menu dropdown-menu-end widthModal p-3" aria-labelledby="dropdownMenuLogin">
+            <div ngClass="row">
+              <div ngClass="form-group col-12">
+
+                <label for="exampleInputEmail1">Correo</label>
+                <input type="email" ngClass="form-control" name="email" [(ngModel)]="this.login.email">
 
               </div>
-            </div>
-          </div>
 
-          <!-- -------------------------------------- Fin dropdown de usuario inactivo -------------------------------------- -->
+              <div ngClass="form-group col-12">
 
-          <!-- -------------------------------------- Inicio dropdown de usuario activo -------------------------------------- -->
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" ngClass="form-control" name="contrasena" [(ngModel)]="this.login.password">
 
-          <div ngClass="dropdown" *ngIf="this.userActivo">
+              </div>
 
-            <button id="dropdownMenuUser" (mouseenter)="getNotify(this.user._id)" ngClass="btn btn-warning text-white dropdown-toggle" type="button"
-              data-bs-toggle="dropdown" aria-expanded="false"><i *ngIf="this.alert"
-                ngClass="fas fa-exclamation-circle fa-lg iconAlertNotify"></i>{{this.user.name}}</button>
-
-
-            <div ngClass="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
-
-              <div ngClass="text-center">
-                <img ngClass="img-thumbnail width-img-user mb-2" src="{{this.user.image}}" alt="{{this.user.name}}"
-                  *ngIf="this.user.image">
-                <img ngClass="img-thumbnail width-img-user mb-2"
-                  src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png"
-                  alt="No hay usuario activo" *ngIf="!this.user.image">
+              <div ngClass="form-group  col-12">
+                <button ngClass="btn btn-success form-control" (click)="loginUser()">Login</button>
               </div>
 
 
-              <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
-                <i ngClass="fas fa-user pr-2"></i>
-                <label>Mi perfil</label>
-              </a>
-              <a [routerLink]="['/list/'+this.user._id]" ngClass="dropdown-item">
-                <i ngClass="fas fa-list pr-2"></i>
-                <label>Mi lista</label>
-              </a>
-              <a [routerLink]="['/notify/'+this.user._id]" ngClass="dropdown-item">
-                <i *ngIf="!this.alert" ngClass="fas fa-bell pr-2"></i>
-                <i *ngIf="this.alert" ngClass="fas fa-bell pr-2" style="color: red;"></i>
-                <label>Notificaciones</label> <span *ngIf="this._notifyService.notifyCount !== 0"
-                  ngClass="ml-2 badge bg-danger">{{this._notifyService.notifyCount}}</span>
-              </a>
-              <a href="#" ngClass="dropdown-item" (click)="cerrarSession()">
-                <i ngClass="fas fa-sign-out-alt pr-2"></i>
-                <label>Cerrar sesion</label>
-              </a>
+              <div ngClass="text-center mt-3 col-12">
+                <label>¿No registrado?</label><a ngClass="ml-2 text-primary" [routerLink]="['/register']">Crear
+                  cuenta</a>
+              </div>
+
             </div>
           </div>
         </div>
 
+        <!-- -------------------------------------- Fin dropdown de usuario inactivo -------------------------------------- -->
+
+
+        <!-- -------------------------------------- Inicio dropdown de usuario activo -------------------------------------- -->
+
+        <div ngClass="dropdown" *ngIf="this.userActivo">
+
+          <button *ngIf="this.userActivo" id="dropdownMenuUser" (mouseenter)="getNotify(this.user._id)"
+            ngClass="btn btn-warning text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">{{this.user.name}}</button>
+
+          <div ngClass="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
+
+            <div ngClass="text-center">
+              <img ngClass="img-thumbnail width-img-user mb-2 widthImageUser" src="{{this.user.image}}" alt="{{this.user.name}}"
+                *ngIf="this.user.image">
+              <img ngClass="img-thumbnail width-img-user mb-2 widthImageUser"
+                src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png"
+                alt="No hay usuario activo" *ngIf="!this.user.image">
+            </div>
+
+
+            <a [routerLink]="['/profile/'+this.user._id]" ngClass="dropdown-item">
+              <i ngClass="fas fa-user pr-2"></i>
+              Mi perfil
+            </a>
+            <a [routerLink]="['/list/'+this.user._id]" ngClass="dropdown-item">
+              <i ngClass="fas fa-list pr-2"></i>
+              Mi lista
+            </a>
+            <a [routerLink]="['/notify/'+this.user._id]" ngClass="dropdown-item">
+              <i *ngIf="!this.alert" ngClass="fas fa-bell pr-2"></i>
+              <i *ngIf="this.alert" ngClass="fas fa-bell pr-2" style="color: red;"></i>
+              Notificaciones <span *ngIf="this._notifyService.notifyCount !== 0"
+                ngClass="ml-2 badge bg-danger">{{this._notifyService.notifyCount}}</span>
+            </a>
+            <a href="#" ngClass="dropdown-item" (click)="cerrarSession()">
+              <i ngClass="fas fa-sign-out-alt pr-2"></i>
+              Cerrar sesion
+            </a>
+          </div>
+        </div>
+        <!-- -------------------------------------- Fin dropdown de usuario activo -------------------------------------- -->
+
       </div>
     </div>
   </nav>
-
-
 </header>
-
-
-

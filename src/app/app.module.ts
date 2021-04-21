@@ -11,7 +11,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LastbooksComponent } from './components/lastbooks/lastbooks.component';
 import { LastchaptersComponent } from './components/lastchapters/lastchapters.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { BookComponent } from './components/book/book.component';
 import { HomeComponent } from './components/home/home.component';
 import { NewbookComponent } from './components/newbook/newbook.component';
@@ -30,15 +29,14 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { NotifyComponent } from './components/notify/notify.component';
 import { ListComponent } from './components/list/list.component';
 import { ListpageComponent } from './components/listpage/listpage.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    SidebarComponent,
     LastbooksComponent,
     LastchaptersComponent,
-    FooterComponent,
     BookComponent,
     HomeComponent,
     NewbookComponent,
@@ -55,7 +53,8 @@ import { ListpageComponent } from './components/listpage/listpage.component';
     CommentsComponent,
     NotifyComponent,
     ListComponent,
-    ListpageComponent
+    ListpageComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +62,8 @@ import { ListpageComponent } from './components/listpage/listpage.component';
     FormsModule,
     HttpClientModule,
     MomentModule,
-    PdfViewerModule
+    PdfViewerModule,
+    RouterModule
   ],
   providers: [appRoutingProviders, CookieService],
   bootstrap: [AppComponent]

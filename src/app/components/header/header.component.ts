@@ -19,13 +19,13 @@ export class HeaderComponent implements OnInit {
   public userActivo: boolean;
   public url: string;
   public searchString: string;
+  public cookieTheme: any;
 
   constructor(
     private _userService: UserService,
     public _notifyService: NotifyService,
     public _router: Router
   ) {
-
 
     this.url = Global.url;
 
@@ -40,7 +40,37 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getToken()
+    this.themePage()
   }
+
+  themePage() {
+    const toggle = document.querySelector('#toggleTheme');
+    const root = document.documentElement;
+    this.cookieTheme = this._userService.getTheme();
+
+    if (this.cookieTheme === 'dark') {
+      toggle.setAttribute('checked', 'true');
+    } else {
+      toggle.removeAttribute('checked');
+    }
+
+    root.setAttribute('data-theme', this.cookieTheme);
+  }
+
+  changeTheme(e:any) {
+    const root = document.documentElement;
+    if (e.checked) {
+      root.setAttribute('data-theme', 'dark');
+      this._userService.removeTheme();
+      this._userService.setTheme('dark');
+    }else{
+      root.setAttribute('data-theme', 'light');
+      this._userService.removeTheme();
+      this._userService.setTheme('light');
+    }
+    
+  }
+
 
   getToken() {
     const token = this._userService.getToken();
@@ -69,19 +99,19 @@ export class HeaderComponent implements OnInit {
 
   getUserLogged() {
     this._userService.getUserLogged().subscribe(response => {
-      
+
       if (response.usuario) {
         this.user = response.usuario;
         this.getNotify(response.usuario._id);
         this.userActivo = true;
-      }else{
+      } else {
         this.userActivo = false;
       }
 
     },
       error => {
         console.log(error);
-        
+
       });
   }
 

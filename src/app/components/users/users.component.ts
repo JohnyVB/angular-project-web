@@ -57,7 +57,13 @@ export class UsersComponent implements OnInit {
           }
         );
       } else if (result.isDenied) {
-        Swal.fire('Usuario no ha sido eliminado', 'Cancelado por usuario', 'info')
+        
+        Swal.fire({
+          title: 'Usuario no ha sido eliminado',
+          html: 'Cancelado por usuario',
+          icon: 'info'
+        })
+
       }
     })
   }

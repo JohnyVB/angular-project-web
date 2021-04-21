@@ -1,8 +1,8 @@
 <div ngClass="container mt-4 minHeight">
   <h2 ngClass="text-center">Lista de programación</h2>
 
-  <div *ngIf="this.list" ngClass="mt-3">
-    <div ngClass="bg-white rounded text-center p-3" *ngFor="let list of this.list">
+  <div *ngIf="this.list.length" ngClass="mt-3">
+    <div ngClass="listTheme rounded text-center p-3" *ngFor="let list of this.list">
       <div ngClass="row">
         <div ngClass="col-9">
           <h5>{{list.name}}</h5>
@@ -48,18 +48,14 @@
               </div>
             </div>
             <button (click)="quitBook(list._id, article._id)" ngClass="btn btn-warning mt-3 text-white">Quitar de lista</button>
-
           </article>
-
-
-
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!this.list" ngClass="mt-3">
-    <div ngClass="rounded text-dark p-3 text-center" style="background-color: white;">
+  <div *ngIf="!this.list.length" ngClass="mt-3">
+    <div ngClass="listTheme rounded text-dark p-3 text-center">
       <h3>Aun no has creado listas de lectura</h3>
       <p>Para crear listas de lectura, ir a un libro y en el boton <strong>Agregar a lista</strong></p>
     </div>
@@ -82,7 +78,7 @@
 
           <div ngClass="input-group">
             <input type="text" ngClass="form-control" placeholder="Nuevo nombre"
-              aria-describedby="button-addon2" [(ngModel)]="this.newNameList">
+              aria-describedby="button-addon2" *ngIf="true" [(ngModel)]="this.newNameList">
             <button (click)="editList()" ngClass="btn btn-success" type="button"
               id="button-addon2"><i ngClass="fas fa-save"></i></button>
           </div>

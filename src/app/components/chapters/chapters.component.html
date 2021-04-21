@@ -1,4 +1,4 @@
-<div ngClass="bg-info m-2 p-2 rounded text-white">
+<div id="capitulos" ngClass="m-2 p-2 rounded text-white">
   <div ngClass="form-floating p-4">
     <h3><Strong>Capitulos</Strong></h3>
 
@@ -6,6 +6,10 @@
       <button ngClass="btn btn-primary mr-2 rounded-0" (click)="getChapters(this.articleId)">Nuevo</button>
       <button ngClass="btn btn-primary rounded-0" (click)="getChapters(this.articleId, 1)">Antiguo</button>
       <hr>
+    </div>
+
+    <div *ngIf="this.userProp" ngClass="d-grid gap-2">
+      <a ngClass="btn btn-primary" [routerLink]="['/newchapter/' + this.articleId]">Agregar capitulo</a>
     </div>
 
     <div *ngIf="this.chapters.length">
@@ -34,9 +38,7 @@
       <h3>Aun no se ha publicado capitulos</h3>
     </div>
 
-    <div *ngIf="this.userProp" ngClass="d-grid gap-2">
-      <a ngClass="btn btn-primary" [routerLink]="['/newchapter/' + this.articleId]">Agregar capitulo</a>
-    </div>
+    
   </div>
 </div>
 

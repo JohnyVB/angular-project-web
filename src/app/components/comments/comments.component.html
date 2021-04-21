@@ -1,12 +1,12 @@
 
-<div ngClass="bg-info m-2 p-2 rounded text-white">
+<div id="comentarios" ngClass="m-2 p-2 rounded text-white">
   <div ngClass="form-floating p-4">
     <h3><Strong>Comentarios</Strong></h3>
     <p *ngIf="!this.userOn">Por favor <strong><a [routerLink]="['/register']">Registrarse</a></strong> o iniciar sesión para comentar
     </p>
     <p *ngIf="this.userOn">Deja tu comentario aqui</p>
     <div ngClass="mb-3">
-      <textarea ngClass="form-control" id="exampleFormControlTextarea1" rows="3"
+      <textarea ngClass="form-control" id="exampleFormControlTextarea1" *ngIf="true" rows="3"
         [(ngModel)]="this.textComment"></textarea>
     </div>
     <button ngClass="btn btn-primary float-end" (click)="saveComment()">Publicar</button>
@@ -28,7 +28,7 @@
     </div>
 
     <div ngClass="col-11 p-0">
-      <h5><strong>{{comment.user.name}}</strong></h5>
+      <h5><strong><a [routerLink]="['/profile/' + comment.user._id]" routerLinkActive="router-link-active" >{{comment.user.name}}</a></strong></h5>
       <p ngClass="fontSizeTextComment">{{comment.date | amLocale: 'es' | amTimeAgo}}</p>
       <p>{{comment.text}}</p>
     </div>

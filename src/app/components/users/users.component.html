@@ -1,6 +1,6 @@
 <div ngClass="row">
 
-  <section ngClass="col-8 minHeight">
+  <section ngClass="col-8">
       <h2 ngClass="m-3">Usuarios</h2>
 
         <div ngClass="row row-cols-1 row-cols-md-3 g-4 m-2">
@@ -9,10 +9,10 @@
             <div ngClass="card h-100">
               <img src="{{user.image}}" ngClass="card-img-top" alt="{{user.name}}">
               <div ngClass="card-body">
-                <h5 ngClass="card-title">ID: {{user._id}}</h5>
-                <h5 ngClass="card-title">{{user.name}} {{user.lastname}}</h5>
-                <h5 ngClass="card-title">{{user.email}}</h5>
-                <p ngClass="card-text">{{user.biography}}</p>
+                <h6 ngClass="card-title rounded text-center text-white userId">{{user._id}}</h6>
+                <h6 ngClass="card-title textUsers">{{user.name}} {{user.lastname}}</h6>
+                <h6 ngClass="card-title textUsers">{{user.email}}</h6>
+                <p ngClass="card-text textUsers">{{user.biography}}</p>
                 <button ngClass="btn btn-danger" (click)="deleteUser(user._id)"><i
                     ngClass="fas fa-trash-alt text-white mr-2"></i>Eliminar</button>
               </div>
@@ -31,6 +31,6 @@
 
   </section>
 
-  <app-sidebar ngClass="col-4"></app-sidebar>
+  <app-sidebar *ngIf="true" ngClass="col-4"></app-sidebar>
 
 </div>

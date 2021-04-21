@@ -3,7 +3,7 @@
     <div ngClass="row py-5 px-4">
       <div ngClass="col-12 mx-auto">
         <!-- Profile widget -->
-        <div ngClass="bg-white shadow rounded overflow-hidden">
+        <div id="perfil" ngClass="p-2 shadow rounded overflow-hidden">
           <div ngClass="px-4 pt-0 pb-4 cover">
 
             <!-- Modal imagen usuario -->
@@ -52,9 +52,9 @@
                   src="https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png"
                   alt="..." width="130" ngClass="rounded mb-2 img-thumbnail">
 
-                <button [disabled]="this.editOn" *ngIf="this.userProp" ngClass="btn btn-outline-dark btn-sm btn-block"
-                  (click)="editUser()">Editar
-                  perfil</button>
+                <button [disabled]="this.editOn" *ngIf="this.userProp" ngClass="btn btn-outline-danger btn-sm btn-block"
+                  (click)="editUser()">
+                  Editar perfil</button>
 
 
               </div>
@@ -67,11 +67,16 @@
               </div>
             </div>
           </div>
-          <div ngClass="bg-light p-4 d-flex justify-content-end text-center">
+
+
+          <div ngClass="themeProfile rounded p-4 d-flex justify-content-end text-center">
             <ul ngClass="list-inline mb-0">
               <li ngClass="list-inline-item">
-                <h5 ngClass="font-weight-bold mb-0 d-block">{{this.cantidadArticles}}</h5><small ngClass="text-muted">
-                  <i ngClass="fas fa-book mr-1"></i>Libros publicados</small>
+                <h5 ngClass="font-weight-bold mb-0 d-block">{{this.cantidadArticles}}</h5>
+                <small id="libPost" ngClass="text-muted">
+                  <i ngClass="fas fa-book mr-1"></i>
+                  Libros publicados
+                </small>
               </li>
             </ul>
           </div>
@@ -95,14 +100,14 @@
 
           <div *ngIf="!this.editOn" ngClass="px-4 py-3">
             <h5 ngClass="mb-0">Sobre mi</h5>
-            <div ngClass="p-4 rounded shadow-sm bg-light">
+            <div ngClass="themeProfile p-4 rounded shadow-sm">
               <p ngClass="font-italic mb-0">{{this.user.biography}}</p>
             </div>
           </div>
 
           <div *ngIf="this.editOn" ngClass="px-4 py-3">
             <h5 ngClass="mb-0">Sobre mi</h5>
-            <div ngClass="p-4 rounded shadow-sm bg-light">
+            <div ngClass="themeProfile p-4 rounded shadow-sm">
               <textarea rows="5" ngClass="form-control" id="floatingTextarea"
                 [(ngModel)]="this.user.biography">{{this.user.biography}}</textarea>
             </div>
@@ -110,14 +115,14 @@
 
           <div ngClass="px-4 py-3">
             <h5 ngClass="mb-0">Email</h5>
-            <div ngClass="p-4 rounded shadow-sm bg-light">
+            <div ngClass="themeProfile p-4 rounded shadow-sm">
               <p ngClass="font-italic mb-0">{{this.user.email}}</p>
             </div>
           </div>
 
           <div *ngIf="this.userProp" ngClass="px-4 py-3">
             <h5 ngClass="mb-0">Preferencia de lectura</h5>
-            <div ngClass="p-4 rounded shadow-sm bg-light">
+            <div ngClass="themeProfile p-4 rounded shadow-sm">
 
               <p *ngIf="!this.user.reader && !this.editOn" ngClass="font-italic mb-0">Paginada</p>
               <p *ngIf="this.user.reader && !this.editOn" ngClass="font-italic mb-0">Cascada</p>
@@ -134,7 +139,7 @@
 
           <div *ngIf="this.editOn" ngClass="px-4 py-3">
             <h5 ngClass="mb-0">Contraseña</h5>
-            <div ngClass="p-4 rounded shadow-sm bg-light">
+            <div ngClass="themeProfile p-4 rounded shadow-sm">
               <input type="password" [(ngModel)]="this.user.password" ngClass="form-control mb-0" />
 
             </div>
@@ -142,7 +147,7 @@
 
           <div *ngIf="this.editOn" ngClass="px-4 py-3">
             <h5 ngClass="mb-0">Confirmar contraseña</h5>
-            <div ngClass="p-4 rounded shadow-sm bg-light">
+            <div ngClass="themeProfile p-4 rounded shadow-sm">
               <input type="password" [(ngModel)]="this.confirmPassword" ngClass="form-control mb-0" />
 
             </div>
@@ -165,7 +170,7 @@
 
               <div *ngFor="let article of this.articles" ngClass="col-lg-4 mb-2 pr-lg-1 mt-5">
                 <h6 ngClass="text-center">
-                  <a ngClass="linkdecoration" [routerLink]="['/book/' + article._id]">
+                  <a ngClass="linkdecorationProfile" [routerLink]="['/book/' + article._id]">
                     {{article.title}}
                   </a>
                 </h6>
@@ -188,5 +193,5 @@
 
 
   </section>
-  <app-sidebar ngClass="col-4"></app-sidebar>
+  <app-sidebar *ngIf="true" ngClass="col-4"></app-sidebar>
 </div>

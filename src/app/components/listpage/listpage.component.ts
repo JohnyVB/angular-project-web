@@ -28,7 +28,7 @@ export class ListpageComponent implements OnInit {
     this.newNameList = null;
     this.listIdupdate = '';
     this.nameListModal = '';
-    this.list = null;
+    this.list = [];
   }
 
   ngOnInit(): void {
@@ -45,11 +45,9 @@ export class ListpageComponent implements OnInit {
   getLists(userId: string) {
     this._listService.getLists(userId).subscribe(
       response => {
-        if (response) {
-          this.list = response.listas;          
-        } else {
-          console.warn('No hay listas');
-        }
+        this.list = response.listas;
+        console.log(this.list);
+        
       },
       error => {
         console.warn('Error al traer la lista');
