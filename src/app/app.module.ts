@@ -30,6 +30,10 @@ import { NotifyComponent } from './components/notify/notify.component';
 import { ListComponent } from './components/list/list.component';
 import { ListpageComponent } from './components/listpage/listpage.component';
 import { RouterModule } from '@angular/router';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { Global } from './services/global';
+
+const config: SocketIoConfig = { url: Global.url, options: {} };
 
 @NgModule({
   declarations: [
@@ -63,7 +67,8 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     MomentModule,
     PdfViewerModule,
-    RouterModule
+    RouterModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [appRoutingProviders, CookieService],
   bootstrap: [AppComponent]
