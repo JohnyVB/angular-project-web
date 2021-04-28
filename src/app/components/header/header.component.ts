@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { SocketIoService } from '../../services/socket-io.service';
 import { NotifyService } from '../../services/notify.service';
 import { Global } from '../../services/global';
 import { Router } from '@angular/router';
@@ -11,7 +10,7 @@ import Swal from 'sweetalert2';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  providers: [UserService, NotifyService, SocketIoService]
+  providers: [UserService, NotifyService]
 })
 export class HeaderComponent implements OnInit {
 
@@ -26,8 +25,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private _userService: UserService,
     private _notifyService: NotifyService,
-    private _router: Router,
-    private _socketService: SocketIoService
+    private _router: Router
   ) {
 
     this.messageSocket = null;
@@ -45,23 +43,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.getToken()
     this.themePage()
-  }
-
-  sendMessage(){
-    if (this.messageSocket) {
-      this._socketService.sendMenssage(this.messageSocket);
-      this._socketService.getMessage().subscribe(data => {
-        console.log(data);
-        
-      });
-      
-    }else{
-      Swal.fire(
-        'Error',
-        'Campo de mensaje vacio',
-        'error'
-      );
-    }
   }
 
   themePage() {

@@ -30,7 +30,6 @@
     "js-cookie": "^2.2.1",
     "ng2-pdf-viewer": "^6.3.2",
     "ngx-cookie-service": "^10.0.1",
-    "ngx-socket-io": "^4.0.0",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.5",
     "sweetalert2": "^10.3.2",

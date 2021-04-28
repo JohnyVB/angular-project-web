@@ -22,14 +22,7 @@
           </li>
 
         </ul>
-
-        <div ngClass="input-group mx-5">
-          <input type="text" ngClass="form-control me-2" placeholder="Mensaje por socket"
-            aria-describedby="button-addon2" [(ngModel)]="this.messageSocket" name="message">
-          <button ngClass="btn btn-info" type="button" id="button-addon2" (click)="sendMessage()"><i
-              ngClass="fas fa-search"></i></button>
-        </div>
-
+        
         <div ngClass="input-group mx-5">
           <input type="text" ngClass="form-control me-2" placeholder="Buscar por: Titulo, generos, tipo"
             aria-describedby="button-addon2" [(ngModel)]="this.searchString" name="search">
