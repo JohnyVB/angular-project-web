@@ -25,7 +25,7 @@
 
         <div ngClass="input-group mx-5">
           <input type="text" ngClass="form-control me-2" placeholder="Buscar por: Titulo, generos, tipo"
-            aria-describedby="button-addon2" (ngModel)="this.searchString" name="search">
+            aria-describedby="button-addon2" [(ngModel)]="this.searchString" name="search">
           <button ngClass="btn btn-info" type="button" id="button-addon2" (click)="sendString()"><i
               ngClass="fas fa-search"></i></button>
         </div>
