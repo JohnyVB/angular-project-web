@@ -1,0 +1,289 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+}
+
+
+.widthImageUser{
+    width: 40%;
+}
+
+.widthModal{
+  width: 500% !important;
+}
+
+.imageUserComment{
+  width: 85%;
+}
+
+.userId{
+  font-size: 12px !important;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: green;
+  
+}
+
+.notifyNew{
+  color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: red;
+}
+
+.themeNotifyN p strong a{
+  text-decoration: none;
+  color: black;
+}
+
+
+[data-theme="dark"] {
+    body {
+        background-color: #2F2F2F;
+    }
+
+    body h2{
+        color: white;
+    }
+
+    body h5 a {
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    body section h4 a {
+        font-size: 15px;
+        text-decoration: none;
+        color: white;
+    }
+
+    body .card {
+      background-color: #161616;
+    }
+
+    p a strong, p span{
+        color: white;
+    }
+    .dropdown-menu{
+        background-color: #4A4A4A;
+    }
+
+    .dropdown-menu label{
+        color: white;
+    }
+
+    header {
+        background-color: #161616;
+        border-top: 4px solid #FFC107;
+       
+    }
+
+    header a {
+         color: white;
+    }
+
+    aside div{
+      background-color: #161616;
+      color: white;
+    }
+
+    article .col-8 {
+      background-color: #161616;
+      color: white;
+    }
+
+    article .col-8 h6 a {
+      text-decoration: none;
+      text-transform: capitalize;
+      color: white;
+    }
+
+    #comentarios{
+      background-color: black;
+      color: white;
+    }
+
+    #capitulos{
+      background-color: black;
+      color: white;
+    }
+
+    #perfil {
+      background-color: #161616;
+      color: white;
+    }
+
+    .themeProfile {
+      background-color: #4A4A4A;
+    }
+
+    #libPost{
+      color: white;
+    }
+
+    .linkdecorationProfile{
+      text-decoration: none;
+      color: white;
+    }
+
+    .textUsers {
+      color: white;
+    }
+
+    .themeNotify {
+      background-color: black;
+      color: white;
+    }
+
+    .themeNotify h3 {
+      color: white;
+    }
+
+    .themeNotifyH{
+      color: white;
+    }
+
+    .themeNotifyN{
+      background-color: black;
+      color: white;
+    }
+
+    .themeNotifyN p strong a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .listTheme{
+      background-color: #161616;
+      color: white;
+    }
+
+    .listTheme h3,
+    .listTheme p{
+      color: white;
+    }
+
+    .themeNewBook{
+      background-color: black;
+      color: white;
+    }
+
+    .themeNewChapter {
+      background-color: #727272;
+      color: white;
+    }
+
+    .swal2-popup {
+      background-color: #202124;
+      color: white;
+    }
+
+}
+
+
+[data-theme="light"] {
+  body {
+    background-color: #E9EAED;
+  }
+
+  body h5 a {
+    color: black;
+    text-decoration: none;
+    font-size: 15px;
+  }
+
+  body section h4 a{
+      color: black;
+      text-decoration: none;
+      font-size: 15px;
+  }
+
+  header {
+    background-color: white;
+    border-top: 4px solid #FFC107;
+  }
+
+  header a {
+    color: black;
+  }
+
+  aside div {
+    background-color: white;
+  }
+
+  article .col-8{
+    background-color: white;
+  }
+
+  article .col-8 h6 a {
+    text-decoration: none;
+    text-transform: capitalize;
+    color: black;
+  }
+
+  #comentarios {
+    background-color: #17A2B8;
+    color: white;
+  }
+
+  #capitulos {
+    background-color: #17A2B8;
+    color: white;
+  }
+
+  #perfil{
+    padding: 15px;
+    background-color: white;
+  }
+
+  .themeProfile {
+    background-color: #E9EAED;
+  }
+
+  .linkdecorationProfile {
+    text-decoration: none;
+    color: black;
+  }
+
+  .themeNotify{
+    background-color: white;
+    color: #17A2B8;
+  }
+
+  .themeNotifyN {
+    background-color: white;
+    color: black;
+  }
+
+  .listTheme {
+    background-color: white;
+  }
+
+  .themeNewBook {
+    background-color: white;
+    color: black;
+  }
+  .themeNewChapter{
+    background-color: #D1D1D1;
+  }
+  
+  .swal2-popup{
+    background-color: white;
+    color: black;
+  }
+  
+  
+}
