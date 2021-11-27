@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
     };
     this.searchString = null;
     this.userActivo = null;
-    this.user = new User('', '', '', '', '', '', null, null, '', null, null);
+    this.user = new User('', '', '', '', '', '', null, null, '', null, null, null);
 
   }
   ngOnInit(): void {
@@ -85,6 +85,11 @@ export class HeaderComponent implements OnInit {
     this._userService.login(this.login).subscribe(
       response => {
         this.user = response.usuario;
+
+        if (!this.user.state && this.user.validatorNumber) {
+          return this._router.navigate(['/activatoruser/' + this.user.email]);
+        }
+
         this._userService.setToken(response.token);
         this._router.navigate(['/home']);
         this.userActivo = true;

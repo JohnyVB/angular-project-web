@@ -16,6 +16,7 @@ import { SearchComponent } from './components/search/search.component';
 import { NotifyComponent } from './components/notify/notify.component'
 import { LastchaptersComponent } from './components/lastchapters/lastchapters.component';
 import { ListpageComponent } from './components/listpage/listpage.component';
+import { ActivatoruserComponent } from './components/activatoruser/activatoruser.component';
 
 
 const appRoutes: Routes = [
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
     { path: 'reader/:id', component: ReaderComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'users', component: UsersComponent },
+    { path: 'activatoruser/:email', component: ActivatoruserComponent },
     { path: 'notify/:id', component: NotifyComponent },
     { path: 'list/:id', component: ListpageComponent },
     { path: 'error', component: ErrorComponent },

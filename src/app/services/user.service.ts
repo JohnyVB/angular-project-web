@@ -5,8 +5,6 @@ import { User } from '../models/user';
 import { Global } from './global';
 import { CookieService } from "ngx-cookie-service";
 
-
-
 @Injectable() export class UserService {
 
     public url: string;
@@ -70,6 +68,10 @@ import { CookieService } from "ngx-cookie-service";
 
     getUserXArticle(articleId: string): Observable<any> {
         return this._http.get(this.url + 'users/article/' + articleId);
+    }
+
+    validateCode(email: string, code: string): Observable<any>{
+        return this._http.put(this.url + 'auth/activateuser', {email, code});
     }
 
 

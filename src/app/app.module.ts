@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'angular2-moment';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -30,6 +31,7 @@ import { NotifyComponent } from './components/notify/notify.component';
 import { ListComponent } from './components/list/list.component';
 import { ListpageComponent } from './components/listpage/listpage.component';
 import { RouterModule } from '@angular/router';
+import { ActivatoruserComponent } from './components/activatoruser/activatoruser.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { RouterModule } from '@angular/router';
     NotifyComponent,
     ListComponent,
     ListpageComponent,
-    SidebarComponent
+    SidebarComponent,
+    ActivatoruserComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     MomentModule,
     PdfViewerModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   providers: [appRoutingProviders, CookieService],
   bootstrap: [AppComponent]

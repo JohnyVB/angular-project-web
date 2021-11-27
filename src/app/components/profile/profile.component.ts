@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
     private _userService: UserService,
     private _articleService: ArticleService
   ) {
-    this.user = new User('', '', '', '', '', '', null, null, '', null, null);
+    this.user = new User('', '', '', '', '', '', null, null, '', null, null, null);
     this.url = Global.url;
     this.userProp = false;
     this.editOn = false;

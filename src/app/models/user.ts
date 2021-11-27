@@ -12,7 +12,8 @@ export class User {
         public state: boolean,
         public role: string,
         public reader: boolean,
-        public date: any
+        public date: any,
+        public validatorNumber: any
 
     ) { }
 }

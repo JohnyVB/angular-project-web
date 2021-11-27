@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
     this.url = Global.url;
     this.errorOn = true;
     this.urlImage = "https://res.cloudinary.com/dr0wxllnu/image/upload/v1615497606/backend-lector/default/default-user_bur2mh.png";
-    this.user = new User('', '','' , '', '', '', null, null, '', null, null);
+    this.user = new User('', '','' , '', '', '', null, null, '', null, null, null);
 
   }
 
@@ -65,15 +65,19 @@ export class RegisterComponent implements OnInit {
           this.uploadimageUser(response.usuario._id);
         }
 
-        Swal.fire(
-          'Se ha creado el usuario!!',
-          'El usuario ha sido creado correctamente, por favor ir al boton Login para ingresar',
-          'success'
-        );
+        this._router.navigate(['/activatoruser/' + response.usuario.email]);
 
-        this._router.navigate(['/home/']);
+        // Swal.fire(
+        //   'Se ha creado el usuario!!',
+        //   'El usuario ha sido creado correctamente, por favor ir al boton Login para ingresar',
+        //   'success'
+        // );
+
+        // this._router.navigate(['/home/']);
       },
       error => {
+        console.log({error});
+        
         Swal.fire(
           'Error al crear el usuario',
           'Por favor revisar el formulario',

@@ -1,0 +1,21 @@
+<div ngClass="row">
+    <div ngClass="col-5 row mx-auto">
+        <div ngClass="form-group col-12 bg-white rounded m-5 p-5 text-center">
+
+            <form [formGroup]="this.form" (submit)="validateUser()">
+                <label for="code">Codigo de verificación</label>
+                <input type="text" ngClass="form-control my-3"  formControlName="code" id="code" >
+                <div *ngIf="this.form.get('code').touched && this.form.get('code').invalid" class="alert alert-danger">
+
+                    <div *ngIf="this.form.get('code').errors.required">El codigo de validación es requerido.</div>
+                    <div *ngIf="this.form.get('code').errors.pattern">Solo numeros.</div>
+                    <div *ngIf="this.form.get('code').errors.minLength">El codigo debe ser de 6 digitos.</div>
+                    <div *ngIf="this.form.get('code').errors.maxLength">El codigo debe ser de 6 digitos.</div>
+    
+                </div>
+                <button ngClass="btn btn-success form-control" type="submit" [disabled]="this.form.invalid">Validar</button>
+            </form>
+
+        </div>
+    </div>
+</div>
