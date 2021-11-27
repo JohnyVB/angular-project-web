@@ -22,8 +22,8 @@ import { CookieService } from "ngx-cookie-service";
     }
 
 
-    getArticles(cantidad: number): Observable<any> {
-        return this._http.get(this.url + 'articles/count/' + cantidad);
+    getArticles(end: number): Observable<any> {
+        return this._http.post(this.url + 'articles', {end});
     }
 
     getArticle(id: string): Observable<any> {
