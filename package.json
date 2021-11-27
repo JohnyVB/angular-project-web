@@ -9,7 +9,8 @@
     "build": "ng build",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --prod"
+    "postinstall": "ng build --prod",
+    "deploy": "ng build --prod --base-href=https://johnyvb.github.io/angular-project-web/"
   },
   "private": true,
   "dependencies": {
