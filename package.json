@@ -6,11 +6,10 @@
     "start:prod": "ng serve --c=production",
     "start:dev": "ng serve --c=development",
     "test": "ng test",
-    "build": "ng build",
+    "build": "ng build --prod",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ng build --prod",
-    "deploy": "ng build --prod --base-href=https://johnyvb.github.io/angular-project-web/"
+    "deploy": "ng deploy --base-href=https://johnyvb.github.io/angular-project-web/"
   },
   "private": true,
   "dependencies": {
