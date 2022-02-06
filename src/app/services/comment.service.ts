@@ -19,9 +19,9 @@ import { CookieService } from 'ngx-cookie-service';
         return this.cookie.get("x-token");
     }
 
-    getComments(articleId: string, order: string, coleccion: string): Observable<any> {
+    getComments(articleId: string, order: string, coleccion: string, inicio = 0, fin = 10): Observable<any> {
 
-        return this._http.get(this.url + 'comments/' + coleccion + '/' + articleId + '/' + order);
+        return this._http.post(this.url + 'comments/' + coleccion + '/' + articleId + '/' + order, {inicio, fin});
 
     }
 

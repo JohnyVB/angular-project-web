@@ -24,7 +24,7 @@ import { Global } from './global';
     }
 
     getChaptersPorUnArticle(articleid: string, order: number): Observable<any> {
-        return this._http.get(this.url + 'chapters/art/' + articleid + '/' + order);
+        return this._http.post(this.url + 'chapters/art/' + articleid, {order});
     }
 
     saveChapter(chapter: any, articleId: string): Observable<any> {
