@@ -23,8 +23,8 @@ import { Global } from './global';
         return this._http.get(this.url + 'chapters/count/' + cantidad);
     }
 
-    getChaptersPorUnArticle(articleid: string, order: number): Observable<any> {
-        return this._http.post(this.url + 'chapters/art/' + articleid, {order});
+    getChaptersPorUnArticle(articleid: string, order: number, inicio: number = 0, fin: number = 10): Observable<any> {
+        return this._http.post(this.url + 'chapters/art/' + articleid + '/' + order, {inicio, fin});
     }
 
     saveChapter(chapter: any, articleId: string): Observable<any> {
